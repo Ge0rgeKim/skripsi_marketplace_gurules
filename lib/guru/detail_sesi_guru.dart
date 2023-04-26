@@ -21,7 +21,7 @@ class _detail_sesi_guruState extends State<detail_sesi_guru> {
         appBar: AppBar(
           backgroundColor: appbarColor,
           title: Text(
-            "Home",
+            "Detail Sesi",
             style: TextStyle(
               fontFamily: "Roboto",
               fontSize: 25,

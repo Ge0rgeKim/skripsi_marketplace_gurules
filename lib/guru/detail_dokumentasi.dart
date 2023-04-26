@@ -29,6 +29,15 @@ class _detail_dokumentasiState extends State<detail_dokumentasi> {
               color: Colors.black,
             ),
           ),
+          leading: IconButton(
+            onPressed: () => {
+              Navigator.of(context).pop(),
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
           centerTitle: true,
           toolbarHeight: 75,
           // leadingWidth: 65,

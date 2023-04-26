@@ -7,7 +7,8 @@ class history_transaksi_murid extends StatefulWidget {
   const history_transaksi_murid({super.key});
 
   @override
-  State<history_transaksi_murid> createState() => _history_transaksi_muridState();
+  State<history_transaksi_murid> createState() =>
+      _history_transaksi_muridState();
 }
 
 class _history_transaksi_muridState extends State<history_transaksi_murid> {
@@ -26,6 +27,15 @@ class _history_transaksi_muridState extends State<history_transaksi_murid> {
               fontFamily: "Roboto",
               fontSize: 25,
               fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          leading: IconButton(
+            onPressed: () => {
+              Navigator.of(context).pop(),
+            },
+            icon: Icon(
+              Icons.arrow_back,
               color: Colors.black,
             ),
           ),
