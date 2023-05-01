@@ -71,7 +71,6 @@ class _register_guruState extends State<register_guru> {
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text(
@@ -86,9 +85,7 @@ class _register_guruState extends State<register_guru> {
                       SizedBox(
                         height: 15,
                       ),
-                      //kemungkinan dropdown dan pakai API
                       TextField(
-                        autofocus: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text(
@@ -100,11 +97,10 @@ class _register_guruState extends State<register_guru> {
                           ),
                         ),
                       ),
-                                            SizedBox(
+                      SizedBox(
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text(
@@ -114,14 +110,14 @@ class _register_guruState extends State<register_guru> {
                               fontSize: 20,
                             ),
                           ),
-                          hintText: "(Surabaya, Jakarta) Data jangan di singkat",
+                          hintText:
+                              "(Surabaya, Jakarta) Data jangan di singkat",
                         ),
                       ),
                       SizedBox(
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -138,7 +134,6 @@ class _register_guruState extends State<register_guru> {
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -161,7 +156,7 @@ class _register_guruState extends State<register_guru> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
@@ -206,9 +201,6 @@ class _register_guruState extends State<register_guru> {
                         decoration: TextDecoration.underline,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
                   ),
                 ],
               ),

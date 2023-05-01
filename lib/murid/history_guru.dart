@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 
 class history_guru extends StatefulWidget {
   const history_guru({super.key});
@@ -44,15 +45,73 @@ class _history_guruState extends State<history_guru> {
           // titleSpacing: 0,
           elevation: 0,
         ),
-        body: Scrollbar(
-          trackVisibility: true,
-          child: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-              child: Column(
-                children: [],
-              ),
-            ),
+        body: Container(
+          padding: EdgeInsets.fromLTRB(5, 30, 5, 30),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return Text("data");
+                            },
+                          ),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                SkripsiIcon.user,
+                                size: 25,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "<username guru>",
+                                    style: TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "<mata pelajaran>",
+                                    style: TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            Icons.arrow_right_outlined,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

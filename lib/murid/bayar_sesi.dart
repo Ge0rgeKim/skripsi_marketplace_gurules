@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:skripsi_c14190201/murid/history_guru.dart';
 
 class bayar_sesi extends StatefulWidget {
   const bayar_sesi({super.key});
@@ -50,7 +51,115 @@ class _bayar_sesiState extends State<bayar_sesi> {
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: Column(
-                children: [],
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "<ID Sesi>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "<Mata Pelajaran>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 13,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "<Tanggal>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            " | ",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            "<Waktu Sesi>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "<ID Guru>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "<Saldo User>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        "<Harga Sesi>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return history_guru();
+                              },
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: buttoncolor,
+                        ),
+                        child: Text(
+                          "Bayar",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

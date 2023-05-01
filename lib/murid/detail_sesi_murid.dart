@@ -50,7 +50,106 @@ class _detail_sesi_muridState extends State<detail_sesi_murid> {
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: Column(
-                children: [],
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "<ID Sesi>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "<Mata Pelajaran>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 13,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "<Tanggal>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            " | ",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            "<Waktu Sesi>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "<Harga Sesi>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "<ID Guru>",
+                        style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "<Lokasi>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            " | ",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            "<Status Sesi>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

@@ -50,7 +50,92 @@ class _detail_penilaianState extends State<detail_penilaian> {
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: Column(
-                children: [],
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "<ID Sesi>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "<Mata Pelajaran>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 13,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "<Tanggal>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            " | ",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            "<Waktu Sesi>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "<ID Murid>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            " | ",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            "<Nilai>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "<Isi Komentar>",
+                    style: TextStyle(
+                      fontFamily: "Roboto",
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

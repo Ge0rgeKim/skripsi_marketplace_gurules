@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:skripsi_c14190201/guru/history_sesi_guru.dart';
+import 'package:skripsi_c14190201/guru/history_transaksi_guru.dart';
+import 'package:skripsi_c14190201/main.dart';
 
 class settings_guru extends StatefulWidget {
   const settings_guru({super.key});
@@ -29,15 +32,6 @@ class _settings_guruState extends State<settings_guru> {
               color: Colors.black,
             ),
           ),
-          leading: IconButton(
-            onPressed: () => {
-              Navigator.of(context).pop(),
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-          ),
           centerTitle: true,
           toolbarHeight: 75,
           // leadingWidth: 65,
@@ -48,9 +42,106 @@ class _settings_guruState extends State<settings_guru> {
           trackVisibility: true,
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
+              padding: EdgeInsets.all(5),
               child: Column(
-                children: [],
+                children: [
+                  Divider(
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return history_sesi_guru();
+                          },
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "History Sesi",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 20,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_right_outlined,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return history_transaksi_guru();
+                          },
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "History Transaksi",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 20,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_right_outlined,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    height: 250,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return MyApp();
+                          },
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: buttoncolor,
+                    ),
+                    child: Text(
+                      "Logout",
+                      style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

@@ -104,7 +104,6 @@ class _reset_passwordState extends State<reset_password> {
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -121,7 +120,6 @@ class _reset_passwordState extends State<reset_password> {
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -144,7 +142,7 @@ class _reset_passwordState extends State<reset_password> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
@@ -166,9 +164,6 @@ class _reset_passwordState extends State<reset_password> {
                         ),
                       ),
                     ],
-                  ),
-                  SizedBox(
-                    height: 5,
                   ),
                 ],
               ),

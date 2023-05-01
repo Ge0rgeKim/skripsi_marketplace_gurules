@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:skripsi_c14190201/guru/detail_sesi_guru.dart';
 
 class history_transaksi_guru extends StatefulWidget {
   const history_transaksi_guru({super.key});
@@ -44,15 +45,72 @@ class _history_transaksi_guruState extends State<history_transaksi_guru> {
           // titleSpacing: 0,
           elevation: 0,
         ),
-        body: Scrollbar(
-          trackVisibility: true,
-          child: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-              child: Column(
-                children: [],
+        body: Container(
+          padding: EdgeInsets.fromLTRB(5, 30, 5, 30),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "<ID Sesi>",
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "<Status Transaksi>",
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "<Waktu Transaksi>",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 13,
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return detail_sesi_guru();
+                                },
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: buttoncolor,
+                          ),
+                          child: Text(
+                            "Detail",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

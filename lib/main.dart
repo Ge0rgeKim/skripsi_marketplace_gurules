@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:skripsi_c14190201/guru/home_guru.dart';
 import 'package:skripsi_c14190201/login_register/reset_password.dart';
 import 'package:skripsi_c14190201/login_register/role_register.dart';
 import 'package:skripsi_c14190201/murid/home_murid.dart';
@@ -66,7 +67,6 @@ class _MyAppState extends State<MyApp> {
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -102,7 +102,33 @@ class _MyAppState extends State<MyApp> {
                           primary: buttoncolor,
                         ),
                         child: Text(
-                          "Login",
+                          "Login1",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return home_guru();
+                              },
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: buttoncolor,
+                        ),
+                        child: Text(
+                          "Login2",
                           style: TextStyle(
                             fontFamily: "Roboto",
                             fontWeight: FontWeight.bold,
@@ -157,9 +183,6 @@ class _MyAppState extends State<MyApp> {
                         decoration: TextDecoration.underline,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
                   ),
                 ],
               ),

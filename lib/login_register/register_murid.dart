@@ -71,7 +71,6 @@ class _register_muridState extends State<register_murid> {
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text(
@@ -87,7 +86,6 @@ class _register_muridState extends State<register_murid> {
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -104,7 +102,6 @@ class _register_muridState extends State<register_murid> {
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -127,7 +124,7 @@ class _register_muridState extends State<register_murid> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
@@ -172,9 +169,6 @@ class _register_muridState extends State<register_murid> {
                         decoration: TextDecoration.underline,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
                   ),
                 ],
               ),

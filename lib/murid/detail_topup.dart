@@ -50,7 +50,38 @@ class _detail_topupState extends State<detail_topup> {
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: Column(
-                children: [],
+                children: [
+                  Text(
+                    "<ID Saldo>",
+                    style: TextStyle(
+                      fontFamily: "Roboto",
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: Text(
+                      "<Foto Top-Up>",
+                      style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    "<Nominal>",
+                    style: TextStyle(
+                      fontFamily: "Roboto",
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

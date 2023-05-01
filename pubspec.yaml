@@ -91,5 +91,8 @@ flutter:
         - asset: assets/font/Roboto-Regular.ttf
         - asset: assets/font/Roboto-Italic.ttf
           style: normal
+    - family:  SkripsiIcon
+      fonts:
+        - asset: assets/font/SkripsiIcon.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

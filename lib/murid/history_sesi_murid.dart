@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:skripsi_c14190201/murid/detail_sesi_murid.dart';
+import 'package:skripsi_c14190201/murid/report_guru.dart';
+import 'package:skripsi_c14190201/murid/review_guru.dart';
 
 class history_sesi_murid extends StatefulWidget {
   const history_sesi_murid({super.key});
@@ -44,15 +47,123 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
           // titleSpacing: 0,
           elevation: 0,
         ),
-        body: Scrollbar(
-          trackVisibility: true,
-          child: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-              child: Column(
-                children: [],
+        body: Container(
+          padding: EdgeInsets.fromLTRB(5, 30, 5, 30),
+          child: Column(
+            children: [
+              Text(
+                "<Total Sesi>",
+                style: TextStyle(
+                  fontFamily: "Roboto",
+                  fontSize: 20,
+                ),
               ),
-            ),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: ListView(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "<ID Sesi>",
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "<Waktu>",
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return review_guru();
+                                },
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: buttoncolor,
+                          ),
+                          child: Text(
+                            "Review",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return report_guru();
+                                },
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: buttoncolor,
+                          ),
+                          child: Text(
+                            "Report",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return detail_sesi_murid();
+                                },
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: buttoncolor,
+                          ),
+                          child: Text(
+                            "Detail",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

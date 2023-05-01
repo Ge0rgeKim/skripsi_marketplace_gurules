@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:skripsi_c14190201/murid/history_transaksi_murid.dart';
 
 class topup_saldo extends StatefulWidget {
   const topup_saldo({super.key});
@@ -50,7 +52,77 @@ class _topup_saldoState extends State<topup_saldo> {
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: Column(
-                children: [],
+                children: [
+                  Column(
+                    children: [
+                      TextField(
+                        autofocus: true,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text(
+                            "Nominal Saldo",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      //cari cara upload gambar
+                      TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text(
+                            "Bukti Transfer",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return history_transaksi_murid();
+                              },
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: buttoncolor,
+                        ),
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

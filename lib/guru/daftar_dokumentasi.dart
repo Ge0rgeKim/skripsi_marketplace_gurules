@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:skripsi_c14190201/guru/detail_dokumentasi.dart';
+import 'package:skripsi_c14190201/guru/form_dokumentasi.dart';
 
 class daftar_dokumentasi extends StatefulWidget {
   const daftar_dokumentasi({super.key});
@@ -44,15 +46,97 @@ class _daftar_dokumentasiState extends State<daftar_dokumentasi> {
           // titleSpacing: 0,
           elevation: 0,
         ),
-        body: Scrollbar(
-          trackVisibility: true,
-          child: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-              child: Column(
-                children: [],
+        body: Container(
+          padding: EdgeInsets.fromLTRB(5, 30, 5, 30),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "<Tanggal Sesi>",
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "<Waktu Sesi>",
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return form_dokumentasi();
+                                },
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: buttoncolor,
+                          ),
+                          child: Text(
+                            "Upload",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return detail_dokumentasi();
+                                },
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: buttoncolor,
+                          ),
+                          child: Text(
+                            "Detail",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "<Harga>",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

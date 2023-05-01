@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:skripsi_c14190201/murid/history_sesi_murid.dart';
 
 class report_guru extends StatefulWidget {
   const report_guru({super.key});
@@ -50,7 +51,115 @@ class _report_guruState extends State<report_guru> {
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: Column(
-                children: [],
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "<ID Sesi>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "<Mata Pelajaran>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 13,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "<Tanggal>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            " | ",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            "<Waktu Sesi>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "<ID Guru>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: [
+                      TextField(
+                        autofocus: true,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text(
+                            "Laporan",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return history_sesi_murid();
+                              },
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: buttoncolor,
+                        ),
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

@@ -1,53 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
-import 'package:skripsi_c14190201/guru/daftar_sesi.dart';
+import 'package:skripsi_c14190201/guru/daftar_dokumentasi.dart';
 
-class tambah_sesi extends StatefulWidget {
-  const tambah_sesi({super.key});
+class form_dokumentasi extends StatefulWidget {
+  const form_dokumentasi({super.key});
 
   @override
-  State<tambah_sesi> createState() => _tambah_sesiState();
+  State<form_dokumentasi> createState() => _form_dokumentasiState();
 }
 
-class _tambah_sesiState extends State<tambah_sesi> {
+class _form_dokumentasiState extends State<form_dokumentasi> {
   @override
-  var time = DateTime.now();
-  final jam = [
-    "00:00 - 01:00",
-    "01:00 - 02:00",
-    "02:00 - 03:00",
-    "03:00 - 04:00",
-    "04:00 - 05:00",
-    "05:00 - 06:00",
-    "06:00 - 07:00",
-    "07:00 - 08:00",
-    "08:00 - 09:00",
-    "09:00 - 10:00",
-    "10:00 - 11:00",
-    "11:00 - 12:00",
-    "12:00 - 13:00",
-    "13:00 - 14:00",
-    "14:00 - 15:00",
-    "15:00 - 16:00",
-    "16:00 - 17:00",
-    "17:00 - 18:00",
-    "18:00 - 19:00",
-    "19:00 - 20:00",
-    "20:00 - 21:00",
-    "21:00 - 22:00",
-    "22:00 - 23:00",
-    "23:00 - 00:00",
-  ];
-  String? selectedvalue;
   Widget build(BuildContext context) {
-    String tgl = time.day.toString() +
-        "/" +
-        time.month.toString() +
-        "/" +
-        time.year.toString();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -56,7 +22,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
         appBar: AppBar(
           backgroundColor: appbarColor,
           title: Text(
-            "Tambah Sesi",
+            "Upload Dokumentasi",
             style: TextStyle(
               fontFamily: "Roboto",
               fontSize: 25,
@@ -86,61 +52,87 @@ class _tambah_sesiState extends State<tambah_sesi> {
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: Column(
                 children: [
-                  Text(
-                    tgl,
-                    style: TextStyle(
-                      fontFamily: "Roboto",
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Column(
+                    children: [
+                      Text(
+                        "<ID Sesi>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "<Mata Pelajaran>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 13,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "<Tanggal>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            " | ",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            "<Waktu Sesi>",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "<ID Guru>",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Column(
                     children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.black)),
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          underline: SizedBox(),
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.black,
-                          ),
-                          hint: Text(
-                            "Pilih Jadwal Sesi",
+                      TextField(
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text(
+                            "Foto Dokumentasi",
                             style: TextStyle(
                               fontFamily: "Roboto",
                               fontSize: 20,
                             ),
                           ),
-                          items: jam.map(buildmenuitem).toList(),
-                          value: selectedvalue,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedvalue = value;
-                            });
-                          },
                         ),
                       ),
                       SizedBox(
                         height: 15,
                       ),
                       TextField(
-                        autofocus: true,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text(
-                            "Harga Sesi",
+                            "Keterangan",
                             style: TextStyle(
                               fontFamily: "Roboto",
                               fontSize: 20,
@@ -162,7 +154,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return daftar_sesi();
+                                return daftar_dokumentasi();
                               },
                             ),
                           );
@@ -189,15 +181,4 @@ class _tambah_sesiState extends State<tambah_sesi> {
       ),
     );
   }
-
-  DropdownMenuItem<String> buildmenuitem(String item) => DropdownMenuItem(
-        value: item,
-        child: Text(
-          item,
-          style: TextStyle(
-            fontFamily: "Roboto",
-            fontSize: 20,
-          ),
-        ),
-      );
 }
