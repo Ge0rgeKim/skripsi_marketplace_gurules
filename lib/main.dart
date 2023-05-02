@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:skripsi_c14190201/colors.dart';
-import 'package:skripsi_c14190201/guru/home_guru.dart';
+import 'package:skripsi_c14190201/guru/guru_pages.dart';
 import 'package:skripsi_c14190201/login_register/reset_password.dart';
 import 'package:skripsi_c14190201/login_register/role_register.dart';
-import 'package:skripsi_c14190201/murid/home_murid.dart';
+import 'package:skripsi_c14190201/murid/murid_pages.dart';
 
 void main() {
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
@@ -93,7 +93,7 @@ class _MyAppState extends State<MyApp> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return home_murid();
+                                return murid_pages();
                               },
                             ),
                           );
@@ -119,7 +119,7 @@ class _MyAppState extends State<MyApp> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return home_guru();
+                                return guru_pages();
                               },
                             ),
                           );

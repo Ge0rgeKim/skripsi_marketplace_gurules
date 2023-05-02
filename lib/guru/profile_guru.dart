@@ -26,7 +26,6 @@ class _profile_guruState extends State<profile_guru> {
           title: Container(
             padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
                   SkripsiIcon.user,

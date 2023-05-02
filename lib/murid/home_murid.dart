@@ -192,26 +192,11 @@ class _home_muridState extends State<home_murid> {
                       ],
                     ),
                   ),
-                  Column(
-                    children: [
-                      //Icon(SkripsiIcon.book_reader),
-                      // Icon(SkripsiIcon.business_time),
-                      // Icon(SkripsiIcon.chalkboard_teacher),
-                      Icon(SkripsiIcon.cog_outline),
-                      // Icon(SkripsiIcon.doc_add),
-                      Icon(SkripsiIcon.home),
-                      // Icon(SkripsiIcon.pencil_squared),
-                      // Icon(SkripsiIcon.user),
-                      Icon(SkripsiIcon.user_1),
-                      // Icon(SkripsiIcon.wallet),
-                    ],
-                  ),
                 ],
               ),
             ),
           ),
         ),
-        // bottomNavigationBar: BottomNavigationBar(items: [BottomNavigationBarItem(icon: icon)]),
       ),
     );
   }

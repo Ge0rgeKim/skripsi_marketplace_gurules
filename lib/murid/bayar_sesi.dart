@@ -136,7 +136,7 @@ class _bayar_sesiState extends State<bayar_sesi> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/main.dart';
 
@@ -12,6 +15,16 @@ class register_guru extends StatefulWidget {
 }
 
 class _register_guruState extends State<register_guru> {
+  late File _image;
+  final picker = ImagePicker();
+
+  Future pilihgambar() async {
+    var pickedimage = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(_image.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -146,6 +159,29 @@ class _register_guruState extends State<register_guru> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          pilihgambar();
+                        },
+                        icon: Icon(Icons.image),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        child: _image == null
+                            ? Text(
+                                "No Image Selected",
+                                style: TextStyle(
+                                  fontFamily: "Roboto",
+                                  fontSize: 15,
+                                ),
+                              )
+                            : Image.file(_image),
+                      )
                     ],
                   ),
                   SizedBox(

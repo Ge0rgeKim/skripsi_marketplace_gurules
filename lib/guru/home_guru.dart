@@ -94,7 +94,6 @@ class _home_guruState extends State<home_guru> {
                                 );
                               },
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Icon(
                                     SkripsiIcon.book_reader,
@@ -126,7 +125,6 @@ class _home_guruState extends State<home_guru> {
                                 );
                               },
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Icon(
                                     SkripsiIcon.pencil_squared,
@@ -158,7 +156,6 @@ class _home_guruState extends State<home_guru> {
                                 );
                               },
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Icon(
                                     SkripsiIcon.doc_add,
