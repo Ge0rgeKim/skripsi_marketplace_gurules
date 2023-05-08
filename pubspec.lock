@@ -208,6 +208,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  progress_dialog:
+    dependency: "direct main"
+    description:
+      name: progress_dialog
+      sha256: "2f92c7664ef569939c8c2c38bdf770e2d791d4e9075efe38d7fff0940afbcadd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.4"
+  rflutter_alert:
+    dependency: "direct main"
+    description:
+      name: rflutter_alert
+      sha256: a77c8c937fad29e70565388c5934f678b92325047663367b985570ba101929fa
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.4"
   sky_engine:
     dependency: transitive
     description: flutter

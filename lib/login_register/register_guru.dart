@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/main.dart';
+import 'package:http/http.dart' as http;
 
 class register_guru extends StatefulWidget {
   const register_guru({super.key});
@@ -15,18 +17,40 @@ class register_guru extends StatefulWidget {
 }
 
 class _register_guruState extends State<register_guru> {
-  late File _image;
-  final picker = ImagePicker();
+  void initState() {
+    super.initState();
+  }
+  // late File _image;
+  // final picker = ImagePicker();
 
-  Future pilihgambar() async {
-    var pickedimage = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(_image.path);
-    });
+  // Future pilihgambar() async {
+  //   var pickedimage = await picker.getImage(source: ImageSource.gallery);
+  //   setState(() {
+  //     _image = File(_image.path);
+  //   });
+  // }
+  List<dynamic> data = [];
+  List<String> data_value = [];
+  final String url = "http://10.0.2.2:8000/api/mata_pelajaran";
+  String? selectedvalue;
+  Future getdata() async {
+    var response = await http.get(Uri.parse(url));
+    data = json.decode(response.body)["data"];
+    return json.decode(response.body)["data"];
+  }
+
+  void isi_data() {
+    if (data_value.length < data.length) {
+      data.forEach((element) {
+        data_value.add(element["mata_pelajaran"] as String);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    getdata();
+    isi_data();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -98,16 +122,32 @@ class _register_guruState extends State<register_guru> {
                       SizedBox(
                         height: 15,
                       ),
-                      TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Text(
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.black)),
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          underline: SizedBox(),
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.black,
+                          ),
+                          hint: Text(
                             "Mata Pelajaran",
                             style: TextStyle(
                               fontFamily: "Roboto",
                               fontSize: 20,
                             ),
                           ),
+                          items: data_value.map(buildmenuitem).toList(),
+                          value: selectedvalue,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedvalue = value;
+                            });
+                          },
                         ),
                       ),
                       SizedBox(
@@ -159,29 +199,29 @@ class _register_guruState extends State<register_guru> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          pilihgambar();
-                        },
-                        icon: Icon(Icons.image),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        child: _image == null
-                            ? Text(
-                                "No Image Selected",
-                                style: TextStyle(
-                                  fontFamily: "Roboto",
-                                  fontSize: 15,
-                                ),
-                              )
-                            : Image.file(_image),
-                      )
+                      // SizedBox(
+                      //   height: 15,
+                      // ),
+                      // IconButton(
+                      //   onPressed: () {
+                      //     pilihgambar();
+                      //   },
+                      //   icon: Icon(Icons.image),
+                      // ),
+                      // SizedBox(
+                      //   height: 15,
+                      // ),
+                      // Container(
+                      //   child: _image == null
+                      //       ? Text(
+                      //           "No Image Selected",
+                      //           style: TextStyle(
+                      //             fontFamily: "Roboto",
+                      //             fontSize: 15,
+                      //           ),
+                      //         )
+                      //       : Image.file(_image),
+                      // )
                     ],
                   ),
                   SizedBox(
@@ -246,4 +286,15 @@ class _register_guruState extends State<register_guru> {
       ),
     );
   }
+
+  DropdownMenuItem<String> buildmenuitem(String item) => DropdownMenuItem(
+        value: item,
+        child: Text(
+          item,
+          style: TextStyle(
+            fontFamily: "Roboto",
+            fontSize: 20,
+          ),
+        ),
+      );
 }

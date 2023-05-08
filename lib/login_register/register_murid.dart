@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/main.dart';
+import 'package:http/http.dart' as http;
 
 class register_murid extends StatefulWidget {
   const register_murid({super.key});
@@ -13,7 +17,86 @@ class register_murid extends StatefulWidget {
 
 class _register_muridState extends State<register_murid> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  void dispose() {
+    userRegistController.dispose();
+    emailRegistController.dispose();
+    passRegistController.dispose();
+    confirPassRegistController.dispose();
+    super.dispose();
+  }
+
+  TextEditingController userRegistController = TextEditingController();
+  TextEditingController emailRegistController = TextEditingController();
+  TextEditingController passRegistController = TextEditingController();
+  TextEditingController confirPassRegistController = TextEditingController();
+
+  Future savedata() async {
+    final response = await http
+        .post(Uri.parse("http://10.0.2.2:8000/api/user_murid"), body: {
+      "username": userRegistController.text,
+      "email": emailRegistController.text,
+      "password": passRegistController.text
+    });
+  }
+
+  List<dynamic> akun_murid = [];
+  List<String> email_murid = [];
+  Future getdatamurid() async {
+    var response =
+        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_murid"));
+    akun_murid = json.decode(response.body)["data"];
+    return json.decode(response.body)["data"];
+  }
+
+  void isi_data_murid() {
+    if (email_murid.length < akun_murid.length) {
+      akun_murid.forEach((element) {
+        email_murid.add(element["email"] as String);
+      });
+    }
+  }
+
+  List<dynamic> akun_guru = [];
+  List<String> email_guru = [];
+  Future getdataguru() async {
+    // var response = await http.get(Uri.parse(""));
+    // akun_guru = json.decode(response.body)["data"];
+    // return json.decode(response.body)["data"];
+  }
+
+  void isi_data_guru() {
+    if (email_guru.length < akun_guru.length) {
+      akun_guru.forEach((element) {
+        email_guru.add(element["email"] as String);
+      });
+    }
+  }
+
+  bool cek_guru = false;
+  bool cek_murid = false;
+  void cekdata() {
+    for (int i = 0; i < email_murid.length; i++) {
+      if (emailRegistController.text == email_murid[i]) {
+        cek_murid = true;
+      }
+    }
+    for (int i = 0; i < email_guru.length; i++) {
+      if (emailRegistController.text == email_guru[i]) {
+        cek_guru = true;
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    getdatamurid();
+    isi_data_murid();
+    getdataguru();
+    isi_data_guru();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -55,6 +138,7 @@ class _register_muridState extends State<register_murid> {
                   Column(
                     children: [
                       TextField(
+                        controller: userRegistController,
                         autofocus: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -71,6 +155,7 @@ class _register_muridState extends State<register_murid> {
                         height: 15,
                       ),
                       TextField(
+                        controller: emailRegistController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text(
@@ -86,6 +171,7 @@ class _register_muridState extends State<register_murid> {
                         height: 15,
                       ),
                       TextField(
+                        controller: passRegistController,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -102,6 +188,7 @@ class _register_muridState extends State<register_murid> {
                         height: 15,
                       ),
                       TextField(
+                        controller: confirPassRegistController,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -124,14 +211,7 @@ class _register_muridState extends State<register_murid> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return MyApp();
-                              },
-                            ),
-                          );
+                          murid_regist();
                         },
                         style: ElevatedButton.styleFrom(
                           primary: buttoncolor,
@@ -177,5 +257,66 @@ class _register_muridState extends State<register_murid> {
         ),
       ),
     );
+  }
+
+  Future murid_regist() async {
+    if (userRegistController.text.isEmpty ||
+        emailRegistController.text.isEmpty ||
+        passRegistController.text.isEmpty ||
+        confirPassRegistController.text.isEmpty) {
+      Alert(
+        context: context,
+        title: "Data tidak valid",
+        type: AlertType.error,
+        buttons: [],
+      ).show();
+    } else {
+      if (passRegistController.text != confirPassRegistController.text) {
+        Alert(
+          context: context,
+          title: "Data Password tidak valid",
+          type: AlertType.error,
+          buttons: [],
+        ).show();
+      } else {
+        if ((passRegistController.text).length < 8) {
+          Alert(
+            context: context,
+            title: "Password harus lebih dari 8 huruf/karakter",
+            type: AlertType.error,
+            buttons: [],
+          ).show();
+        } else {
+          cekdata();
+          if (cek_murid || cek_guru) {
+            Alert(
+              context: context,
+              title: "Email User sudah terdaftar/terpakai",
+              type: AlertType.error,
+              buttons: [],
+            ).show();
+            cek_murid = false;
+            cek_guru = false;
+          } else {
+            savedata().then((value) {
+              Alert(
+                context: context,
+                title: "Registrasi Akun Berhasil",
+                type: AlertType.success,
+                buttons: [],
+              ).show();
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return MyApp();
+                },
+              ),
+            );
+          }
+        }
+      }
+    }
   }
 }

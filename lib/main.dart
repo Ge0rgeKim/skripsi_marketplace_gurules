@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/guru/guru_pages.dart';
 import 'package:skripsi_c14190201/login_register/reset_password.dart';
@@ -17,6 +18,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  TextEditingController emaillogincontroller = TextEditingController();
+  TextEditingController passlogincontroller = TextEditingController();
+
+  void initState() {
+    super.initState();
+  }
+
+  void dispose() {
+    emaillogincontroller.dispose();
+    passlogincontroller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -55,13 +70,14 @@ class _MyAppState extends State<MyApp> {
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text(
-                            "Username",
+                            "Email",
                             style: TextStyle(
                               fontFamily: "Roboto",
                               fontSize: 20,
                             ),
                           ),
                         ),
+                        controller: emaillogincontroller,
                       ),
                       SizedBox(
                         height: 15,
@@ -78,6 +94,7 @@ class _MyAppState extends State<MyApp> {
                             ),
                           ),
                         ),
+                        controller: passlogincontroller,
                       ),
                     ],
                   ),
@@ -89,14 +106,15 @@ class _MyAppState extends State<MyApp> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return murid_pages();
-                              },
-                            ),
-                          );
+                          userlogin();
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return murid_pages();
+                          //     },
+                          //   ),
+                          // );
                         },
                         style: ElevatedButton.styleFrom(
                           primary: buttoncolor,
@@ -191,5 +209,17 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  Future userlogin() async {
+    if (emaillogincontroller.text.isEmpty || passlogincontroller.text.isEmpty) {
+      Alert(
+        context: context,
+        title: "Data tidak valid",
+        type: AlertType.error,
+        buttons: [],
+      ).show();
+      return;
+    }
   }
 }
