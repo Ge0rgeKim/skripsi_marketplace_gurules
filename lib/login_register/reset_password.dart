@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -35,16 +36,31 @@ class _reset_passwordState extends State<reset_password> {
     final response = await http.put(
         Uri.parse("http://10.0.2.2:8000/api/user_murid/" + i.toString()),
         body: {
-          "email": temp1_murid,
-          "username": temp2_murid,
+          "email": temp_email_murid,
+          "username": temp_user_murid,
           "password": passResetController.text,
         });
   }
 
-  //nanti bikin save data guru
+  Future savedataguru(int? i) async {
+    final response = await http.put(
+        Uri.parse("http://10.0.2.2:8000/api/user_guru/" + i.toString()),
+        body: {
+          //id_admin,mata_pelajaran,ktp,lokasi,status_sesi,status_akun,
+          "id_admin": temp_idAdmin_guru,
+          "mata_pelajaran": temp_mataPelajaran_guru,
+          "ktp": temp_ktp_guru,
+          "lokasi": temp_lokasi_guru,
+          "status_sesi": temp_statusSesi_guru,
+          "status_akun": temp_statusAkun_guru,
+          "email": temp_email_guru,
+          "username": temp_user_guru,
+          "password": passResetController.text,
+        });
+  }
+
   List<dynamic> akun_murid = [];
   List<String> email_murid = [];
-  List<String> user_murid = [];
   Future getdatamurid() async {
     var response =
         await http.get(Uri.parse("http://10.0.2.2:8000/api/user_murid"));
@@ -56,24 +72,23 @@ class _reset_passwordState extends State<reset_password> {
     if (email_murid.length < akun_murid.length) {
       akun_murid.forEach((element) {
         email_murid.add(element["email"] as String);
-        user_murid.add(element["username"] as String);
       });
     }
   }
 
   List<dynamic> akun_guru = [];
   List<String> email_guru = [];
-  List<String> user_guru = [];
   Future getdataguru() async {
-    // var response = await http.get(Uri.parse(""));
-    // akun_guru = json.decode(response.body)["data"];
-    // return json.decode(response.body)["data"];
+    var response =
+        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_guru"));
+    akun_guru = json.decode(response.body)["data"];
+    return json.decode(response.body)["data"];
   }
+
   void isi_data_guru() {
     if (email_guru.length < akun_guru.length) {
       akun_guru.forEach((element) {
         email_guru.add(element["email"] as String);
-        user_guru.add(element["username"] as String);
       });
     }
   }
@@ -82,18 +97,25 @@ class _reset_passwordState extends State<reset_password> {
   bool cek_murid = false;
   int? index_guru;
   int? index_murid;
-  String temp1_murid = "";
-  String temp2_murid = "";
-  String temp1_guru = "";
-  String temp2_guru = "";
 
+  String? temp_email_murid;
+  String? temp_user_murid;
+
+  String? temp_email_guru;
+  String? temp_user_guru;
+  String? temp_idAdmin_guru;
+  String? temp_mataPelajaran_guru;
+  String? temp_ktp_guru;
+  String? temp_lokasi_guru;
+  int? temp_statusSesi_guru;
+  int? temp_statusAkun_guru;
   void cekdatamurid() {
     for (int i = 0; i < email_murid.length; i++) {
       if (emailResetController.text == email_murid[i]) {
         cek_murid = true;
-        index_murid = i + 1;
-        temp1_murid = email_murid[i];
-        temp2_murid = user_murid[i];
+        index_murid = akun_murid[i]["id"];
+        temp_email_murid = akun_murid[i]["email"];
+        temp_user_murid = akun_murid[i]["username"];
       }
     }
   }
@@ -102,9 +124,15 @@ class _reset_passwordState extends State<reset_password> {
     for (int i = 0; i < email_guru.length; i++) {
       if (emailResetController.text == email_guru[i]) {
         cek_guru = true;
-        index_guru = i + 1;
-        temp1_guru = email_guru[i];
-        temp2_guru = user_guru[i];
+        index_guru = akun_guru[i]["id"];
+        temp_email_guru = akun_guru[i]["email"];
+        temp_user_guru = akun_guru[i]["username"];
+        temp_statusAkun_guru = akun_guru[i]["status_akun"];
+        temp_statusSesi_guru = akun_guru[i]["status_sesi"];
+        temp_idAdmin_guru = akun_guru[i]["id_admin"];
+        temp_mataPelajaran_guru = akun_guru[i]["mata_pelajaran"];
+        temp_ktp_guru = akun_guru[i]["ktp"];
+        temp_lokasi_guru = akun_guru[i]["lokasi"];
       }
     }
   }
@@ -273,10 +301,11 @@ class _reset_passwordState extends State<reset_password> {
   Future user_reset_pass() async {
     if (emailResetController.text.isEmpty ||
         passResetController.text.isEmpty ||
-        confirPassResetController.text.isEmpty) {
+        confirPassResetController.text.isEmpty ||
+        selectedvalue == null) {
       Alert(
         context: context,
-        title: "Data tidak valid",
+        title: "Data belum lengkap",
         type: AlertType.error,
         buttons: [],
       ).show();
@@ -300,12 +329,32 @@ class _reset_passwordState extends State<reset_password> {
           if (selectedvalue == "Guru") {
             cekdataguru();
             if (cek_guru) {
-              Alert(
-                context: context,
-                title: "ya",
-                type: AlertType.error,
-                buttons: [],
-              ).show();
+              if (temp_statusAkun_guru != 0) {
+                savedataguru(index_guru).then((value) {
+                  Alert(
+                    context: context,
+                    title: "Reset Password Akun Berhasil",
+                    type: AlertType.success,
+                    buttons: [],
+                  ).show();
+                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return MyApp();
+                    },
+                  ),
+                );
+                cek_guru = false;
+              } else {
+                Alert(
+                  context: context,
+                  title: "Akun belum divalidasi oleh admin",
+                  type: AlertType.error,
+                  buttons: [],
+                ).show();
+              }
             } else {
               Alert(
                 context: context,
@@ -314,6 +363,7 @@ class _reset_passwordState extends State<reset_password> {
                 buttons: [],
               ).show();
             }
+            cek_guru = false;
           } else if (selectedvalue == "Murid") {
             cekdatamurid();
             if (cek_murid) {
@@ -333,6 +383,7 @@ class _reset_passwordState extends State<reset_password> {
                   },
                 ),
               );
+              cek_murid = false;
             } else {
               Alert(
                 context: context,
@@ -341,6 +392,7 @@ class _reset_passwordState extends State<reset_password> {
                 buttons: [],
               ).show();
             }
+            cek_murid = false;
           }
         }
       }

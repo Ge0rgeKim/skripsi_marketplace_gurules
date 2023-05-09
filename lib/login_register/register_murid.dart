@@ -22,24 +22,25 @@ class _register_muridState extends State<register_murid> {
   }
 
   void dispose() {
-    userRegistController.dispose();
-    emailRegistController.dispose();
-    passRegistController.dispose();
-    confirPassRegistController.dispose();
+    userMuridRegistController.dispose();
+    emailMuridRegistController.dispose();
+    passMuridRegistController.dispose();
+    confirpassMuridRegistController.dispose();
     super.dispose();
   }
 
-  TextEditingController userRegistController = TextEditingController();
-  TextEditingController emailRegistController = TextEditingController();
-  TextEditingController passRegistController = TextEditingController();
-  TextEditingController confirPassRegistController = TextEditingController();
+  TextEditingController userMuridRegistController = TextEditingController();
+  TextEditingController emailMuridRegistController = TextEditingController();
+  TextEditingController passMuridRegistController = TextEditingController();
+  TextEditingController confirpassMuridRegistController =
+      TextEditingController();
 
   Future savedata() async {
     final response = await http
         .post(Uri.parse("http://10.0.2.2:8000/api/user_murid"), body: {
-      "username": userRegistController.text,
-      "email": emailRegistController.text,
-      "password": passRegistController.text
+      "username": userMuridRegistController.text,
+      "email": emailMuridRegistController.text,
+      "password": passMuridRegistController.text
     });
   }
 
@@ -60,33 +61,11 @@ class _register_muridState extends State<register_murid> {
     }
   }
 
-  List<dynamic> akun_guru = [];
-  List<String> email_guru = [];
-  Future getdataguru() async {
-    // var response = await http.get(Uri.parse(""));
-    // akun_guru = json.decode(response.body)["data"];
-    // return json.decode(response.body)["data"];
-  }
-
-  void isi_data_guru() {
-    if (email_guru.length < akun_guru.length) {
-      akun_guru.forEach((element) {
-        email_guru.add(element["email"] as String);
-      });
-    }
-  }
-
-  bool cek_guru = false;
   bool cek_murid = false;
   void cekdata() {
     for (int i = 0; i < email_murid.length; i++) {
-      if (emailRegistController.text == email_murid[i]) {
+      if (emailMuridRegistController.text == email_murid[i]) {
         cek_murid = true;
-      }
-    }
-    for (int i = 0; i < email_guru.length; i++) {
-      if (emailRegistController.text == email_guru[i]) {
-        cek_guru = true;
       }
     }
   }
@@ -95,8 +74,6 @@ class _register_muridState extends State<register_murid> {
   Widget build(BuildContext context) {
     getdatamurid();
     isi_data_murid();
-    getdataguru();
-    isi_data_guru();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -138,7 +115,7 @@ class _register_muridState extends State<register_murid> {
                   Column(
                     children: [
                       TextField(
-                        controller: userRegistController,
+                        controller: userMuridRegistController,
                         autofocus: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -155,7 +132,7 @@ class _register_muridState extends State<register_murid> {
                         height: 15,
                       ),
                       TextField(
-                        controller: emailRegistController,
+                        controller: emailMuridRegistController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text(
@@ -171,7 +148,7 @@ class _register_muridState extends State<register_murid> {
                         height: 15,
                       ),
                       TextField(
-                        controller: passRegistController,
+                        controller: passMuridRegistController,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -188,7 +165,7 @@ class _register_muridState extends State<register_murid> {
                         height: 15,
                       ),
                       TextField(
-                        controller: confirPassRegistController,
+                        controller: confirpassMuridRegistController,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -260,18 +237,19 @@ class _register_muridState extends State<register_murid> {
   }
 
   Future murid_regist() async {
-    if (userRegistController.text.isEmpty ||
-        emailRegistController.text.isEmpty ||
-        passRegistController.text.isEmpty ||
-        confirPassRegistController.text.isEmpty) {
+    if (userMuridRegistController.text.isEmpty ||
+        emailMuridRegistController.text.isEmpty ||
+        passMuridRegistController.text.isEmpty ||
+        confirpassMuridRegistController.text.isEmpty) {
       Alert(
         context: context,
-        title: "Data tidak valid",
+        title: "Data belum lengkap",
         type: AlertType.error,
         buttons: [],
       ).show();
     } else {
-      if (passRegistController.text != confirPassRegistController.text) {
+      if (passMuridRegistController.text !=
+          confirpassMuridRegistController.text) {
         Alert(
           context: context,
           title: "Data Password tidak valid",
@@ -279,7 +257,7 @@ class _register_muridState extends State<register_murid> {
           buttons: [],
         ).show();
       } else {
-        if ((passRegistController.text).length < 8) {
+        if ((passMuridRegistController.text).length < 8) {
           Alert(
             context: context,
             title: "Password harus lebih dari 8 huruf/karakter",
@@ -288,7 +266,7 @@ class _register_muridState extends State<register_murid> {
           ).show();
         } else {
           cekdata();
-          if (cek_murid || cek_guru) {
+          if (cek_murid) {
             Alert(
               context: context,
               title: "Email User sudah terdaftar/terpakai",
@@ -296,7 +274,6 @@ class _register_muridState extends State<register_murid> {
               buttons: [],
             ).show();
             cek_murid = false;
-            cek_guru = false;
           } else {
             savedata().then((value) {
               Alert(
@@ -315,6 +292,7 @@ class _register_muridState extends State<register_murid> {
               ),
             );
           }
+          cek_murid = false;
         }
       }
     }

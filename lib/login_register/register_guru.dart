@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/main.dart';
 import 'package:http/http.dart' as http;
@@ -20,15 +22,35 @@ class _register_guruState extends State<register_guru> {
   void initState() {
     super.initState();
   }
-  // late File _image;
-  // final picker = ImagePicker();
 
-  // Future pilihgambar() async {
-  //   var pickedimage = await picker.getImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     _image = File(_image.path);
-  //   });
-  // }
+  void dispose() {
+    userGuruRegistController.dispose();
+    emailGuruRegistController.dispose();
+    lokasiGuruRegistController.dispose();
+    passGuruRegistController.dispose();
+    confirpassGuruRegistController.dispose();
+    super.dispose();
+  }
+
+  TextEditingController userGuruRegistController = TextEditingController();
+  TextEditingController emailGuruRegistController = TextEditingController();
+  TextEditingController lokasiGuruRegistController = TextEditingController();
+  TextEditingController passGuruRegistController = TextEditingController();
+  TextEditingController confirpassGuruRegistController =
+      TextEditingController();
+
+  File? image_;
+  PickedFile? pickedfile_;
+  final picker_ = ImagePicker();
+  Future<void> pickimage_() async {
+    pickedfile_ = await picker_.getImage(source: ImageSource.gallery);
+    if (pickedfile_ != null) {
+      setState(() {
+        image_ = File(pickedfile_!.path);
+      });
+    }
+  }
+
   List<dynamic> data = [];
   List<String> data_value = [];
   final String url = "http://10.0.2.2:8000/api/mata_pelajaran";
@@ -47,10 +69,53 @@ class _register_guruState extends State<register_guru> {
     }
   }
 
+  Future savedata() async {
+    final response =
+        await http.post(Uri.parse("http://10.0.2.2:8000/api/user_guru"), body: {
+      "id_admin": 0,
+      "username": userGuruRegistController.text,
+      "email": emailGuruRegistController.text,
+      "password": passGuruRegistController.text,
+      "mata_pelajaran": selectedvalue.toString(),
+      "lokasi": lokasiGuruRegistController.text,
+      "ktp": "belum",
+      "status_sesi": 0,
+      "status_akun": 0,
+    });
+  }
+
+  List<dynamic> akun_guru = [];
+  List<String> email_guru = [];
+  Future getdataguru() async {
+    var response =
+        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_guru"));
+    akun_guru = json.decode(response.body)["data"];
+    return json.decode(response.body)["data"];
+  }
+
+  void isi_data_guru() {
+    if (email_guru.length < akun_guru.length) {
+      akun_guru.forEach((element) {
+        email_guru.add(element["email"] as String);
+      });
+    }
+  }
+
+  bool cek_guru = false;
+  void cekdata() {
+    for (int i = 0; i < email_guru.length; i++) {
+      if (emailGuruRegistController.text == email_guru[i]) {
+        cek_guru = true;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     getdata();
     isi_data();
+    getdataguru();
+    isi_data_guru();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -92,6 +157,7 @@ class _register_guruState extends State<register_guru> {
                   Column(
                     children: [
                       TextField(
+                        controller: userGuruRegistController,
                         autofocus: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -108,6 +174,7 @@ class _register_guruState extends State<register_guru> {
                         height: 15,
                       ),
                       TextField(
+                        controller: emailGuruRegistController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text(
@@ -154,6 +221,7 @@ class _register_guruState extends State<register_guru> {
                         height: 15,
                       ),
                       TextField(
+                        controller: lokasiGuruRegistController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text(
@@ -171,6 +239,7 @@ class _register_guruState extends State<register_guru> {
                         height: 15,
                       ),
                       TextField(
+                        controller: passGuruRegistController,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -187,6 +256,7 @@ class _register_guruState extends State<register_guru> {
                         height: 15,
                       ),
                       TextField(
+                        controller: confirpassGuruRegistController,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -199,29 +269,32 @@ class _register_guruState extends State<register_guru> {
                           ),
                         ),
                       ),
-                      // SizedBox(
-                      //   height: 15,
-                      // ),
-                      // IconButton(
-                      //   onPressed: () {
-                      //     pilihgambar();
-                      //   },
-                      //   icon: Icon(Icons.image),
-                      // ),
-                      // SizedBox(
-                      //   height: 15,
-                      // ),
-                      // Container(
-                      //   child: _image == null
-                      //       ? Text(
-                      //           "No Image Selected",
-                      //           style: TextStyle(
-                      //             fontFamily: "Roboto",
-                      //             fontSize: 15,
-                      //           ),
-                      //         )
-                      //       : Image.file(_image),
-                      // )
+                      SizedBox(
+                        height: 15,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          pickimage_();
+                        },
+                        icon: Icon(
+                          Icons.upload,
+                          size: 30,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        child: pickedfile_ == null
+                            ? Text(
+                                "No Image Selected",
+                                style: TextStyle(
+                                  fontFamily: "Roboto",
+                                  fontSize: 15,
+                                ),
+                              )
+                            : Image.file(File(pickedfile_!.path)),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -232,14 +305,7 @@ class _register_guruState extends State<register_guru> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return MyApp();
-                              },
-                            ),
-                          );
+                          guru_regist();
                         },
                         style: ElevatedButton.styleFrom(
                           primary: buttoncolor,
@@ -297,4 +363,68 @@ class _register_guruState extends State<register_guru> {
           ),
         ),
       );
+
+  Future guru_regist() async {
+    if (userGuruRegistController.text.isEmpty ||
+        emailGuruRegistController.text.isEmpty ||
+        lokasiGuruRegistController.text.isEmpty ||
+        passGuruRegistController.text.isEmpty ||
+        confirpassGuruRegistController.text.isEmpty ||
+        selectedvalue.toString().isEmpty) {
+      Alert(
+        context: context,
+        title: "Data belum lengkap",
+        type: AlertType.error,
+        buttons: [],
+      ).show();
+    } else {
+      if (passGuruRegistController.text !=
+          confirpassGuruRegistController.text) {
+        Alert(
+          context: context,
+          title: "Data Password tidak valid",
+          type: AlertType.error,
+          buttons: [],
+        ).show();
+      } else {
+        if ((passGuruRegistController.text).length < 8) {
+          Alert(
+            context: context,
+            title: "Password harus lebih dari 8 huruf/karakter",
+            type: AlertType.error,
+            buttons: [],
+          ).show();
+        } else {
+          cekdata();
+          if (cek_guru) {
+            Alert(
+              context: context,
+              title: "Email User sudah terdaftar/terpakai",
+              type: AlertType.error,
+              buttons: [],
+            ).show();
+            cek_guru = false;
+          } else {
+            savedata().then((value) {
+              Alert(
+                context: context,
+                title: "Registrasi Akun Berhasil",
+                type: AlertType.success,
+                buttons: [],
+              ).show();
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return MyApp();
+                },
+              ),
+            );
+          }
+          cek_guru = false;
+        }
+      }
+    }
+  }
 }

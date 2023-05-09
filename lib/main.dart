@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
@@ -5,6 +7,7 @@ import 'package:skripsi_c14190201/guru/guru_pages.dart';
 import 'package:skripsi_c14190201/login_register/reset_password.dart';
 import 'package:skripsi_c14190201/login_register/role_register.dart';
 import 'package:skripsi_c14190201/murid/murid_pages.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
@@ -32,8 +35,73 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
+  List<dynamic> akun_murid = [];
+  List<String> email_murid = [];
+  Future getdatamurid() async {
+    var response =
+        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_murid"));
+    akun_murid = json.decode(response.body)["data"];
+    return json.decode(response.body)["data"];
+  }
+
+  void isi_data_murid() {
+    if (email_murid.length < akun_murid.length) {
+      akun_murid.forEach((element) {
+        email_murid.add(element["email"] as String);
+      });
+    }
+  }
+
+  List<dynamic> akun_guru = [];
+  List<String> email_guru = [];
+  Future getdataguru() async {
+    var response =
+        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_guru"));
+    akun_guru = json.decode(response.body)["data"];
+    return json.decode(response.body)["data"];
+  }
+
+  void isi_data_guru() {
+    if (email_guru.length < akun_guru.length) {
+      akun_guru.forEach((element) {
+        email_guru.add(element["email"] as String);
+      });
+    }
+  }
+
+  bool cek_guru = false;
+  bool cek_murid = false;
+  int? index_murid;
+  int? index_guru;
+  String? pass_murid;
+  String? pass_guru;
+  int? status_guru;
+  void cekdata() {
+    for (int i = 0; i < email_murid.length; i++) {
+      if (emaillogincontroller.text == email_murid[i]) {
+        cek_murid = true;
+        index_murid = akun_murid[i]["id"];
+        pass_murid = akun_murid[i]["password"];
+      }
+    }
+    for (int i = 0; i < email_guru.length; i++) {
+      if (emaillogincontroller.text == email_guru[i]) {
+        cek_guru = true;
+        index_guru = akun_guru[i]["id"];
+        pass_guru = akun_guru[i]["password"];
+        status_guru = akun_guru[i]["status_akun"];
+      }
+    }
+  }
+
+  final user = ["Guru", "Murid"];
+  String? selectedvalue;
   @override
   Widget build(BuildContext context) {
+    getdatamurid();
+    getdataguru();
+    isi_data_murid();
+    isi_data_guru();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -63,6 +131,37 @@ class _MyAppState extends State<MyApp> {
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: Column(
                 children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black)),
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      underline: SizedBox(),
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black,
+                      ),
+                      hint: Text(
+                        "Pilih User",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontSize: 20,
+                        ),
+                      ),
+                      items: user.map(buildmenuitem).toList(),
+                      value: selectedvalue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedvalue = value;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Column(
                     children: [
                       TextField(
@@ -112,6 +211,7 @@ class _MyAppState extends State<MyApp> {
                           //   MaterialPageRoute(
                           //     builder: (context) {
                           //       return murid_pages();
+                          //       return guru_pages();
                           //     },
                           //   ),
                           // );
@@ -120,33 +220,7 @@ class _MyAppState extends State<MyApp> {
                           primary: buttoncolor,
                         ),
                         child: Text(
-                          "Login1",
-                          style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return guru_pages();
-                              },
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: buttoncolor,
-                        ),
-                        child: Text(
-                          "Login2",
+                          "Login",
                           style: TextStyle(
                             fontFamily: "Roboto",
                             fontWeight: FontWeight.bold,
@@ -212,14 +286,94 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future userlogin() async {
-    if (emaillogincontroller.text.isEmpty || passlogincontroller.text.isEmpty) {
+    cekdata();
+    if (emaillogincontroller.text.isEmpty ||
+        passlogincontroller.text.isEmpty ||
+        selectedvalue == null) {
       Alert(
         context: context,
-        title: "Data tidak valid",
+        title: "Data belum lengkap",
         type: AlertType.error,
         buttons: [],
       ).show();
-      return;
+    } else {
+      if (selectedvalue == "Guru") {
+        if (cek_guru) {
+          if (passlogincontroller.text == pass_guru) {
+            if (status_guru != 0) {
+              print(index_guru);
+              Alert(
+                context: context,
+                title: "sukses guru",
+                type: AlertType.success,
+                buttons: [],
+              ).show();
+              cek_guru = false;
+            } else {
+              Alert(
+                context: context,
+                title: "Akun belum divalidasi oleh admin",
+                type: AlertType.error,
+                buttons: [],
+              ).show();
+            }
+          } else {
+            Alert(
+              context: context,
+              title: "Password Akun Guru Salah",
+              type: AlertType.error,
+              buttons: [],
+            ).show();
+          }
+        } else {
+          Alert(
+            context: context,
+            title: "Akun Guru Belum Terdaftar",
+            type: AlertType.error,
+            buttons: [],
+          ).show();
+        }
+        cek_guru = false;
+      } else if (selectedvalue == "Murid") {
+        if (cek_murid) {
+          if (passlogincontroller.text == pass_murid) {
+            print(index_murid);
+            Alert(
+              context: context,
+              title: "sukses murid",
+              type: AlertType.success,
+              buttons: [],
+            ).show();
+            cek_murid = false;
+          } else {
+            Alert(
+              context: context,
+              title: "Password Akun Murid Salah",
+              type: AlertType.error,
+              buttons: [],
+            ).show();
+          }
+        } else {
+          Alert(
+            context: context,
+            title: "Akun Murid Belum Terdaftar",
+            type: AlertType.error,
+            buttons: [],
+          ).show();
+        }
+        cek_murid = false;
+      }
     }
   }
+
+  DropdownMenuItem<String> buildmenuitem(String item) => DropdownMenuItem(
+        value: item,
+        child: Text(
+          item,
+          style: TextStyle(
+            fontFamily: "Roboto",
+            fontSize: 20,
+          ),
+        ),
+      );
 }
