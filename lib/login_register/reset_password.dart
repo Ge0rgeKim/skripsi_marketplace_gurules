@@ -329,7 +329,7 @@ class _reset_passwordState extends State<reset_password> {
           if (selectedvalue == "Guru") {
             cekdataguru();
             if (cek_guru) {
-              if (temp_statusAkun_guru != 0) {
+              if (temp_statusAkun_guru == 1) {
                 savedataguru(index_guru).then((value) {
                   Alert(
                     context: context,

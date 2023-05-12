@@ -71,8 +71,8 @@ class _MyAppState extends State<MyApp> {
 
   bool cek_guru = false;
   bool cek_murid = false;
-  int? index_murid;
-  int? index_guru;
+  int? id_murid;
+  int? id_guru;
   String? pass_murid;
   String? pass_guru;
   int? status_guru;
@@ -80,14 +80,14 @@ class _MyAppState extends State<MyApp> {
     for (int i = 0; i < email_murid.length; i++) {
       if (emaillogincontroller.text == email_murid[i]) {
         cek_murid = true;
-        index_murid = akun_murid[i]["id"];
+        id_murid = akun_murid[i]["id"];
         pass_murid = akun_murid[i]["password"];
       }
     }
     for (int i = 0; i < email_guru.length; i++) {
       if (emaillogincontroller.text == email_guru[i]) {
         cek_guru = true;
-        index_guru = akun_guru[i]["id"];
+        id_guru = akun_guru[i]["id"];
         pass_guru = akun_guru[i]["password"];
         status_guru = akun_guru[i]["status_akun"];
       }
@@ -206,15 +206,6 @@ class _MyAppState extends State<MyApp> {
                       ElevatedButton(
                         onPressed: () {
                           userlogin();
-                          // Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) {
-                          //       return murid_pages();
-                          //       return guru_pages();
-                          //     },
-                          //   ),
-                          // );
                         },
                         style: ElevatedButton.styleFrom(
                           primary: buttoncolor,
@@ -300,14 +291,22 @@ class _MyAppState extends State<MyApp> {
       if (selectedvalue == "Guru") {
         if (cek_guru) {
           if (passlogincontroller.text == pass_guru) {
-            if (status_guru != 0) {
-              print(index_guru);
+            if (status_guru == 1) {
+              print(id_guru);
               Alert(
                 context: context,
-                title: "sukses guru",
+                title: "Guru Berhasil Login",
                 type: AlertType.success,
                 buttons: [],
               ).show();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return guru_pages(index: id_guru);
+                  },
+                ),
+              );
               cek_guru = false;
             } else {
               Alert(
@@ -337,13 +336,21 @@ class _MyAppState extends State<MyApp> {
       } else if (selectedvalue == "Murid") {
         if (cek_murid) {
           if (passlogincontroller.text == pass_murid) {
-            print(index_murid);
+            print(id_murid);
             Alert(
               context: context,
-              title: "sukses murid",
+              title: "Murid Berhasil Login",
               type: AlertType.success,
               buttons: [],
             ).show();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return murid_pages(index : id_murid);
+                },
+              ),
+            );
             cek_murid = false;
           } else {
             Alert(

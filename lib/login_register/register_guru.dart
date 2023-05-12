@@ -40,7 +40,7 @@ class _register_guruState extends State<register_guru> {
       TextEditingController();
 
   File? image_;
-  PickedFile? pickedfile_;
+  var pickedfile_;
   final picker_ = ImagePicker();
   Future<void> pickimage_() async {
     pickedfile_ = await picker_.getImage(source: ImageSource.gallery);
@@ -70,18 +70,40 @@ class _register_guruState extends State<register_guru> {
   }
 
   Future savedata() async {
-    final response =
-        await http.post(Uri.parse("http://10.0.2.2:8000/api/user_guru"), body: {
-      "id_admin": 0,
+    Map<String, String> body = {
       "username": userGuruRegistController.text,
       "email": emailGuruRegistController.text,
       "password": passGuruRegistController.text,
       "mata_pelajaran": selectedvalue.toString(),
       "lokasi": lokasiGuruRegistController.text,
-      "ktp": "belum",
-      "status_sesi": 0,
-      "status_akun": 0,
-    });
+    };
+    var response = await add_dataRegist(body, pickedfile_!.path);
+    if (response) {
+      setState(() {
+        pickedfile_ = null;
+      });
+    }
+  }
+
+  static Future<bool> add_dataRegist(
+      Map<String, String> body, String filepath) async {
+    Map<String, String> headers = {
+      'Content-Type': 'multipart/form-data',
+      'Connection': 'Keep-Alive'
+    };
+
+    var request = http.MultipartRequest(
+        'POST', Uri.parse("http://10.0.2.2:8000/api/user_guru"))
+      ..fields.addAll(body)
+      ..headers.addAll(headers)
+      ..files.add(await http.MultipartFile.fromPath('image', filepath));
+
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   List<dynamic> akun_guru = [];
@@ -370,7 +392,8 @@ class _register_guruState extends State<register_guru> {
         lokasiGuruRegistController.text.isEmpty ||
         passGuruRegistController.text.isEmpty ||
         confirpassGuruRegistController.text.isEmpty ||
-        selectedvalue.toString().isEmpty) {
+        selectedvalue.toString().isEmpty ||
+        pickedfile_ == null) {
       Alert(
         context: context,
         title: "Data belum lengkap",

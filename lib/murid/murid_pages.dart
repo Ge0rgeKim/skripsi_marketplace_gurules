@@ -8,13 +8,25 @@ import 'package:skripsi_c14190201/murid/settings_murid.dart';
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 
 class murid_pages extends StatefulWidget {
-  const murid_pages({super.key});
+  int? index;
+  murid_pages({super.key, required this.index});
 
   @override
-  State<murid_pages> createState() => _murid_pagesState();
+  State<murid_pages> createState() => _murid_pagesState(index);
 }
 
 class _murid_pagesState extends State<murid_pages> {
+  int? index;
+  _murid_pagesState(this.index);
+  void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   List pages = [
     profile_murid(),
     home_murid(),
