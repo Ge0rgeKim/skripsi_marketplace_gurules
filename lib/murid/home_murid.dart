@@ -9,13 +9,24 @@ import 'package:skripsi_c14190201/murid/topup_saldo.dart';
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 
 class home_murid extends StatefulWidget {
-  const home_murid({super.key});
+  int? index;
+  home_murid({super.key, required this.index});
 
   @override
-  State<home_murid> createState() => _home_muridState();
+  State<home_murid> createState() => _home_muridState(index);
 }
 
 class _home_muridState extends State<home_murid> {
+  int? index;
+  _home_muridState(this.index);
+    void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

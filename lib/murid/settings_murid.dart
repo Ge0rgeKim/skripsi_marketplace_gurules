@@ -7,13 +7,25 @@ import 'package:skripsi_c14190201/murid/history_sesi_murid.dart';
 import 'package:skripsi_c14190201/murid/history_transaksi_murid.dart';
 
 class settings_murid extends StatefulWidget {
-  const settings_murid({super.key});
+  int? index;
+  settings_murid({super.key, required this.index});
 
   @override
-  State<settings_murid> createState() => _settings_muridState();
+  State<settings_murid> createState() => _settings_muridState(index);
 }
 
 class _settings_muridState extends State<settings_murid> {
+  int? index;
+  _settings_muridState(this.index);
+  void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
