@@ -67,7 +67,7 @@ class _settings_muridState extends State<settings_murid> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return history_sesi_murid();
+                            return history_sesi_murid(index: index);
                           },
                         ),
                       );
@@ -100,7 +100,7 @@ class _settings_muridState extends State<settings_murid> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return history_transaksi_murid();
+                            return history_transaksi_murid(index: index);
                           },
                         ),
                       );

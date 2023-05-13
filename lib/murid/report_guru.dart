@@ -140,7 +140,7 @@ class _report_guruState extends State<report_guru> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return history_sesi_murid();
+                                return history_sesi_murid(index: 0);
                               },
                             ),
                           );

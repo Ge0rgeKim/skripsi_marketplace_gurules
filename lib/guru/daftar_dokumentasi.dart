@@ -6,13 +6,25 @@ import 'package:skripsi_c14190201/guru/detail_dokumentasi.dart';
 import 'package:skripsi_c14190201/guru/form_dokumentasi.dart';
 
 class daftar_dokumentasi extends StatefulWidget {
-  const daftar_dokumentasi({super.key});
+  int? index;
+  daftar_dokumentasi({super.key, required this.index});
 
   @override
-  State<daftar_dokumentasi> createState() => _daftar_dokumentasiState();
+  State<daftar_dokumentasi> createState() => _daftar_dokumentasiState(index);
 }
 
 class _daftar_dokumentasiState extends State<daftar_dokumentasi> {
+  int? index;
+  _daftar_dokumentasiState(this.index);
+  void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

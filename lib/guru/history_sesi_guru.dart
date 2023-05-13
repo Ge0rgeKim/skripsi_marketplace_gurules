@@ -6,13 +6,25 @@ import 'package:skripsi_c14190201/guru/detail_dokumentasi.dart';
 import 'package:skripsi_c14190201/guru/detail_sesi_guru.dart';
 
 class history_sesi_guru extends StatefulWidget {
-  const history_sesi_guru({super.key});
+  int? index;
+  history_sesi_guru({super.key, required this.index});
 
   @override
-  State<history_sesi_guru> createState() => _history_sesi_guruState();
+  State<history_sesi_guru> createState() => _history_sesi_guruState(index);
 }
 
 class _history_sesi_guruState extends State<history_sesi_guru> {
+  int? index;
+  _history_sesi_guruState(this.index);
+  void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

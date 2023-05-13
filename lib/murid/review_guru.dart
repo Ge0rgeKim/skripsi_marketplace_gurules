@@ -161,7 +161,7 @@ class _review_guruState extends State<review_guru> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return history_sesi_murid();
+                                return history_sesi_murid(index: 0);
                               },
                             ),
                           );

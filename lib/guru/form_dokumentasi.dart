@@ -154,7 +154,7 @@ class _form_dokumentasiState extends State<form_dokumentasi> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return daftar_dokumentasi();
+                                return daftar_dokumentasi(index: 0);
                               },
                             ),
                           );

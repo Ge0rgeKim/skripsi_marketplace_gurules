@@ -6,13 +6,25 @@ import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/murid/history_transaksi_murid.dart';
 
 class topup_saldo extends StatefulWidget {
-  const topup_saldo({super.key});
+  int? index;
+  topup_saldo({super.key, required this.index});
 
   @override
-  State<topup_saldo> createState() => _topup_saldoState();
+  State<topup_saldo> createState() => _topup_saldoState(index);
 }
 
 class _topup_saldoState extends State<topup_saldo> {
+  int? index;
+  _topup_saldoState(this.index);
+  void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -103,7 +115,7 @@ class _topup_saldoState extends State<topup_saldo> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return history_transaksi_murid();
+                                return history_transaksi_murid(index: 0);
                               },
                             ),
                           );

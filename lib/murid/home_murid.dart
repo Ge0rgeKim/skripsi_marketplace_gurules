@@ -19,7 +19,7 @@ class home_murid extends StatefulWidget {
 class _home_muridState extends State<home_murid> {
   int? index;
   _home_muridState(this.index);
-    void initState() {
+  void initState() {
     print(index);
     super.initState();
   }
@@ -80,7 +80,7 @@ class _home_muridState extends State<home_murid> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return history_guru();
+                                      return history_guru(index: index);
                                     },
                                   ),
                                 );
@@ -111,7 +111,7 @@ class _home_muridState extends State<home_murid> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return jadwal_sesi();
+                                      return jadwal_sesi(index: index);
                                     },
                                   ),
                                 );
@@ -142,7 +142,7 @@ class _home_muridState extends State<home_murid> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return history_sesi_murid();
+                                      return history_sesi_murid(index: index);
                                     },
                                   ),
                                 );
@@ -173,7 +173,7 @@ class _home_muridState extends State<home_murid> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return topup_saldo();
+                                      return topup_saldo(index: index);
                                     },
                                   ),
                                 );

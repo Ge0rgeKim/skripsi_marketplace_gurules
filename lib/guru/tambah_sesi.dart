@@ -162,7 +162,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return daftar_sesi();
+                                return daftar_sesi(index: 0);
                               },
                             ),
                           );

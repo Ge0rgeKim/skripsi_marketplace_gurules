@@ -6,13 +6,25 @@ import 'package:skripsi_c14190201/guru/detail_sesi_guru.dart';
 import 'package:skripsi_c14190201/guru/tambah_sesi.dart';
 
 class daftar_sesi extends StatefulWidget {
-  const daftar_sesi({super.key});
+  int? index;
+  daftar_sesi({super.key, required this.index});
 
   @override
-  State<daftar_sesi> createState() => _daftar_sesiState();
+  State<daftar_sesi> createState() => _daftar_sesiState(index);
 }
 
 class _daftar_sesiState extends State<daftar_sesi> {
+  int? index;
+  _daftar_sesiState(this.index);
+  void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

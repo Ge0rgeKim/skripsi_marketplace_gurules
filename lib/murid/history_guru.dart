@@ -5,13 +5,25 @@ import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 
 class history_guru extends StatefulWidget {
-  const history_guru({super.key});
+  int? index;
+  history_guru({super.key, required this.index});
 
   @override
-  State<history_guru> createState() => _history_guruState();
+  State<history_guru> createState() => _history_guruState(index);
 }
 
 class _history_guruState extends State<history_guru> {
+  int? index;
+  _history_guruState(this.index);
+  void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

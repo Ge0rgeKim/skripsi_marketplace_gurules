@@ -19,6 +19,7 @@ class _murid_pagesState extends State<murid_pages> {
   int? index;
   _murid_pagesState(this.index);
   void initState() {
+    print(index);
     super.initState();
   }
 
@@ -29,7 +30,7 @@ class _murid_pagesState extends State<murid_pages> {
   int page_index = 1;
   @override
   Widget build(BuildContext context) {
-    List pages=[
+    List pages = [
       profile_murid(index: index),
       home_murid(index: index),
       settings_murid(index: index),

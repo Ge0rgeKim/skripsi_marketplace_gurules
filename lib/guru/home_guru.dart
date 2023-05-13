@@ -9,13 +9,25 @@ import 'package:skripsi_c14190201/guru/history_murid.dart';
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 
 class home_guru extends StatefulWidget {
-  const home_guru({super.key});
+  int? index;
+  home_guru({super.key, required this.index});
 
   @override
-  State<home_guru> createState() => _home_guruState();
+  State<home_guru> createState() => _home_guruState(index);
 }
 
 class _home_guruState extends State<home_guru> {
+  int? index;
+  _home_guruState(this.index);
+  void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -59,7 +71,7 @@ class _home_guruState extends State<home_guru> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return history_murid();
+                                  return history_murid(index: index);
                                 },
                               ),
                             );
@@ -88,7 +100,7 @@ class _home_guruState extends State<home_guru> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return daftar_sesi();
+                                      return daftar_sesi(index: index);
                                     },
                                   ),
                                 );
@@ -119,7 +131,7 @@ class _home_guruState extends State<home_guru> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return daftar_penilaian();
+                                      return daftar_penilaian(index: index);
                                     },
                                   ),
                                 );
@@ -150,7 +162,7 @@ class _home_guruState extends State<home_guru> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return daftar_dokumentasi();
+                                      return daftar_dokumentasi(index: index);
                                     },
                                   ),
                                 );

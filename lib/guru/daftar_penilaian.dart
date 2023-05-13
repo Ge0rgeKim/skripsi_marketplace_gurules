@@ -5,13 +5,25 @@ import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/guru/detail_penilaian.dart';
 
 class daftar_penilaian extends StatefulWidget {
-  const daftar_penilaian({super.key});
+  int? index;
+  daftar_penilaian({super.key, required this.index});
 
   @override
-  State<daftar_penilaian> createState() => _daftar_penilaianState();
+  State<daftar_penilaian> createState() => _daftar_penilaianState(index);
 }
 
 class _daftar_penilaianState extends State<daftar_penilaian> {
+  int? index;
+  _daftar_penilaianState(this.index);
+  void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

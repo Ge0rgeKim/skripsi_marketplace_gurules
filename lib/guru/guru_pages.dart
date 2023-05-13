@@ -18,21 +18,23 @@ class guru_pages extends StatefulWidget {
 class _guru_pagesState extends State<guru_pages> {
   int? index;
   _guru_pagesState(this.index);
-  void initState(){
+  void initState() {
     print(index);
     super.initState();
   }
-  void dispose(){
+
+  void dispose() {
     super.dispose();
   }
-  List pages = [
-    profile_guru(),
-    home_guru(),
-    settings_guru()
-  ];
+
   int page_index = 1;
   @override
   Widget build(BuildContext context) {
+    List pages = [
+      profile_guru(index: index),
+      home_guru(index: index),
+      settings_guru(index: index)
+    ];
     return Scaffold(
       body: pages[page_index],
       bottomNavigationBar: BottomNavigationBar(

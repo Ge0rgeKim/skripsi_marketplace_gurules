@@ -5,46 +5,59 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
-import 'package:skripsi_c14190201/murid/profile_murid.dart';
+import 'package:skripsi_c14190201/guru/profile_guru.dart';
 import 'package:http/http.dart' as http;
 
-class edit_profile_murid extends StatefulWidget {
+class edit_profile_guru extends StatefulWidget {
   final Map data_profile;
-  edit_profile_murid({super.key, required this.data_profile});
+  edit_profile_guru({super.key, required this.data_profile});
 
   @override
-  State<edit_profile_murid> createState() =>
-      _edit_profile_muridState(data_profile);
+  State<edit_profile_guru> createState() =>
+      _edit_profile_guruState(data_profile);
 }
 
-class _edit_profile_muridState extends State<edit_profile_murid> {
+class _edit_profile_guruState extends State<edit_profile_guru> {
   final Map data_profile;
-  _edit_profile_muridState(this.data_profile);
+  _edit_profile_guruState(this.data_profile);
   void initState() {
     super.initState();
   }
 
   void dispose() {
-    dataUserMuridControlller.dispose();
-    dataPassMuridControlller.dispose();
+    dataUserGuruController.dispose();
+    dataPassGuruController.dispose();
+    dataLokasiGuruController.dispose();
     super.dispose();
   }
 
-  TextEditingController dataUserMuridControlller = TextEditingController();
-  TextEditingController dataPassMuridControlller = TextEditingController();
+  TextEditingController dataUserGuruController = TextEditingController();
+  TextEditingController dataPassGuruController = TextEditingController();
+  TextEditingController dataLokasiGuruController = TextEditingController();
 
-  Future updatedatamurid() async {
+  Future updatedataguru() async {
+    int? n;
+    for(int i = 0;i<3;i++){
+      if(selectedvalue == status[i]){
+        n = i;
+      }
+    }
     var response = await http.put(
-        Uri.parse("http://10.0.2.2:8000/api/user_murid/" +
+        Uri.parse("http://10.0.2.2:8000/api/user_guru/" +
             data_profile["id"].toString()),
         body: {
-          "username": dataUserMuridControlller.text,
-          "email": data_profile["email"],
-          "password": dataPassMuridControlller.text
+          'username': dataUserGuruController.text,
+          'email': data_profile['email'],
+          'password': dataPassGuruController.text,
+          'mata_pelajaran': data_profile['mata_pelajaran'],
+          'lokasi': dataLokasiGuruController.text,
+          'status_sesi': n.toString(),
         });
     return json.decode(response.body);
   }
 
+  final status = ["Online Onsite", "Online", "Onsite"];
+  String? selectedvalue;
   @override
   Widget build(BuildContext context) {
     print(data_profile);
@@ -89,7 +102,7 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
                   Column(
                     children: [
                       TextField(
-                        controller: dataUserMuridControlller
+                        controller: dataUserGuruController
                           ..text = data_profile["username"],
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -106,7 +119,7 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
                         height: 15,
                       ),
                       TextField(
-                        controller: dataPassMuridControlller
+                        controller: dataPassGuruController
                           ..text = data_profile["password"],
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -119,6 +132,54 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      TextField(
+                        controller: dataLokasiGuruController
+                          ..text = data_profile['lokasi'],
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text(
+                            "Lokasi (Kota, Jangan di singkat)",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.black)),
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          underline: SizedBox(),
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.black,
+                          ),
+                          hint: Text(
+                            "Pilih Status Sesi",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 20,
+                            ),
+                          ),
+                          items: status.map(buildmenuitem).toList(),
+                          value: selectedvalue,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedvalue = value;
+                            });
+                          },
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -129,7 +190,7 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          murid_profile_update();
+                          guru_profile_update();
                         },
                         style: ElevatedButton.styleFrom(
                           primary: buttoncolor,
@@ -154,16 +215,18 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
     );
   }
 
-  Future murid_profile_update() async {
-    if (dataUserMuridControlller.text.isEmpty ||
-        dataPassMuridControlller.text.isEmpty) {
+  Future guru_profile_update() async {
+    if (dataUserGuruController.text.isEmpty ||
+        dataPassGuruController.text.isEmpty ||
+        dataLokasiGuruController.text.isEmpty ||
+        selectedvalue == null) {
       Alert(
         context: context,
         title: "Data belum lengkap",
         type: AlertType.error,
         buttons: [],
       ).show();
-    } else if ((dataPassMuridControlller.text).length < 8) {
+    } else if ((dataPassGuruController.text).length < 8) {
       Alert(
         context: context,
         title: "Password harus lebih dari 8 huruf/karakter",
@@ -171,7 +234,7 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
         buttons: [],
       ).show();
     } else {
-      updatedatamurid().then((value) {
+      updatedataguru().then((value) {
         Alert(
           context: context,
           title: "Data Berhasil di Update",
@@ -183,10 +246,21 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return profile_murid(index: data_profile["id"]);
+            return profile_guru(index: data_profile["id"]);
           },
         ),
       );
     }
   }
+
+  DropdownMenuItem<String> buildmenuitem(String item) => DropdownMenuItem(
+        value: item,
+        child: Text(
+          item,
+          style: TextStyle(
+            fontFamily: "Roboto",
+            fontSize: 20,
+          ),
+        ),
+      );
 }
