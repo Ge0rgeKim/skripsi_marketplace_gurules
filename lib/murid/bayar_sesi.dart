@@ -140,7 +140,7 @@ class _bayar_sesiState extends State<bayar_sesi> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return history_guru();
+                                return history_guru(index: 0);
                               },
                             ),
                           );

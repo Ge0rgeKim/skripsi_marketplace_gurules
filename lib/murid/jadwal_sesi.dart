@@ -332,6 +332,9 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
                               ],
                             );
                           }
+                          else{
+                            return CircularProgressIndicator();
+                          }
                         },
                       ),
                     );

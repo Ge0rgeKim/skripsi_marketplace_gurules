@@ -1,18 +1,86 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/guru/daftar_sesi.dart';
+import 'package:http/http.dart' as http;
 
 class tambah_sesi extends StatefulWidget {
-  const tambah_sesi({super.key});
+  int? index;
+  tambah_sesi({super.key, required this.index});
 
   @override
-  State<tambah_sesi> createState() => _tambah_sesiState();
+  State<tambah_sesi> createState() => _tambah_sesiState(index);
 }
 
 class _tambah_sesiState extends State<tambah_sesi> {
+  int? index;
+  _tambah_sesiState(this.index);
+  void initState() {
+    print(index);
+    super.initState();
+  }
+
+  void dispose() {
+    hargaSesiGuruController.dispose();
+    super.dispose();
+  }
+
+  TextEditingController hargaSesiGuruController = TextEditingController();
+
+  Future savedata() async {
+    String tgl = time.day.toString() +
+        "/" +
+        time.month.toString() +
+        "/" +
+        time.year.toString();
+    final response =
+        await http.post(Uri.parse("http://10.0.2.2:8000/api/sesi"), body: {
+      'id_guru': index.toString(),
+      'tanggal_sesi': tgl,
+      'waktu_sesi': selectedvalue,
+      'nominal_saldo': hargaSesiGuruController.text,
+    });
+  }
+
+  List<dynamic> sesi_guru = [];
+  List<String> jam_sesi = [];
+  List<String> tgl_sesi = [];
+  Future getdatasesi() async {
+    var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi"));
+    sesi_guru = json.decode(response.body)["data"];
+    return json.decode(response.body)["data"];
+  }
+
+  void isi_data_sesi() {
+    if (jam_sesi.length < sesi_guru.length) {
+      sesi_guru.forEach((element) {
+        if (element["id_guru"] == index) {
+          jam_sesi.add(element["waktu_sesi"] as String);
+          tgl_sesi.add(element["tanggal_sesi"] as String);
+        }
+      });
+    }
+  }
+
+  bool cek_sesi = false;
+  void cekdata() {
+    String tgl = time.day.toString() +
+        "/" +
+        time.month.toString() +
+        "/" +
+        time.year.toString();
+    for (int i = 0; i < jam_sesi.length; i++) {
+      if (selectedvalue == jam_sesi[i] && tgl == tgl_sesi[i]) {
+        cek_sesi = true;
+      }
+    }
+  }
+
   @override
   var time = DateTime.now();
   final jam = [
@@ -43,6 +111,8 @@ class _tambah_sesiState extends State<tambah_sesi> {
   ];
   String? selectedvalue;
   Widget build(BuildContext context) {
+    getdatasesi();
+    isi_data_sesi();
     String tgl = time.day.toString() +
         "/" +
         time.month.toString() +
@@ -131,6 +201,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
                         height: 15,
                       ),
                       TextField(
+                        controller: hargaSesiGuruController,
                         autofocus: true,
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
@@ -158,14 +229,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return daftar_sesi(index: 0);
-                              },
-                            ),
-                          );
+                          save_sesi();
                         },
                         style: ElevatedButton.styleFrom(
                           primary: buttoncolor,
@@ -188,6 +252,46 @@ class _tambah_sesiState extends State<tambah_sesi> {
         ),
       ),
     );
+  }
+
+  Future save_sesi() async {
+    if (hargaSesiGuruController.text.isEmpty || selectedvalue == null) {
+      Alert(
+        context: context,
+        title: "Data belum lengkap",
+        type: AlertType.error,
+        buttons: [],
+      ).show();
+    } else {
+      cekdata();
+      if (cek_sesi) {
+        Alert(
+          context: context,
+          title: "Jam Sudah ada",
+          type: AlertType.error,
+          buttons: [],
+        ).show();
+        cek_sesi = false;
+      } else {
+        savedata().then((value) {
+          Alert(
+            context: context,
+            title: "Jadwal Sesi Berhasil Ditambahkan",
+            type: AlertType.success,
+            buttons: [],
+          ).show();
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return daftar_sesi(index: index);
+            },
+          ),
+        );
+        cek_sesi = false;
+      }
+    }
   }
 
   DropdownMenuItem<String> buildmenuitem(String item) => DropdownMenuItem(
