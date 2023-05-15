@@ -309,7 +309,7 @@ class _register_guruState extends State<register_guru> {
                       Container(
                         child: pickedfile_ == null
                             ? Text(
-                                "No Image Selected",
+                                "No Image KTP Selected",
                                 style: TextStyle(
                                   fontFamily: "Roboto",
                                   fontSize: 15,

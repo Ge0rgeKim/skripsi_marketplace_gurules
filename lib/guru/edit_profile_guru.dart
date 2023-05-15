@@ -60,7 +60,6 @@ class _edit_profile_guruState extends State<edit_profile_guru> {
   String? selectedvalue;
   @override
   Widget build(BuildContext context) {
-    print(data_profile);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",

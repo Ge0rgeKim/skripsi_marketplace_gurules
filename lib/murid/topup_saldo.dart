@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/murid/history_transaksi_murid.dart';
+import 'package:http/http.dart' as http;
 
 class topup_saldo extends StatefulWidget {
   int? index;
@@ -22,7 +27,55 @@ class _topup_saldoState extends State<topup_saldo> {
   }
 
   void dispose() {
+    nominalTopUpController.dispose();
     super.dispose();
+  }
+
+  TextEditingController nominalTopUpController = TextEditingController();
+
+  File? image_;
+  var pickedfile_;
+  final picker_ = ImagePicker();
+  Future<void> pickimage_() async {
+    pickedfile_ = await picker_.getImage(source: ImageSource.gallery);
+    if (pickedfile_ != null) {
+      setState(() {
+        image_ = File(pickedfile_!.path);
+      });
+    }
+  }
+
+  Future savedata() async {
+    Map<String, String> body = {
+      "nominal_saldo": nominalTopUpController.text,
+    };
+    var response = await add_dataTopUp(body, pickedfile_!.path, index);
+    if (response) {
+      setState(() {
+        pickedfile_ = null;
+      });
+    }
+  }
+
+  static Future<bool> add_dataTopUp(
+      Map<String, String> body, String filepath, int? n) async {
+    Map<String, String> headers = {
+      'Content-Type': 'multipart/form-data',
+      'Connection': 'Keep-Alive'
+    };
+
+    var request = http.MultipartRequest('POST',
+        Uri.parse("http://10.0.2.2:8000/api/transaksi_saldo/" + n.toString()))
+      ..fields.addAll(body)
+      ..headers.addAll(headers)
+      ..files.add(await http.MultipartFile.fromPath('image', filepath));
+
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -68,6 +121,7 @@ class _topup_saldoState extends State<topup_saldo> {
                   Column(
                     children: [
                       TextField(
+                        controller: nominalTopUpController,
                         autofocus: true,
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
@@ -88,19 +142,29 @@ class _topup_saldoState extends State<topup_saldo> {
                       SizedBox(
                         height: 15,
                       ),
-                      //cari cara upload gambar
-                      TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Text(
-                            "Bukti Transfer",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 20,
-                            ),
-                          ),
+                      IconButton(
+                        onPressed: () {
+                          pickimage_();
+                        },
+                        icon: Icon(
+                          Icons.upload,
+                          size: 30,
                         ),
                       ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        child: pickedfile_ == null
+                            ? Text(
+                                "No Image Top Up Selected",
+                                style: TextStyle(
+                                  fontFamily: "Roboto",
+                                  fontSize: 15,
+                                ),
+                              )
+                            : Image.file(File(pickedfile_!.path)),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -111,14 +175,7 @@ class _topup_saldoState extends State<topup_saldo> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return history_transaksi_murid(index: 0);
-                              },
-                            ),
-                          );
+                          save_topup();
                         },
                         style: ElevatedButton.styleFrom(
                           primary: buttoncolor,
@@ -141,5 +198,33 @@ class _topup_saldoState extends State<topup_saldo> {
         ),
       ),
     );
+  }
+
+  Future save_topup() async {
+    if (nominalTopUpController.text.isEmpty || pickedfile_ == null) {
+      Alert(
+        context: context,
+        title: "Data belum lengkap",
+        type: AlertType.error,
+        buttons: [],
+      ).show();
+    } else {
+      savedata().then((value) {
+        Alert(
+          context: context,
+          title: "Top Up Berhasil, Mohon Menunggu Konfirmasi",
+          type: AlertType.success,
+          buttons: [],
+        ).show();
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return history_transaksi_murid(index: index);
+          },
+        ),
+      );
+    }
   }
 }

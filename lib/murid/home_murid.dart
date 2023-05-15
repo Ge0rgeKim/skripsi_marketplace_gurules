@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/murid/history_guru.dart';
 import 'package:skripsi_c14190201/murid/history_sesi_murid.dart';
 import 'package:skripsi_c14190201/murid/jadwal_sesi.dart';
 import 'package:skripsi_c14190201/murid/topup_saldo.dart';
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
+import 'package:http/http.dart' as http;
 
 class home_murid extends StatefulWidget {
   int? index;
@@ -27,6 +31,17 @@ class _home_muridState extends State<home_murid> {
   void dispose() {
     super.dispose();
   }
+
+  List<dynamic> data_user = [];
+  int saldo_user = 0;
+  Future getdatasaldo() async {
+    var response = await http
+        .get(Uri.parse("http://10.0.2.2:8000/api/saldo/" + index.toString()));
+    data_user = json.decode(response.body)["data"];
+    saldo_user = data_user[data_user.length - 1]["total"];
+    return json.decode(response.body)["data"];
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -67,12 +82,21 @@ class _home_muridState extends State<home_murid> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "<Total Saldo>",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 20,
-                              ),
+                            FutureBuilder(
+                              future: getdatasaldo(),
+                              builder: (context, snapshot) {
+                                return Text(
+                                  NumberFormat.currency(
+                                          locale: 'id',
+                                          symbol: "Rp. ",
+                                          decimalDigits: 0)
+                                      .format(saldo_user),
+                                  style: TextStyle(
+                                    fontFamily: "Roboto",
+                                    fontSize: 20,
+                                  ),
+                                );
+                              },
                             ),
                             ElevatedButton(
                               onPressed: () {
