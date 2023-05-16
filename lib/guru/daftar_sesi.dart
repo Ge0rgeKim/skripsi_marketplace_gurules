@@ -158,7 +158,7 @@ class _daftar_sesiState extends State<daftar_sesi> {
                               ],
                             );
                           }else{
-                            return CircularProgressIndicator();
+                            return Container();
                           }
                         },
                       ),

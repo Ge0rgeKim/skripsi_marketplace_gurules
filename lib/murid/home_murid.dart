@@ -82,21 +82,35 @@ class _home_muridState extends State<home_murid> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            FutureBuilder(
-                              future: getdatasaldo(),
-                              builder: (context, snapshot) {
-                                return Text(
-                                  NumberFormat.currency(
-                                          locale: 'id',
-                                          symbol: "Rp. ",
-                                          decimalDigits: 0)
-                                      .format(saldo_user),
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 20,
-                                  ),
-                                );
-                              },
+                            Container(
+                              child: data_user.isEmpty
+                                  ? Text(
+                                      NumberFormat.currency(
+                                              locale: 'id',
+                                              symbol: "Rp. ",
+                                              decimalDigits: 0)
+                                          .format(saldo_user),
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 20,
+                                      ),
+                                    )
+                                  : FutureBuilder(
+                                      future: getdatasaldo(),
+                                      builder: (context, snapshot) {
+                                        return Text(
+                                          NumberFormat.currency(
+                                                  locale: 'id',
+                                                  symbol: "Rp. ",
+                                                  decimalDigits: 0)
+                                              .format(saldo_user),
+                                          style: TextStyle(
+                                            fontFamily: "Roboto",
+                                            fontSize: 20,
+                                          ),
+                                        );
+                                      },
+                                    ),
                             ),
                             ElevatedButton(
                               onPressed: () {

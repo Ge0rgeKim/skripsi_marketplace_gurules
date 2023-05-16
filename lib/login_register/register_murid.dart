@@ -18,6 +18,8 @@ class register_murid extends StatefulWidget {
 class _register_muridState extends State<register_murid> {
   @override
   void initState() {
+    getdatamurid();
+    isi_data_murid();
     super.initState();
   }
 
@@ -72,8 +74,6 @@ class _register_muridState extends State<register_murid> {
 
   @override
   Widget build(BuildContext context) {
-    getdatamurid();
-    isi_data_murid();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -283,14 +283,10 @@ class _register_muridState extends State<register_murid> {
                 buttons: [],
               ).show();
             });
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return MyApp();
-                },
-              ),
-            );
+            userMuridRegistController.text = "";
+            emailMuridRegistController.text = "";
+            passMuridRegistController.text = "";
+            confirpassMuridRegistController.text = "";
           }
           cek_murid = false;
         }

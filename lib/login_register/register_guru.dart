@@ -436,14 +436,12 @@ class _register_guruState extends State<register_guru> {
                 buttons: [],
               ).show();
             });
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return MyApp();
-                },
-              ),
-            );
+            userGuruRegistController.text = "";
+            emailGuruRegistController.text = "";
+            passGuruRegistController.text = "";
+            lokasiGuruRegistController.text="";
+            confirpassGuruRegistController.text = "";
+            selectedvalue = null;
           }
           cek_guru = false;
         }

@@ -347,7 +347,7 @@ class _MyAppState extends State<MyApp> {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return murid_pages(index : id_murid);
+                  return murid_pages(index: id_murid);
                 },
               ),
             );

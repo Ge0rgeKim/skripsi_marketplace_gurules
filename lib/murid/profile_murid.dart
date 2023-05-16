@@ -36,7 +36,6 @@ class _profile_muridState extends State<profile_murid> {
 
   @override
   Widget build(BuildContext context) {
-    getdatamurid();
     String username = "";
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -258,7 +257,8 @@ class _profile_muridState extends State<profile_murid> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return edit_profile_murid(data_profile: snapshot.data["data"]);
+                                  return edit_profile_murid(
+                                      data_profile: snapshot.data["data"]);
                                 },
                               ),
                             );

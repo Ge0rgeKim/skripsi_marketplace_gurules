@@ -41,7 +41,6 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
   final status = ["Online Onsite", "Online", "Onsite"];
 
   Widget build(BuildContext context) {
-    getdataguru();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -111,113 +110,6 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
               SizedBox(
                 height: 20,
               ),
-              // Expanded(
-              //   child: ListView.builder(
-              //     itemCount: akun_guru.length,
-              //     itemBuilder: (context, index) {
-              //       final guru = akun_guru[index];
-              //       return Row(
-              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //           Row(
-              //             children: [
-              //               Icon(
-              //                 SkripsiIcon.user,
-              //                 size: 25,
-              //               ),
-              //               SizedBox(
-              //                 width: 10,
-              //               ),
-              //               Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   Row(
-              //                     children: [
-              //                       Text(
-              //                         guru.username,
-              //                         style: TextStyle(
-              //                           fontFamily: "Roboto",
-              //                           fontSize: 15,
-              //                           fontWeight: FontWeight.bold,
-              //                         ),
-              //                       ),
-              //                       Text(
-              //                         " | ",
-              //                         style: TextStyle(
-              //                           fontFamily: "Roboto",
-              //                           fontSize: 13,
-              //                         ),
-              //                       ),
-              //                       Text(
-              //                         status[guru.status_akun],
-              //                         style: TextStyle(
-              //                           fontFamily: "Roboto",
-              //                           fontSize: 13,
-              //                         ),
-              //                       ),
-              //                     ],
-              //                   ),
-              //                   SizedBox(
-              //                     height: 5,
-              //                   ),
-              //                   Row(
-              //                     children: [
-              //                       Text(
-              //                         guru.mata_pelajaran,
-              //                         style: TextStyle(
-              //                           fontFamily: "Roboto",
-              //                           fontSize: 13,
-              //                         ),
-              //                       ),
-              //                       Text(
-              //                         " | ",
-              //                         style: TextStyle(
-              //                           fontFamily: "Roboto",
-              //                           fontSize: 13,
-              //                         ),
-              //                       ),
-              //                       Text(
-              //                         guru.lokasi,
-              //                         style: TextStyle(
-              //                           fontFamily: "Roboto",
-              //                           fontSize: 13,
-              //                         ),
-              //                       ),
-              //                     ],
-              //                   ),
-              //                 ],
-              //               )
-              //             ],
-              //           ),
-              //           ElevatedButton(
-              //             onPressed: () {
-              //               Navigator.push(
-              //                 context,
-              //                 MaterialPageRoute(
-              //                   builder: (context) {
-              //                     return detail_guru();
-              //                   },
-              //                 ),
-              //               );
-              //             },
-              //             style: ElevatedButton.styleFrom(
-              //               primary: buttoncolor,
-              //             ),
-              //             child: Text(
-              //               "Detail",
-              //               style: TextStyle(
-              //                 fontFamily: "Roboto",
-              //                 fontWeight: FontWeight.bold,
-              //                 fontSize: 15,
-              //               ),
-              //             ),
-              //           ),
-              //         ],
-              //       );
-              //     },
-              //   ),
-              // ),
-
               FutureBuilder(
                 future: getdataguru(),
                 builder: (context, snapshot) {
@@ -331,9 +223,8 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
                                 ),
                               ],
                             );
-                          }
-                          else{
-                            return CircularProgressIndicator();
+                          } else {
+                            return Container();
                           }
                         },
                       ),

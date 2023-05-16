@@ -38,7 +38,6 @@ class _profile_guruState extends State<profile_guru> {
 
   @override
   Widget build(BuildContext context) {
-    getdataguru();
     String username = "";
     return MaterialApp(
       debugShowCheckedModeBanner: false,

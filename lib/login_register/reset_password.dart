@@ -19,6 +19,10 @@ class reset_password extends StatefulWidget {
 class _reset_passwordState extends State<reset_password> {
   @override
   void initState() {
+    getdatamurid();
+    isi_data_murid();
+    getdataguru();
+    isi_data_guru();
     super.initState();
   }
 
@@ -140,10 +144,6 @@ class _reset_passwordState extends State<reset_password> {
   final user = ["Guru", "Murid"];
   String? selectedvalue;
   Widget build(BuildContext context) {
-    getdatamurid();
-    isi_data_murid();
-    getdataguru();
-    isi_data_guru();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
