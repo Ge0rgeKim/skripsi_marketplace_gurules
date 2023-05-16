@@ -33,11 +33,6 @@ class _tambah_sesiState extends State<tambah_sesi> {
   TextEditingController hargaSesiGuruController = TextEditingController();
 
   Future savedata() async {
-    String tgl = time.day.toString() +
-        "/" +
-        time.month.toString() +
-        "/" +
-        time.year.toString();
     final response =
         await http.post(Uri.parse("http://10.0.2.2:8000/api/sesi"), body: {
       'id_guru': index.toString(),
@@ -45,44 +40,14 @@ class _tambah_sesiState extends State<tambah_sesi> {
       'waktu_sesi': selectedvalue,
       'nominal_saldo': hargaSesiGuruController.text,
     });
-  }
-
-  List<dynamic> sesi_guru = [];
-  List<String> jam_sesi = [];
-  List<String> tgl_sesi = [];
-  Future getdatasesi() async {
-    var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi"));
-    sesi_guru = json.decode(response.body)["data"];
-    return json.decode(response.body)["data"];
-  }
-
-  void isi_data_sesi() {
-    if (jam_sesi.length < sesi_guru.length) {
-      sesi_guru.forEach((element) {
-        if (element["id_guru"] == index) {
-          jam_sesi.add(element["waktu_sesi"] as String);
-          tgl_sesi.add(element["tanggal_sesi"] as String);
-        }
-      });
-    }
-  }
-
-  bool cek_sesi = false;
-  void cekdata() {
-    String tgl = time.day.toString() +
-        "/" +
-        time.month.toString() +
-        "/" +
-        time.year.toString();
-    for (int i = 0; i < jam_sesi.length; i++) {
-      if (selectedvalue == jam_sesi[i] && tgl == tgl_sesi[i]) {
-        cek_sesi = true;
-      }
+    if (response.statusCode == 200) {
+      return json.decode(response.body)['message'];
+    } else {
+      return json.decode(response.body)['message'];
     }
   }
 
   @override
-  var time = DateTime.now();
   final jam = [
     "00:00 - 01:00",
     "01:00 - 02:00",
@@ -110,14 +75,9 @@ class _tambah_sesiState extends State<tambah_sesi> {
     "23:00 - 00:00",
   ];
   String? selectedvalue;
+  String tgl = "";
+  DateTime tglNow = DateTime.now();
   Widget build(BuildContext context) {
-    getdatasesi();
-    isi_data_sesi();
-    String tgl = time.day.toString() +
-        "/" +
-        time.month.toString() +
-        "/" +
-        time.year.toString();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -157,7 +117,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
               child: Column(
                 children: [
                   Text(
-                    tgl,
+                    tgl == "" ? "Pilih Tanggal" : tgl,
                     style: TextStyle(
                       fontFamily: "Roboto",
                       fontSize: 20,
@@ -165,7 +125,40 @@ class _tambah_sesiState extends State<tambah_sesi> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 5,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2019),
+                        lastDate: DateTime(2100),
+                      ).then((value) {
+                        setState(() {
+                          tglNow = value!;
+                          tgl = tglNow.day.toString() +
+                              "/" +
+                              tglNow.month.toString() +
+                              "/" +
+                              tglNow.year.toString();
+                        });
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: buttoncolor,
+                    ),
+                    child: Text(
+                      "Select Date",
+                      style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
                   ),
                   Column(
                     children: [
@@ -263,34 +256,32 @@ class _tambah_sesiState extends State<tambah_sesi> {
         buttons: [],
       ).show();
     } else {
-      cekdata();
-      if (cek_sesi) {
-        Alert(
-          context: context,
-          title: "Jam Sudah ada",
-          type: AlertType.error,
-          buttons: [],
-        ).show();
-        cek_sesi = false;
-      } else {
-        savedata().then((value) {
+      savedata().then((value) {
+        print(value);
+        if (value == "success") {
           Alert(
             context: context,
             title: "Jadwal Sesi Berhasil Ditambahkan",
             type: AlertType.success,
             buttons: [],
           ).show();
-        });
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return daftar_sesi(index: index);
-            },
-          ),
-        );
-        cek_sesi = false;
-      }
+        } else {
+          Alert(
+            context: context,
+            title: value,
+            type: AlertType.error,
+            buttons: [],
+          ).show();
+        }
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return daftar_sesi(index: index);
+          },
+        ),
+      );
     }
   }
 
