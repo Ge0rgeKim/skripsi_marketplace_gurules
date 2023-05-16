@@ -129,7 +129,8 @@ class _history_sesi_guruState extends State<history_sesi_guru> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return detail_sesi_guru();
+                                  //nnti return id sesi
+                                  return detail_sesi_guru(index: index);
                                 },
                               ),
                             );

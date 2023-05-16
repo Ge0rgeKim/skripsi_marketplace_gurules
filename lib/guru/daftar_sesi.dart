@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/guru/detail_sesi_guru.dart';
 import 'package:skripsi_c14190201/guru/tambah_sesi.dart';
@@ -125,8 +126,14 @@ class _daftar_sesiState extends State<daftar_sesi> {
                                   ),
                                 ),
                                 Text(
-                                  snapshot.data['data'][index]['nominal_saldo']
-                                      .toString(),
+                                  NumberFormat.currency(
+                                          locale: 'id',
+                                          symbol: "Rp. ",
+                                          decimalDigits: 0)
+                                      .format(
+                                    snapshot.data['data'][index]
+                                        ['nominal_saldo'],
+                                  ),
                                   style: TextStyle(
                                     fontFamily: "Roboto",
                                     fontSize: 13,
@@ -138,7 +145,9 @@ class _daftar_sesiState extends State<daftar_sesi> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return detail_sesi_guru();
+                                          return detail_sesi_guru(
+                                              index: snapshot.data['data']
+                                                  [index]['id']);
                                         },
                                       ),
                                     );
@@ -157,7 +166,7 @@ class _daftar_sesiState extends State<daftar_sesi> {
                                 ),
                               ],
                             );
-                          }else{
+                          } else {
                             return Container();
                           }
                         },

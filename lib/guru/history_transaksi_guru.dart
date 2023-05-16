@@ -101,7 +101,8 @@ class _history_transaksi_guruState extends State<history_transaksi_guru> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return detail_sesi_guru();
+                                  //nanti return id sesi
+                                  return detail_sesi_guru(index: index);
                                 },
                               ),
                             );
