@@ -5,18 +5,18 @@ import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 
 class history_murid extends StatefulWidget {
-  int? index;
-  history_murid({super.key, required this.index});
+  int? index_user;
+  history_murid({super.key, required this.index_user});
 
   @override
-  State<history_murid> createState() => _history_muridState(index);
+  State<history_murid> createState() => _history_muridState(index_user);
 }
 
 class _history_muridState extends State<history_murid> {
-  int? index;
-  _history_muridState(this.index);
+  int? index_user;
+  _history_muridState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 

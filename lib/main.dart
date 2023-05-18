@@ -303,7 +303,7 @@ class _MyAppState extends State<MyApp> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return guru_pages(index: id_guru);
+                    return guru_pages(index_user: id_guru);
                   },
                 ),
               );
@@ -347,7 +347,7 @@ class _MyAppState extends State<MyApp> {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return murid_pages(index: id_murid);
+                  return murid_pages(index_user: id_murid);
                 },
               ),
             );

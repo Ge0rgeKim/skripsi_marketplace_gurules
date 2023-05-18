@@ -9,18 +9,18 @@ import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 import 'package:http/http.dart' as http;
 
 class profile_guru extends StatefulWidget {
-  int? index;
-  profile_guru({super.key, required this.index});
+  int? index_user;
+  profile_guru({super.key, required this.index_user});
 
   @override
-  State<profile_guru> createState() => _profile_guruState(index);
+  State<profile_guru> createState() => _profile_guruState(index_user);
 }
 
 class _profile_guruState extends State<profile_guru> {
-  int? index;
-  _profile_guruState(this.index);
+  int? index_user;
+  _profile_guruState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -30,7 +30,7 @@ class _profile_guruState extends State<profile_guru> {
 
   Future getdataguru() async {
     var response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/user_guru/" + index.toString()));
+        Uri.parse("http://10.0.2.2:8000/api/user_guru/" + index_user.toString()));
     return json.decode(response.body);
   }
 

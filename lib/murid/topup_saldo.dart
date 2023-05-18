@@ -11,18 +11,18 @@ import 'package:skripsi_c14190201/murid/history_transaksi_murid.dart';
 import 'package:http/http.dart' as http;
 
 class topup_saldo extends StatefulWidget {
-  int? index;
-  topup_saldo({super.key, required this.index});
+  int? index_user;
+  topup_saldo({super.key, required this.index_user});
 
   @override
-  State<topup_saldo> createState() => _topup_saldoState(index);
+  State<topup_saldo> createState() => _topup_saldoState(index_user);
 }
 
 class _topup_saldoState extends State<topup_saldo> {
-  int? index;
-  _topup_saldoState(this.index);
+  int? index_user;
+  _topup_saldoState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -49,7 +49,7 @@ class _topup_saldoState extends State<topup_saldo> {
     Map<String, String> body = {
       "nominal_saldo": nominalTopUpController.text,
     };
-    var response = await add_dataTopUp(body, pickedfile_!.path, index);
+    var response = await add_dataTopUp(body, pickedfile_!.path, index_user);
     if (response) {
       setState(() {
         pickedfile_ = null;
@@ -221,7 +221,7 @@ class _topup_saldoState extends State<topup_saldo> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return history_transaksi_murid(index: index);
+            return history_transaksi_murid(index_user: index_user);
           },
         ),
       );

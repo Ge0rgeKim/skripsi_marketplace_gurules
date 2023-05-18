@@ -13,18 +13,18 @@ import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 import 'package:http/http.dart' as http;
 
 class home_murid extends StatefulWidget {
-  int? index;
-  home_murid({super.key, required this.index});
+  int? index_user;
+  home_murid({super.key, required this.index_user});
 
   @override
-  State<home_murid> createState() => _home_muridState(index);
+  State<home_murid> createState() => _home_muridState(index_user);
 }
 
 class _home_muridState extends State<home_murid> {
-  int? index;
-  _home_muridState(this.index);
+  int? index_user;
+  _home_muridState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -35,10 +35,12 @@ class _home_muridState extends State<home_murid> {
   List<dynamic> data_user = [];
   int saldo_user = 0;
   Future getdatasaldo() async {
-    var response = await http
-        .get(Uri.parse("http://10.0.2.2:8000/api/saldo/" + index.toString()));
+    var response = await http.get(
+        Uri.parse("http://10.0.2.2:8000/api/saldo/" + index_user.toString()));
     data_user = json.decode(response.body)["data"];
-    saldo_user = data_user[data_user.length - 1]["total"];
+    if (data_user.isNotEmpty) {
+      saldo_user = data_user[data_user.length - 1]["total"];
+    }
     return json.decode(response.body)["data"];
   }
 
@@ -83,34 +85,32 @@ class _home_muridState extends State<home_murid> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              child: data_user.isEmpty
-                                  ? Text(
-                                      NumberFormat.currency(
-                                              locale: 'id',
-                                              symbol: "Rp. ",
-                                              decimalDigits: 0)
-                                          .format(saldo_user),
-                                      style: TextStyle(
-                                        fontFamily: "Roboto",
-                                        fontSize: 20,
-                                      ),
-                                    )
-                                  : FutureBuilder(
-                                      future: getdatasaldo(),
-                                      builder: (context, snapshot) {
-                                        return Text(
-                                          NumberFormat.currency(
+                              child: FutureBuilder(
+                                future: getdatasaldo(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Text(
+                                      data_user.isEmpty
+                                          ? NumberFormat.currency(
+                                                  locale: 'id',
+                                                  symbol: "Rp. ",
+                                                  decimalDigits: 0)
+                                              .format(saldo_user)
+                                          : NumberFormat.currency(
                                                   locale: 'id',
                                                   symbol: "Rp. ",
                                                   decimalDigits: 0)
                                               .format(saldo_user),
-                                          style: TextStyle(
-                                            fontFamily: "Roboto",
-                                            fontSize: 20,
-                                          ),
-                                        );
-                                      },
-                                    ),
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 20,
+                                      ),
+                                    );
+                                  } else {
+                                    return Text("data error");
+                                  }
+                                },
+                              ),
                             ),
                             ElevatedButton(
                               onPressed: () {
@@ -118,7 +118,8 @@ class _home_muridState extends State<home_murid> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return history_guru(index: index);
+                                      return history_guru(
+                                          index_user: index_user);
                                     },
                                   ),
                                 );
@@ -149,7 +150,8 @@ class _home_muridState extends State<home_murid> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return jadwal_sesi(index: index);
+                                      return jadwal_sesi(
+                                          index_user: index_user);
                                     },
                                   ),
                                 );
@@ -180,7 +182,8 @@ class _home_muridState extends State<home_murid> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return history_sesi_murid(index: index);
+                                      return history_sesi_murid(
+                                          index_user: index_user);
                                     },
                                   ),
                                 );
@@ -211,7 +214,8 @@ class _home_muridState extends State<home_murid> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return topup_saldo(index: index);
+                                      return topup_saldo(
+                                          index_user: index_user);
                                     },
                                   ),
                                 );

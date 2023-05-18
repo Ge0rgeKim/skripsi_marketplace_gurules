@@ -7,18 +7,18 @@ import 'package:skripsi_c14190201/murid/report_guru.dart';
 import 'package:skripsi_c14190201/murid/review_guru.dart';
 
 class history_sesi_murid extends StatefulWidget {
-  int? index;
-  history_sesi_murid({super.key, required this.index});
+  int? index_user;
+  history_sesi_murid({super.key, required this.index_user});
 
   @override
-  State<history_sesi_murid> createState() => _history_sesi_muridState(index);
+  State<history_sesi_murid> createState() => _history_sesi_muridState(index_user);
 }
 
 class _history_sesi_muridState extends State<history_sesi_murid> {
-  int? index;
-  _history_sesi_muridState(this.index);
+  int? index_user;
+  _history_sesi_muridState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -107,7 +107,7 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return review_guru();
+                                  return review_guru(index_user: index_user);
                                 },
                               ),
                             );
@@ -130,7 +130,7 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return report_guru();
+                                  return report_guru(index_user: index_user);
                                 },
                               ),
                             );
@@ -153,7 +153,8 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return detail_sesi_murid();
+                                  return Text("data");
+                                  // return detail_sesi_murid(index_user: index_user, index_sesi: index_sesi)
                                 },
                               ),
                             );

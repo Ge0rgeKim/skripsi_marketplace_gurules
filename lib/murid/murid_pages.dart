@@ -8,18 +8,18 @@ import 'package:skripsi_c14190201/murid/settings_murid.dart';
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 
 class murid_pages extends StatefulWidget {
-  int? index;
-  murid_pages({super.key, required this.index});
+  int? index_user;
+  murid_pages({super.key, required this.index_user});
 
   @override
-  State<murid_pages> createState() => _murid_pagesState(index);
+  State<murid_pages> createState() => _murid_pagesState(index_user);
 }
 
 class _murid_pagesState extends State<murid_pages> {
-  int? index;
-  _murid_pagesState(this.index);
+  int? index_user;
+  _murid_pagesState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -31,9 +31,9 @@ class _murid_pagesState extends State<murid_pages> {
   @override
   Widget build(BuildContext context) {
     List pages = [
-      profile_murid(index: index),
-      home_murid(index: index),
-      settings_murid(index: index),
+      profile_murid(index_user: index_user),
+      home_murid(index_user: index_user),
+      settings_murid(index_user: index_user)
     ];
     return Scaffold(
       body: pages[page_index],

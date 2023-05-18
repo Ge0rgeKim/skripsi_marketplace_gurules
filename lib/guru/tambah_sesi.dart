@@ -10,18 +10,18 @@ import 'package:skripsi_c14190201/guru/daftar_sesi.dart';
 import 'package:http/http.dart' as http;
 
 class tambah_sesi extends StatefulWidget {
-  int? index;
-  tambah_sesi({super.key, required this.index});
+  int? index_user;
+  tambah_sesi({super.key, required this.index_user});
 
   @override
-  State<tambah_sesi> createState() => _tambah_sesiState(index);
+  State<tambah_sesi> createState() => _tambah_sesiState(index_user);
 }
 
 class _tambah_sesiState extends State<tambah_sesi> {
-  int? index;
-  _tambah_sesiState(this.index);
+  int? index_user;
+  _tambah_sesiState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -35,7 +35,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
   Future savedata() async {
     final response =
         await http.post(Uri.parse("http://10.0.2.2:8000/api/sesi"), body: {
-      'id_guru': index.toString(),
+      'id_guru': index_user.toString(),
       'tanggal_sesi': tgl,
       'waktu_sesi': selectedvalue,
       'nominal_saldo': hargaSesiGuruController.text,
@@ -278,7 +278,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return daftar_sesi(index: index);
+            return daftar_sesi(index_user: index_user);
           },
         ),
       );

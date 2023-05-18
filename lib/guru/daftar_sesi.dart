@@ -10,18 +10,18 @@ import 'package:skripsi_c14190201/guru/tambah_sesi.dart';
 import 'package:http/http.dart' as http;
 
 class daftar_sesi extends StatefulWidget {
-  int? index;
-  daftar_sesi({super.key, required this.index});
+  int? index_user;
+  daftar_sesi({super.key, required this.index_user});
 
   @override
-  State<daftar_sesi> createState() => _daftar_sesiState(index);
+  State<daftar_sesi> createState() => _daftar_sesiState(index_user);
 }
 
 class _daftar_sesiState extends State<daftar_sesi> {
-  int? index;
-  _daftar_sesiState(this.index);
+  int? index_user;
+  _daftar_sesiState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -77,7 +77,7 @@ class _daftar_sesiState extends State<daftar_sesi> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return tambah_sesi(index: index);
+                        return tambah_sesi(index_user: index_user);
                       },
                     ),
                   );
@@ -106,7 +106,7 @@ class _daftar_sesiState extends State<daftar_sesi> {
                         itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
                           if (snapshot.data['data'][index]['id_guru'] ==
-                              this.index) {
+                              index_user) {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -146,8 +146,10 @@ class _daftar_sesiState extends State<daftar_sesi> {
                                       MaterialPageRoute(
                                         builder: (context) {
                                           return detail_sesi_guru(
-                                              index: snapshot.data['data']
-                                                  [index]['id']);
+                                            index_sesi: snapshot.data['data']
+                                                [index]['id'],
+                                            index_user: index_user,
+                                          );
                                         },
                                       ),
                                     );

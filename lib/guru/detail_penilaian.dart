@@ -4,13 +4,24 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
 
 class detail_penilaian extends StatefulWidget {
-  const detail_penilaian({super.key});
+  int? index_user;
+  detail_penilaian({super.key, required this.index_user});
 
   @override
-  State<detail_penilaian> createState() => _detail_penilaianState();
+  State<detail_penilaian> createState() => _detail_penilaianState(index_user);
 }
 
 class _detail_penilaianState extends State<detail_penilaian> {
+  int? index_user;
+  _detail_penilaianState(this.index_user);
+  void initState() {
+    print(index_user);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

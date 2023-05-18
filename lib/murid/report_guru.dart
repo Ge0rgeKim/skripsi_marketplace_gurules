@@ -5,13 +5,26 @@ import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/murid/history_sesi_murid.dart';
 
 class report_guru extends StatefulWidget {
-  const report_guru({super.key});
+  int? index_user;
+  report_guru({super.key, required this.index_user});
 
   @override
-  State<report_guru> createState() => _report_guruState();
+  State<report_guru> createState() => _report_guruState(index_user);
 }
 
 class _report_guruState extends State<report_guru> {
+  int? index_user;
+  _report_guruState(this.index_user);
+
+  void initState() {
+    print(index_user);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -140,7 +153,7 @@ class _report_guruState extends State<report_guru> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return history_sesi_murid(index: 0);
+                                return history_sesi_murid(index_user: index_user);
                               },
                             ),
                           );

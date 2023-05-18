@@ -5,13 +5,25 @@ import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/guru/daftar_dokumentasi.dart';
 
 class form_dokumentasi extends StatefulWidget {
-  const form_dokumentasi({super.key});
+  int? index_user;
+  form_dokumentasi({super.key, required this.index_user});
 
   @override
-  State<form_dokumentasi> createState() => _form_dokumentasiState();
+  State<form_dokumentasi> createState() => _form_dokumentasiState(index_user);
 }
 
 class _form_dokumentasiState extends State<form_dokumentasi> {
+  int? index_user;
+  _form_dokumentasiState(this.index_user);
+  void initState() {
+    print(index_user);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -154,7 +166,7 @@ class _form_dokumentasiState extends State<form_dokumentasi> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return daftar_dokumentasi(index: 0);
+                                return daftar_dokumentasi(index_user: index_user);
                               },
                             ),
                           );

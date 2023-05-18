@@ -5,18 +5,18 @@ import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/guru/detail_penilaian.dart';
 
 class daftar_penilaian extends StatefulWidget {
-  int? index;
-  daftar_penilaian({super.key, required this.index});
+  int? index_user;
+  daftar_penilaian({super.key, required this.index_user});
 
   @override
-  State<daftar_penilaian> createState() => _daftar_penilaianState(index);
+  State<daftar_penilaian> createState() => _daftar_penilaianState(index_user);
 }
 
 class _daftar_penilaianState extends State<daftar_penilaian> {
-  int? index;
-  _daftar_penilaianState(this.index);
+  int? index_user;
+  _daftar_penilaianState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -98,7 +98,7 @@ class _daftar_penilaianState extends State<daftar_penilaian> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return detail_penilaian();
+                                  return detail_penilaian(index_user: index_user);
                                 },
                               ),
                             );

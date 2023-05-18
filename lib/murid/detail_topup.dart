@@ -4,13 +4,26 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
 
 class detail_topup extends StatefulWidget {
-  const detail_topup({super.key});
+  int? index_user;
+  detail_topup({super.key, required this.index_user});
 
   @override
-  State<detail_topup> createState() => _detail_topupState();
+  State<detail_topup> createState() => _detail_topupState(index_user);
 }
 
 class _detail_topupState extends State<detail_topup> {
+  int? index_user;
+  _detail_topupState(this.index_user);
+
+  void initState() {
+    print(index_user);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

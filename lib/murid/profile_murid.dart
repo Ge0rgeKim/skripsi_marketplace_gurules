@@ -9,18 +9,18 @@ import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 import 'package:http/http.dart' as http;
 
 class profile_murid extends StatefulWidget {
-  int? index;
-  profile_murid({super.key, required this.index});
+  int? index_user;
+  profile_murid({super.key, required this.index_user});
 
   @override
-  State<profile_murid> createState() => _profile_muridState(index);
+  State<profile_murid> createState() => _profile_muridState(index_user);
 }
 
 class _profile_muridState extends State<profile_murid> {
-  int? index;
-  _profile_muridState(this.index);
+  int? index_user;
+  _profile_muridState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -30,7 +30,7 @@ class _profile_muridState extends State<profile_murid> {
 
   Future getdatamurid() async {
     var response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/user_murid/" + index.toString()));
+        Uri.parse("http://10.0.2.2:8000/api/user_murid/" + index_user.toString()));
     return json.decode(response.body);
   }
 

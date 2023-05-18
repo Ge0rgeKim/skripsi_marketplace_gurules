@@ -6,19 +6,19 @@ import 'package:skripsi_c14190201/murid/detail_sesi_murid.dart';
 import 'package:skripsi_c14190201/murid/detail_topup.dart';
 
 class history_transaksi_murid extends StatefulWidget {
-  int? index;
-  history_transaksi_murid({super.key, required this.index});
+  int? index_user;
+  history_transaksi_murid({super.key, required this.index_user});
 
   @override
   State<history_transaksi_murid> createState() =>
-      _history_transaksi_muridState(index);
+      _history_transaksi_muridState(index_user);
 }
 
 class _history_transaksi_muridState extends State<history_transaksi_murid> {
-  int? index;
-  _history_transaksi_muridState(this.index);
+  int? index_user;
+  _history_transaksi_muridState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -107,7 +107,7 @@ class _history_transaksi_muridState extends State<history_transaksi_murid> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return detail_topup();
+                                  return detail_topup(index_user: index_user);
                                 },
                               ),
                             );
@@ -157,7 +157,8 @@ class _history_transaksi_muridState extends State<history_transaksi_murid> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return detail_sesi_murid();
+                                  // return detail_sesi_murid(index_user: index_user, index_sesi: index_sesi);
+                                  return Text("data");
                                 },
                               ),
                             );

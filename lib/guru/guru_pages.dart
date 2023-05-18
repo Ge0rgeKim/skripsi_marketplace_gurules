@@ -8,18 +8,18 @@ import 'package:skripsi_c14190201/guru/settings_guru.dart';
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 
 class guru_pages extends StatefulWidget {
-  int? index;
-  guru_pages({super.key, required this.index});
+  int? index_user;
+  guru_pages({super.key, required this.index_user});
 
   @override
-  State<guru_pages> createState() => _guru_pagesState(index);
+  State<guru_pages> createState() => _guru_pagesState(index_user);
 }
 
 class _guru_pagesState extends State<guru_pages> {
-  int? index;
-  _guru_pagesState(this.index);
+  int? index_user;
+  _guru_pagesState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -31,9 +31,9 @@ class _guru_pagesState extends State<guru_pages> {
   @override
   Widget build(BuildContext context) {
     List pages = [
-      profile_guru(index: index),
-      home_guru(index: index),
-      settings_guru(index: index)
+      profile_guru(index_user: index_user),
+      home_guru(index_user: index_user),
+      settings_guru(index_user: index_user)
     ];
     return Scaffold(
       body: pages[page_index],

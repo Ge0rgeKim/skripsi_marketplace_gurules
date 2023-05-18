@@ -1,19 +1,51 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/murid/bayar_sesi.dart';
 import 'package:skripsi_c14190201/murid/detail_sesi_murid.dart';
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
+import 'package:http/http.dart' as http;
 
 class detail_guru extends StatefulWidget {
-  const detail_guru({super.key});
+  int? index_user;
+  int? index_guru;
+  detail_guru({super.key, required this.index_user, required this.index_guru});
 
   @override
-  State<detail_guru> createState() => _detail_guruState();
+  State<detail_guru> createState() => _detail_guruState(index_user, index_guru);
 }
 
 class _detail_guruState extends State<detail_guru> {
+  int? index_user;
+  int? index_guru;
+  _detail_guruState(this.index_user, this.index_guru);
+
+  void initState() {
+    print(index_user);
+    print(index_guru);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
+  Future getdatasesi() async {
+    var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi"));
+    return json.decode(response.body);
+  }
+
+  Future getdataguru() async {
+    var response = await http.get(Uri.parse(
+        "http://10.0.2.2:8000/api/user_guru/" + index_guru.toString()));
+    return json.decode(response.body);
+  }
+
+  final status = ["Online Onsite", "Online", "Onsite"];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,124 +83,171 @@ class _detail_guruState extends State<detail_guru> {
           padding: EdgeInsets.fromLTRB(5, 30, 5, 30),
           child: Column(
             children: [
-              Column(
-                children: [
-                  Text(
-                    "<Username Guru>",
-                    style: TextStyle(
-                      fontFamily: "Roboto",
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    "<Mata Pelajaran Guru>",
-                    style: TextStyle(
-                      fontFamily: "Roboto",
-                      fontSize: 13,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "<Lokasi>",
-                        style: TextStyle(
-                          fontFamily: "Roboto",
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        " | ",
-                        style: TextStyle(
-                          fontFamily: "Roboto",
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "<Status>",
-                        style: TextStyle(
-                          fontFamily: "Roboto",
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              FutureBuilder(
+                future: getdataguru(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
                       children: [
                         Text(
-                          "<Tanggal Sesi>",
+                          snapshot.data['data']['username'],
                           style: TextStyle(
                             fontFamily: "Roboto",
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return bayar_sesi();
-                                },
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "<Waktu Sesi>",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return detail_sesi_murid();
-                                },
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: buttoncolor,
-                          ),
-                          child: Text(
-                            "Detail",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
                         Text(
-                          "<Harga>",
+                          snapshot.data['data']['mata_pelajaran'],
                           style: TextStyle(
                             fontFamily: "Roboto",
                             fontSize: 13,
                           ),
                         ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              snapshot.data['data']['lokasi'],
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 13,
+                              ),
+                            ),
+                            Text(
+                              " | ",
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 13,
+                              ),
+                            ),
+                            Text(
+                              status[snapshot.data['data']['status_sesi']],
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
-                    ),
-                  ],
-                ),
+                    );
+                  } else {
+                    return Text("data error");
+                  }
+                },
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              FutureBuilder(
+                future: getdatasesi(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data['data'].length,
+                        itemBuilder: (context, index) {
+                          if (snapshot.data['data'][index]['id_guru'] ==
+                              index_guru) {
+                            if (snapshot.data['data'][index]['status_sesi'] ==
+                                0) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    snapshot.data['data'][index]
+                                        ['tanggal_sesi'],
+                                    style: TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return bayar_sesi(
+                                              index_user: index_user,
+                                              index_sesi: snapshot.data['data']
+                                                  [index]['id'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      snapshot.data['data'][index]
+                                          ['waktu_sesi'],
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    NumberFormat.currency(
+                                            locale: 'id',
+                                            symbol: "Rp. ",
+                                            decimalDigits: 0)
+                                        .format(
+                                      snapshot.data['data'][index]
+                                          ['nominal_saldo'],
+                                    ),
+                                    style: TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return detail_sesi_murid(
+                                              index_user: index_user,
+                                              index_sesi: snapshot.data['data']
+                                                  [index]['id'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: buttoncolor,
+                                    ),
+                                    child: Text(
+                                      "Detail",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return Container();
+                            }
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                    );
+                  } else {
+                    return Text("data error");
+                  }
+                },
               ),
               SizedBox(
                 height: 20,

@@ -5,19 +5,19 @@ import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/guru/detail_sesi_guru.dart';
 
 class history_transaksi_guru extends StatefulWidget {
-  int? index;
-  history_transaksi_guru({super.key, required this.index});
+  int? index_user;
+  history_transaksi_guru({super.key, required this.index_user});
 
   @override
   State<history_transaksi_guru> createState() =>
-      _history_transaksi_guruState(index);
+      _history_transaksi_guruState(index_user);
 }
 
 class _history_transaksi_guruState extends State<history_transaksi_guru> {
-  int? index;
-  _history_transaksi_guruState(this.index);
+  int? index_user;
+  _history_transaksi_guruState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -102,7 +102,7 @@ class _history_transaksi_guruState extends State<history_transaksi_guru> {
                               MaterialPageRoute(
                                 builder: (context) {
                                   //nanti return id sesi
-                                  return detail_sesi_guru(index: index);
+                                  return detail_sesi_guru(index_user: index_user,index_sesi: 0,);
                                 },
                               ),
                             );

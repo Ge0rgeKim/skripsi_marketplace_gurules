@@ -7,18 +7,18 @@ import 'package:skripsi_c14190201/guru/history_transaksi_guru.dart';
 import 'package:skripsi_c14190201/main.dart';
 
 class settings_guru extends StatefulWidget {
-  int? index;
-  settings_guru({super.key, required this.index});
+  int? index_user;
+  settings_guru({super.key, required this.index_user});
 
   @override
-  State<settings_guru> createState() => _settings_guruState(index);
+  State<settings_guru> createState() => _settings_guruState(index_user);
 }
 
 class _settings_guruState extends State<settings_guru> {
-  int? index;
-  _settings_guruState(this.index);
+  int? index_user;
+  _settings_guruState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -67,7 +67,7 @@ class _settings_guruState extends State<settings_guru> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return history_sesi_guru(index: index);
+                            return history_sesi_guru(index_user: index_user);
                           },
                         ),
                       );
@@ -100,7 +100,7 @@ class _settings_guruState extends State<settings_guru> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return history_transaksi_guru(index: index);
+                            return history_transaksi_guru(index_user: index_user);
                           },
                         ),
                       );

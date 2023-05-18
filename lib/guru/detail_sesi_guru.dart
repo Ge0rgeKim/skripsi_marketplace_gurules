@@ -8,19 +8,22 @@ import 'package:skripsi_c14190201/colors.dart';
 import 'package:http/http.dart' as http;
 
 class detail_sesi_guru extends StatefulWidget {
-  int? index;
-  detail_sesi_guru({super.key, required this.index});
+  int? index_user;
+  int? index_sesi;
+  detail_sesi_guru({super.key, required this.index_user, required this.index_sesi});
 
   @override
-  State<detail_sesi_guru> createState() => _detail_sesi_guruState(index);
+  State<detail_sesi_guru> createState() => _detail_sesi_guruState(index_user, index_sesi);
 }
 
 class _detail_sesi_guruState extends State<detail_sesi_guru> {
-  int? index;
-  _detail_sesi_guruState(this.index);
+  int? index_user;
+  int? index_sesi;
+  _detail_sesi_guruState(this.index_user, this.index_sesi);
 
   void initState() {
-    print(index);
+    print(index_user);
+    print(index_sesi);
     super.initState();
   }
 
@@ -34,7 +37,7 @@ class _detail_sesi_guruState extends State<detail_sesi_guru> {
   final status = ["Online Onsite", "Online", "Onsite"];
   Future getdatasesi() async {
     var response = await http
-        .get(Uri.parse("http://10.0.2.2:8000/api/sesi/" + index.toString()));
+        .get(Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
     var response2 = await http.get(Uri.parse(
         "http://10.0.2.2:8000/api/user_guru/" +
             json.decode(response.body)['data']['id_guru'].toString()));
@@ -94,7 +97,7 @@ class _detail_sesi_guruState extends State<detail_sesi_guru> {
                             Column(
                               children: [
                                 Text(
-                                  snapshot.data['data']['id'].toString(),
+                                  "ID Sesi : "+snapshot.data['data']['id'].toString(),
                                   style: TextStyle(
                                     fontFamily: "Roboto",
                                     fontSize: 15,

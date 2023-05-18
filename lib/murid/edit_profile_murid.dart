@@ -34,9 +34,6 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
   TextEditingController dataPassMuridControlller = TextEditingController();
 
   Future updatedatamurid() async {
-    if (selectedvalue == null) {
-      selectedvalue = "tidak";
-    }
     var response = await http.put(
         Uri.parse("http://10.0.2.2:8000/api/user_murid/" +
             data_profile["id"].toString()),
@@ -44,258 +41,116 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
           "username": dataUserMuridControlller.text,
           "email": data_profile["email"],
           "password": dataPassMuridControlller.text,
-          "status_reward": selectedvalue,
         });
     return json.decode(response.body);
   }
 
-  final status = ["ya", "tidak"];
-  String? selectedvalue;
-
   @override
   Widget build(BuildContext context) {
-    if (data_profile['status_reward'] != 1) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: "Skripsi c14190201",
-        home: Scaffold(
-          backgroundColor: containerColor,
-          appBar: AppBar(
-            backgroundColor: appbarColor,
-            title: Text(
-              "Edit Profile",
-              style: TextStyle(
-                fontFamily: "Roboto",
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Skripsi c14190201",
+      home: Scaffold(
+        backgroundColor: containerColor,
+        appBar: AppBar(
+          backgroundColor: appbarColor,
+          title: Text(
+            "Edit Profile",
+            style: TextStyle(
+              fontFamily: "Roboto",
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
-            leading: IconButton(
-              onPressed: () => {
-                Navigator.of(context).pop(),
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              ),
-            ),
-            centerTitle: true,
-            toolbarHeight: 75,
-            // leadingWidth: 65,
-            // titleSpacing: 0,
-            elevation: 0,
           ),
-          body: Scrollbar(
-            trackVisibility: true,
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        TextField(
-                          controller: dataUserMuridControlller
-                            ..text = data_profile["username"],
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            label: Text(
-                              "Username",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextField(
-                          controller: dataPassMuridControlller
-                            ..text = data_profile["password"],
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            label: Text(
-                              "Password",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.black)),
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            underline: SizedBox(),
-                            icon: Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.black,
-                            ),
-                            hint: Text(
-                              "Mau Ambil Saldo Bonus?",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 20,
-                              ),
-                            ),
-                            items: status.map(buildmenuitem).toList(),
-                            value: selectedvalue,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedvalue = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            murid_profile_update();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: buttoncolor,
-                          ),
-                          child: Text(
-                            "Submit",
+          leading: IconButton(
+            onPressed: () => {
+              Navigator.of(context).pop(),
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
+          centerTitle: true,
+          toolbarHeight: 75,
+          // leadingWidth: 65,
+          // titleSpacing: 0,
+          elevation: 0,
+        ),
+        body: Scrollbar(
+          trackVisibility: true,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      TextField(
+                        controller: dataUserMuridControlller
+                          ..text = data_profile["username"],
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text(
+                            "Username",
                             style: TextStyle(
                               fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
+                              fontSize: 20,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      TextField(
+                        controller: dataPassMuridControlller
+                          ..text = data_profile["password"],
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text(
+                            "Password",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          murid_profile_update();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: buttoncolor,
+                        ),
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
         ),
-      );
-    } else {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: "Skripsi c14190201",
-        home: Scaffold(
-          backgroundColor: containerColor,
-          appBar: AppBar(
-            backgroundColor: appbarColor,
-            title: Text(
-              "Edit Profile",
-              style: TextStyle(
-                fontFamily: "Roboto",
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            leading: IconButton(
-              onPressed: () => {
-                Navigator.of(context).pop(),
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              ),
-            ),
-            centerTitle: true,
-            toolbarHeight: 75,
-            // leadingWidth: 65,
-            // titleSpacing: 0,
-            elevation: 0,
-          ),
-          body: Scrollbar(
-            trackVisibility: true,
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        TextField(
-                          controller: dataUserMuridControlller
-                            ..text = data_profile["username"],
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            label: Text(
-                              "Username",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextField(
-                          controller: dataPassMuridControlller
-                            ..text = data_profile["password"],
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            label: Text(
-                              "Password",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            murid_profile_update();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: buttoncolor,
-                          ),
-                          child: Text(
-                            "Submit",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
+      ),
+    );
   }
 
   Future murid_profile_update() async {
@@ -327,21 +182,10 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return profile_murid(index: data_profile["id"]);
+            return profile_murid(index_user: data_profile["id"]);
           },
         ),
       );
     }
   }
-
-  DropdownMenuItem<String> buildmenuitem(String item) => DropdownMenuItem(
-        value: item,
-        child: Text(
-          item,
-          style: TextStyle(
-            fontFamily: "Roboto",
-            fontSize: 20,
-          ),
-        ),
-      );
 }

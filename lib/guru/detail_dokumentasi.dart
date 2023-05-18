@@ -4,13 +4,25 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
 
 class detail_dokumentasi extends StatefulWidget {
-  const detail_dokumentasi({super.key});
+  int? index_user;
+  detail_dokumentasi({super.key, required this.index_user});
 
   @override
-  State<detail_dokumentasi> createState() => _detail_dokumentasiState();
+  State<detail_dokumentasi> createState() => _detail_dokumentasiState(index_user);
 }
 
 class _detail_dokumentasiState extends State<detail_dokumentasi> {
+  int? index_user;
+  _detail_dokumentasiState(this.index_user);
+  void initState() {
+    print(index_user);
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

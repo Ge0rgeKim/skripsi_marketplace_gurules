@@ -6,18 +6,18 @@ import 'package:skripsi_c14190201/guru/detail_dokumentasi.dart';
 import 'package:skripsi_c14190201/guru/form_dokumentasi.dart';
 
 class daftar_dokumentasi extends StatefulWidget {
-  int? index;
-  daftar_dokumentasi({super.key, required this.index});
+  int? index_user;
+  daftar_dokumentasi({super.key, required this.index_user});
 
   @override
-  State<daftar_dokumentasi> createState() => _daftar_dokumentasiState(index);
+  State<daftar_dokumentasi> createState() => _daftar_dokumentasiState(index_user);
 }
 
 class _daftar_dokumentasiState extends State<daftar_dokumentasi> {
-  int? index;
-  _daftar_dokumentasiState(this.index);
+  int? index_user;
+  _daftar_dokumentasiState(this.index_user);
   void initState() {
-    print(index);
+    print(index_user);
     super.initState();
   }
 
@@ -96,7 +96,7 @@ class _daftar_dokumentasiState extends State<daftar_dokumentasi> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return form_dokumentasi();
+                                  return form_dokumentasi(index_user: index_user);
                                 },
                               ),
                             );
@@ -119,7 +119,7 @@ class _daftar_dokumentasiState extends State<daftar_dokumentasi> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return detail_dokumentasi();
+                                  return detail_dokumentasi(index_user: index_user);
                                 },
                               ),
                             );

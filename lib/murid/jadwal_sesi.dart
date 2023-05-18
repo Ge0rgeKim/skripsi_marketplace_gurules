@@ -9,17 +9,18 @@ import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 import 'package:http/http.dart' as http;
 
 class jadwal_sesi extends StatefulWidget {
-  int? index;
-  jadwal_sesi({super.key, required this.index});
+  int? index_user;
+  jadwal_sesi({super.key, required this.index_user});
 
   @override
-  State<jadwal_sesi> createState() => _jadwal_sesiState(index);
+  State<jadwal_sesi> createState() => _jadwal_sesiState(index_user);
 }
 
 class _jadwal_sesiState extends State<jadwal_sesi> {
-  int? index;
-  _jadwal_sesiState(this.index);
+  int? index_user;
+  _jadwal_sesiState(this.index_user);
   void initState() {
+    print(index_user);
     super.initState();
   }
 
@@ -204,7 +205,11 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return detail_guru();
+                                          return detail_guru(
+                                            index_user: index_user,
+                                            index_guru: snapshot.data['data']
+                                                [index]['id'],
+                                          );
                                         },
                                       ),
                                     );

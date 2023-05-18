@@ -245,7 +245,7 @@ class _edit_profile_guruState extends State<edit_profile_guru> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return profile_guru(index: data_profile["id"]);
+            return profile_guru(index_user: data_profile["id"]);
           },
         ),
       );
