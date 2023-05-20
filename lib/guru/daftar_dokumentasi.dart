@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
-import 'package:skripsi_c14190201/guru/detail_dokumentasi.dart';
 import 'package:skripsi_c14190201/guru/form_dokumentasi.dart';
 
 class daftar_dokumentasi extends StatefulWidget {
@@ -106,29 +105,6 @@ class _daftar_dokumentasiState extends State<daftar_dokumentasi> {
                           ),
                           child: Text(
                             "Upload",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return detail_dokumentasi(index_user: index_user);
-                                },
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: buttoncolor,
-                          ),
-                          child: Text(
-                            "Detail",
                             style: TextStyle(
                               fontFamily: "Roboto",
                               fontWeight: FontWeight.bold,
