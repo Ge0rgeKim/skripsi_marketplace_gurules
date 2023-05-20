@@ -11,22 +11,19 @@ import 'package:skripsi_c14190201/murid/detail_guru.dart';
 import 'package:skripsi_c14190201/murid/history_sesi_murid.dart';
 
 class review_guru extends StatefulWidget {
-  int? index_user;
-  int? index_sesi;
-  review_guru({super.key, required this.index_user, required this.index_sesi});
+  final Map data_transaksi;
+  review_guru({super.key, required this.data_transaksi});
 
   @override
-  State<review_guru> createState() => _review_guruState(index_user, index_sesi);
+  State<review_guru> createState() => _review_guruState(data_transaksi);
 }
 
 class _review_guruState extends State<review_guru> {
-  int? index_user;
-  int? index_sesi;
-  _review_guruState(this.index_user, this.index_sesi);
+  final Map data_transaksi;
+  _review_guruState(this.data_transaksi);
 
   void initState() {
-    print(index_user);
-    print(index_sesi);
+    print(data_transaksi);
     super.initState();
   }
 
@@ -41,25 +38,22 @@ class _review_guruState extends State<review_guru> {
 
   String mataPelajaran = "";
   Future getdatasesi() async {
-    var response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
+    var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi/" +
+        data_transaksi['id_sesi'].toString()));
     var response2 = await http.get(Uri.parse(
         "http://10.0.2.2:8000/api/user_guru/" +
-            json.decode(response.body)['data']['id_guru'].toString()));
+            data_transaksi['id_guru'].toString()));
     mataPelajaran =
         json.decode(response2.body)['data']['mata_pelajaran'].toString();
     return json.decode(response.body);
   }
 
   Future savedata() async {
-    var response_guru = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
-    int id_guru = json.decode(response_guru.body)['data']['id_guru'];
     final response =
         await http.post(Uri.parse("http://10.0.2.2:8000/api/review"), body: {
-      "id_sesi": index_sesi.toString(),
-      "id_murid": index_user.toString(),
-      "id_guru": id_guru.toString(),
+      "id_sesi": data_transaksi['id_sesi'].toString(),
+      "id_murid": data_transaksi['id_murid'].toString(),
+      "id_guru": data_transaksi['id_guru'].toString(),
       "penilaian_sesi": penilaianmuridController.text,
       "komentar_sesi": komentarmuridController.text,
     });
@@ -99,13 +93,13 @@ class _review_guruState extends State<review_guru> {
           child: SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-              child: FutureBuilder(
-                future: getdatasesi(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        Column(
+              child: Column(
+                children: [
+                  FutureBuilder(
+                    future: getdatasesi(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
                           children: [
                             Text(
                               "ID Sesi : " +
@@ -161,93 +155,80 @@ class _review_guruState extends State<review_guru> {
                               ),
                             ),
                           ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Column(
-                          children: [
-                            TextField(
-                              controller: penilaianmuridController,
-                              autofocus: true,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'[0-9]')),
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                label: Text(
-                                  "Penilaian (0 - 10)",
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
+                        );
+                      } else {
+                        return Text("data error");
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: [
+                      TextField(
+                        controller: penilaianmuridController,
+                        autofocus: true,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text(
+                            "Penilaian (0 - 10)",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 20,
                             ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            TextField(
-                              controller: komentarmuridController,
-                              textCapitalization: TextCapitalization.words,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                label: Text(
-                                  "Komentar",
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                save_review();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return detail_guru(
-                                        index_user: index_user,
-                                        index_guru: snapshot.data['data']
-                                            ['id_guru'],
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: buttoncolor,
-                              ),
-                              child: Text(
-                                "Submit",
-                                style: TextStyle(
-                                  fontFamily: "Roboto",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      TextField(
+                        controller: komentarmuridController,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text(
+                            "Komentar",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 20,
                             ),
-                          ],
+                          ),
                         ),
-                      ],
-                    );
-                  } else {
-                    return Text("data error");
-                  }
-                },
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          save_review();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: buttoncolor,
+                        ),
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
@@ -257,9 +238,6 @@ class _review_guruState extends State<review_guru> {
   }
 
   Future save_review() async {
-    var response_guru = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
-    int id_guru = json.decode(response_guru.body)['data']['id_guru'];
     if (penilaianmuridController.text.isEmpty ||
         komentarmuridController.text.isEmpty) {
       Alert(
@@ -287,6 +265,17 @@ class _review_guruState extends State<review_guru> {
           ).show();
         }
       });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return detail_guru(
+              index_user: data_transaksi['id_murid'],
+              index_guru: data_transaksi['id_guru'],
+            );
+          },
+        ),
+      );
     }
   }
 }

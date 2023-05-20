@@ -120,11 +120,7 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return review_guru(
-                                            index_user: index_user,
-                                            index_sesi: snapshot.data['data']
-                                                [index]['id_sesi'],
-                                          );
+                                          return review_guru(data_transaksi: snapshot.data['data'][index]);
                                         },
                                       ),
                                     );
@@ -147,11 +143,7 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return report_guru(
-                                            index_user: index_user,
-                                            index_sesi: snapshot.data['data']
-                                                [index]['id_sesi'],
-                                          );
+                                          return report_guru(data_transaksi: snapshot.data['data'][index]);
                                         },
                                       ),
                                     );
