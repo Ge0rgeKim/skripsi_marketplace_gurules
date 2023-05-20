@@ -60,11 +60,15 @@ class _bayar_sesiState extends State<bayar_sesi> {
   }
 
   Future savedata() async {
+    var response_guru = await http.get(
+        Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
+    int id_guru = json.decode(response_guru.body)['data']['id_guru'];
     final response = await http.post(
         Uri.parse(
             "http://10.0.2.2:8000/api/transaksi_sesi/" + index_sesi.toString()),
         body: {
           "id_murid": index_user.toString(),
+          "id_guru" : id_guru.toString()
         });
     if (response.statusCode == 200) {
       return json.decode(response.body)['message'];

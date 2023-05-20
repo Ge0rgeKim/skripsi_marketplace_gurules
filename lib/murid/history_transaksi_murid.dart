@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 import 'package:skripsi_c14190201/colors.dart';
-import 'package:skripsi_c14190201/murid/detail_sesi_murid.dart';
-import 'package:skripsi_c14190201/murid/detail_topup.dart';
+import 'package:http/http.dart' as http;
 
 class history_transaksi_murid extends StatefulWidget {
   int? index_user;
@@ -24,6 +26,18 @@ class _history_transaksi_muridState extends State<history_transaksi_murid> {
 
   void dispose() {
     super.dispose();
+  }
+
+  List<dynamic> data_user = [];
+  int saldo_user = 0;
+  Future getdatasaldo() async {
+    var response = await http.get(
+        Uri.parse("http://10.0.2.2:8000/api/saldo/" + index_user.toString()));
+    data_user = json.decode(response.body)["data"];
+    if (data_user.isNotEmpty) {
+      saldo_user = data_user[data_user.length - 1]["total"];
+    }
+    return json.decode(response.body);
   }
 
   @override
@@ -63,123 +77,146 @@ class _history_transaksi_muridState extends State<history_transaksi_murid> {
           padding: EdgeInsets.fromLTRB(5, 30, 5, 30),
           child: Column(
             children: [
-              Text(
-                "<Total Saldo>",
-                style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 20,
-                ),
+              FutureBuilder(
+                future: getdatasaldo(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(
+                      data_user.isEmpty
+                          ? NumberFormat.currency(
+                                  locale: 'id',
+                                  symbol: "Rp. ",
+                                  decimalDigits: 0)
+                              .format(saldo_user)
+                          : NumberFormat.currency(
+                                  locale: 'id',
+                                  symbol: "Rp. ",
+                                  decimalDigits: 0)
+                              .format(saldo_user),
+                      style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  } else {
+                    return Text("data error");
+                  }
+                },
               ),
               SizedBox(
                 height: 20,
               ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Top Up",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "<Waktu Transaksi>",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return detail_topup(index_user: index_user);
-                                },
-                              ),
+              FutureBuilder(
+                future: getdatasaldo(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data['data'].length,
+                        itemBuilder: (context, index) {
+                          if (snapshot.data['data'][index]['debit'] != 0) {
+                            return Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      snapshot.data['data'][index]
+                                          ['id_transaksi'],
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.arrow_upward,
+                                          color: Colors.green,
+                                          size: 25,
+                                        ),
+                                        Text(
+                                          NumberFormat.currency(
+                                                  locale: 'id',
+                                                  symbol: "Rp. ",
+                                                  decimalDigits: 0)
+                                              .format(
+                                            snapshot.data['data'][index]
+                                                ['debit'],
+                                          ),
+                                          style: TextStyle(
+                                            fontFamily: "Roboto",
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                )
+                              ],
                             );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: buttoncolor,
-                          ),
-                          child: Text(
-                            "Detail",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Sesi",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "<Waktu Transaksi>",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  // return detail_sesi_murid(index_user: index_user, index_sesi: index_sesi);
-                                  return Text("data");
-                                },
-                              ),
+                          } else if (snapshot.data['data'][index]['credit'] !=
+                              0) {
+                            return Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      snapshot.data['data'][index]
+                                          ['id_transaksi'],
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.arrow_downward,
+                                          color: Colors.red,
+                                          size: 25,
+                                        ),
+                                        Text(
+                                          NumberFormat.currency(
+                                                  locale: 'id',
+                                                  symbol: "Rp. ",
+                                                  decimalDigits: 0)
+                                              .format(
+                                            snapshot.data['data'][index]
+                                                ['credit'],
+                                          ),
+                                          style: TextStyle(
+                                            fontFamily: "Roboto",
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                )
+                              ],
                             );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: buttoncolor,
-                          ),
-                          child: Text(
-                            "Detail",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                          }
+                        },
+                      ),
+                    );
+                  } else {
+                    return Text("data error");
+                  }
+                },
+              )
             ],
           ),
         ),

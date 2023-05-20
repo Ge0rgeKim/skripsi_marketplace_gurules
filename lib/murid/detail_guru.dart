@@ -45,6 +45,12 @@ class _detail_guruState extends State<detail_guru> {
     return json.decode(response.body);
   }
 
+  Future getdatareview() async {
+    var response =
+        await http.get(Uri.parse("http://10.0.2.2:8000/api/review/"));
+    return json.decode(response.body);
+  }
+
   final status = ["Online Onsite", "Online", "Onsite"];
   @override
   Widget build(BuildContext context) {
@@ -263,92 +269,102 @@ class _detail_guruState extends State<detail_guru> {
               SizedBox(
                 height: 20,
               ),
-              Row(
-                children: [
-                  Text(
-                    "<Rata-rata Nilai>",
-                    style: TextStyle(
-                      fontFamily: "Roboto",
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    " | ",
-                    style: TextStyle(
-                      fontFamily: "Roboto",
-                      fontSize: 15,
-                    ),
-                  ),
-                  Text(
-                    "<Total Jumlah Review>",
-                    style: TextStyle(
-                      fontFamily: "Roboto",
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          SkripsiIcon.user,
-                          size: 25,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "<username murid>",
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
+              FutureBuilder(
+                future: getdatareview(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data['data'].length,
+                        itemBuilder: (context, index) {
+                          if (snapshot.data['data'][index]['id_guru'] ==
+                              index_guru) {
+                            return Row(
                               children: [
-                                Text(
-                                  "<Total Nilai>",
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 13,
-                                  ),
+                                Icon(
+                                  SkripsiIcon.user,
+                                  size: 25,
                                 ),
-                                Text(
-                                  " | ",
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 13,
-                                  ),
+                                SizedBox(
+                                  width: 10,
                                 ),
-                                Text(
-                                  "<Review>",
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 13,
-                                  ),
-                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "ID Murid : " +
+                                              snapshot.data['data'][index]
+                                                      ['id_murid']
+                                                  .toString(),
+                                          style: TextStyle(
+                                            fontFamily: "Roboto",
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          " | ",
+                                          style: TextStyle(
+                                            fontFamily: "Roboto",
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Nilai : " +
+                                              snapshot.data['data'][index]
+                                                      ['penilaian_sesi']
+                                                  .toString(),
+                                          style: TextStyle(
+                                            fontFamily: "Roboto",
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              snapshot.data['data'][index]
+                                                  ['komentar_sesi'],
+                                              style: TextStyle(
+                                                fontFamily: "Roboto",
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: buttoncolor,
+                                      ),
+                                      child: Text(
+                                        "Show Comment",
+                                        style: TextStyle(
+                                          fontFamily: "Roboto",
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
                               ],
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                    );
+                  } else {
+                    return Text("data error");
+                  }
+                },
               ),
             ],
           ),

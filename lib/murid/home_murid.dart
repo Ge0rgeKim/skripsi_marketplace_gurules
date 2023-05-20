@@ -84,33 +84,32 @@ class _home_muridState extends State<home_murid> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              child: FutureBuilder(
-                                future: getdatasaldo(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    return Text(
-                                      data_user.isEmpty
-                                          ? NumberFormat.currency(
-                                                  locale: 'id',
-                                                  symbol: "Rp. ",
-                                                  decimalDigits: 0)
-                                              .format(saldo_user)
-                                          : NumberFormat.currency(
-                                                  locale: 'id',
-                                                  symbol: "Rp. ",
-                                                  decimalDigits: 0)
-                                              .format(saldo_user),
-                                      style: TextStyle(
-                                        fontFamily: "Roboto",
-                                        fontSize: 20,
-                                      ),
-                                    );
-                                  } else {
-                                    return Text("data error");
-                                  }
-                                },
-                              ),
+                            FutureBuilder(
+                              future: getdatasaldo(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    data_user.isEmpty
+                                        ? NumberFormat.currency(
+                                                locale: 'id',
+                                                symbol: "Rp. ",
+                                                decimalDigits: 0)
+                                            .format(saldo_user)
+                                        : NumberFormat.currency(
+                                                locale: 'id',
+                                                symbol: "Rp. ",
+                                                decimalDigits: 0)
+                                            .format(saldo_user),
+                                    style: TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                } else {
+                                  return Text("data error");
+                                }
+                              },
                             ),
                             ElevatedButton(
                               onPressed: () {
