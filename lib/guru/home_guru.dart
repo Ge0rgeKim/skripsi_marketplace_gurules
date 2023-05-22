@@ -5,7 +5,6 @@ import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/guru/daftar_dokumentasi.dart';
 import 'package:skripsi_c14190201/guru/daftar_penilaian.dart';
 import 'package:skripsi_c14190201/guru/daftar_sesi.dart';
-import 'package:skripsi_c14190201/guru/history_murid.dart';
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 
 class home_guru extends StatefulWidget {
@@ -65,27 +64,12 @@ class _home_guruState extends State<home_guru> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return history_murid(index_user: index_user);
-                                },
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: buttoncolor,
-                          ),
-                          child: Text(
-                            "History Murid",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
+                        Text(
+                          "ID Guru : " + index_user.toString(),
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
@@ -100,7 +84,8 @@ class _home_guruState extends State<home_guru> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return daftar_sesi(index_user: index_user);
+                                      return daftar_sesi(
+                                          index_user: index_user);
                                     },
                                   ),
                                 );
@@ -131,7 +116,8 @@ class _home_guruState extends State<home_guru> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return daftar_penilaian(index_user: index_user);
+                                      return daftar_penilaian(
+                                          index_user: index_user);
                                     },
                                   ),
                                 );
@@ -162,7 +148,8 @@ class _home_guruState extends State<home_guru> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return daftar_dokumentasi(index_user: index_user);
+                                      return daftar_dokumentasi(
+                                          index_user: index_user);
                                     },
                                   ),
                                 );

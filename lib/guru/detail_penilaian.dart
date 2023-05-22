@@ -1,27 +1,43 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:http/http.dart' as http;
 
 class detail_penilaian extends StatefulWidget {
-  int? index_user;
-  detail_penilaian({super.key, required this.index_user});
+  final Map data_review;
+  detail_penilaian({super.key, required this.data_review});
 
   @override
-  State<detail_penilaian> createState() => _detail_penilaianState(index_user);
+  State<detail_penilaian> createState() => _detail_penilaianState(data_review);
 }
 
 class _detail_penilaianState extends State<detail_penilaian> {
-  int? index_user;
-  _detail_penilaianState(this.index_user);
+  final Map data_review;
+  _detail_penilaianState(this.data_review);
   void initState() {
-    print(index_user);
+    print(data_review);
     super.initState();
   }
 
   void dispose() {
     super.dispose();
   }
+
+  String mataPelajaran = "";
+  Future getdatasesi() async {
+    var response = await http.get(Uri.parse(
+        "http://10.0.2.2:8000/api/sesi/" + data_review['id_sesi'].toString()));
+    var response2 = await http.get(Uri.parse(
+        "http://10.0.2.2:8000/api/user_guru/" +
+            json.decode(response.body)['data']['id_guru'].toString()));
+    mataPelajaran =
+        json.decode(response2.body)['data']['mata_pelajaran'].toString();
+    return json.decode(response.body);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -65,7 +81,7 @@ class _detail_penilaianState extends State<detail_penilaian> {
                   Column(
                     children: [
                       Text(
-                        "<ID Sesi>",
+                        "ID Sesi : " + data_review['id_sesi'].toString(),
                         style: TextStyle(
                           fontFamily: "Roboto",
                           fontSize: 15,
@@ -75,18 +91,57 @@ class _detail_penilaianState extends State<detail_penilaian> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text(
-                        "<Mata Pelajaran>",
-                        style: TextStyle(
-                          fontFamily: "Roboto",
-                          fontSize: 13,
-                        ),
+                      FutureBuilder(
+                        future: getdatasesi(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Column(
+                              children: [
+                                Text(
+                                  mataPelajaran,
+                                  style: TextStyle(
+                                    fontFamily: "Roboto",
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      snapshot.data['data']['tanggal_sesi'],
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    Text(
+                                      " | ",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    Text(
+                                      snapshot.data['data']['waktu_sesi'],
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Text("data error");
+                          }
+                        },
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "<Tanggal>",
+                            "ID Murid : " + data_review['id_murid'].toString(),
                             style: TextStyle(
                               fontFamily: "Roboto",
                               fontSize: 13,
@@ -100,33 +155,8 @@ class _detail_penilaianState extends State<detail_penilaian> {
                             ),
                           ),
                           Text(
-                            "<Waktu Sesi>",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "<ID Murid>",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 13,
-                            ),
-                          ),
-                          Text(
-                            " | ",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 13,
-                            ),
-                          ),
-                          Text(
-                            "<Nilai>",
+                            "Nilai : " +
+                                data_review['penilaian_sesi'].toString(),
                             style: TextStyle(
                               fontFamily: "Roboto",
                               fontSize: 13,
@@ -140,7 +170,7 @@ class _detail_penilaianState extends State<detail_penilaian> {
                     height: 20,
                   ),
                   Text(
-                    "<Isi Komentar>",
+                    data_review['komentar_sesi'],
                     style: TextStyle(
                       fontFamily: "Roboto",
                       fontSize: 13,

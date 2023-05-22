@@ -18,8 +18,8 @@ class register_murid extends StatefulWidget {
 class _register_muridState extends State<register_murid> {
   @override
   void initState() {
-    getdatamurid();
-    isi_data_murid();
+    // getdatamurid();
+    // isi_data_murid();
     super.initState();
   }
 
@@ -46,31 +46,31 @@ class _register_muridState extends State<register_murid> {
     });
   }
 
-  List<dynamic> akun_murid = [];
-  List<String> email_murid = [];
-  Future getdatamurid() async {
-    var response =
-        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_murid"));
-    akun_murid = json.decode(response.body)["data"];
-    return json.decode(response.body)["data"];
-  }
+  // List<dynamic> akun_murid = [];
+  // List<String> email_murid = [];
+  // Future getdatamurid() async {
+  //   var response =
+  //       await http.get(Uri.parse("http://10.0.2.2:8000/api/user_murid"));
+  //   akun_murid = json.decode(response.body)["data"];
+  //   return json.decode(response.body)["data"];
+  // }
 
-  void isi_data_murid() {
-    if (email_murid.length < akun_murid.length) {
-      akun_murid.forEach((element) {
-        email_murid.add(element["email"] as String);
-      });
-    }
-  }
+  // void isi_data_murid() {
+  //   if (email_murid.length < akun_murid.length) {
+  //     akun_murid.forEach((element) {
+  //       email_murid.add(element["email"] as String);
+  //     });
+  //   }
+  // }
 
-  bool cek_murid = false;
-  void cekdata() {
-    for (int i = 0; i < email_murid.length; i++) {
-      if (emailMuridRegistController.text == email_murid[i]) {
-        cek_murid = true;
-      }
-    }
-  }
+  // bool cek_murid = false;
+  // void cekdata() {
+  //   for (int i = 0; i < email_murid.length; i++) {
+  //     if (emailMuridRegistController.text == email_murid[i]) {
+  //       cek_murid = true;
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -237,60 +237,60 @@ class _register_muridState extends State<register_murid> {
   }
 
   Future murid_regist() async {
-    if (userMuridRegistController.text.isEmpty ||
-        emailMuridRegistController.text.isEmpty ||
-        passMuridRegistController.text.isEmpty ||
-        confirpassMuridRegistController.text.isEmpty) {
-      Alert(
-        context: context,
-        title: "Data belum lengkap",
-        type: AlertType.error,
-        buttons: [],
-      ).show();
-    } else {
-      if (passMuridRegistController.text !=
-          confirpassMuridRegistController.text) {
-        Alert(
-          context: context,
-          title: "Data Password tidak valid",
-          type: AlertType.error,
-          buttons: [],
-        ).show();
-      } else {
-        if ((passMuridRegistController.text).length < 8) {
-          Alert(
-            context: context,
-            title: "Password harus lebih dari 8 huruf/karakter",
-            type: AlertType.error,
-            buttons: [],
-          ).show();
-        } else {
-          cekdata();
-          if (cek_murid) {
-            Alert(
-              context: context,
-              title: "Email User sudah terdaftar/terpakai",
-              type: AlertType.error,
-              buttons: [],
-            ).show();
-            cek_murid = false;
-          } else {
-            savedata().then((value) {
-              Alert(
-                context: context,
-                title: "Registrasi Akun Berhasil",
-                type: AlertType.success,
-                buttons: [],
-              ).show();
-            });
-            userMuridRegistController.text = "";
-            emailMuridRegistController.text = "";
-            passMuridRegistController.text = "";
-            confirpassMuridRegistController.text = "";
-          }
-          cek_murid = false;
-        }
-      }
-    }
+  //   if (userMuridRegistController.text.isEmpty ||
+  //       emailMuridRegistController.text.isEmpty ||
+  //       passMuridRegistController.text.isEmpty ||
+  //       confirpassMuridRegistController.text.isEmpty) {
+  //     Alert(
+  //       context: context,
+  //       title: "Data belum lengkap",
+  //       type: AlertType.error,
+  //       buttons: [],
+  //     ).show();
+  //   } else {
+  //     if (passMuridRegistController.text !=
+  //         confirpassMuridRegistController.text) {
+  //       Alert(
+  //         context: context,
+  //         title: "Data Password tidak valid",
+  //         type: AlertType.error,
+  //         buttons: [],
+  //       ).show();
+  //     } else {
+  //       if ((passMuridRegistController.text).length < 8) {
+  //         Alert(
+  //           context: context,
+  //           title: "Password harus lebih dari 8 huruf/karakter",
+  //           type: AlertType.error,
+  //           buttons: [],
+  //         ).show();
+  //       } else {
+  //         cekdata();
+  //         if (cek_murid) {
+  //           Alert(
+  //             context: context,
+  //             title: "Email User sudah terdaftar/terpakai",
+  //             type: AlertType.error,
+  //             buttons: [],
+  //           ).show();
+  //           cek_murid = false;
+  //         } else {
+  //           savedata().then((value) {
+  //             Alert(
+  //               context: context,
+  //               title: "Registrasi Akun Berhasil",
+  //               type: AlertType.success,
+  //               buttons: [],
+  //             ).show();
+  //           });
+  //           userMuridRegistController.text = "";
+  //           emailMuridRegistController.text = "";
+  //           passMuridRegistController.text = "";
+  //           confirpassMuridRegistController.text = "";
+  //         }
+  //         cek_murid = false;
+  //       }
+  //     }
+  //   }
   }
 }

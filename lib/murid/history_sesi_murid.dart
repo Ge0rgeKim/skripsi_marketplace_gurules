@@ -106,13 +106,28 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  snapshot.data['data'][index]['id_transaksi'],
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      snapshot.data['data'][index]
+                                          ['id_transaksi'],
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      "ID Sesi : " +
+                                          snapshot.data['data']['id_sesi']
+                                              .toString(),
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
@@ -120,7 +135,9 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return review_guru(data_transaksi: snapshot.data['data'][index]);
+                                          return review_guru(
+                                              data_transaksi:
+                                                  snapshot.data['data'][index]);
                                         },
                                       ),
                                     );
@@ -143,7 +160,9 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return report_guru(data_transaksi: snapshot.data['data'][index]);
+                                          return report_guru(
+                                              data_transaksi:
+                                                  snapshot.data['data'][index]);
                                         },
                                       ),
                                     );

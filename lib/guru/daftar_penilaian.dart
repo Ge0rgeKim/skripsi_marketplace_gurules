@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:skripsi_c14190201/guru/detail_penilaian.dart';
+import 'package:http/http.dart' as http;
 
 class daftar_penilaian extends StatefulWidget {
   int? index_user;
@@ -22,6 +25,12 @@ class _daftar_penilaianState extends State<daftar_penilaian> {
 
   void dispose() {
     super.dispose();
+  }
+
+  Future getdatareview() async {
+    var response =
+        await http.get(Uri.parse("http://10.0.2.2:8000/api/review/"));
+    return json.decode(response.body);
   }
 
   @override
@@ -61,64 +70,67 @@ class _daftar_penilaianState extends State<daftar_penilaian> {
           padding: EdgeInsets.fromLTRB(5, 30, 5, 30),
           child: Column(
             children: [
-              Text(
-                "<Total Penilaian>",
-                style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 20,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "<ID Murid>",
-                          style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "<Waktu>",
-                          style: TextStyle(
-                            fontFamily: "Roboto",
-                            fontSize: 15,
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return detail_penilaian(index_user: index_user);
-                                },
-                              ),
+              FutureBuilder(
+                future: getdatareview(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data['data'].length,
+                        itemBuilder: (context, index) {
+                          if (snapshot.data['data'][index]['id_guru'] ==
+                              index_user) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "ID Sesi : " +
+                                      snapshot.data['data'][index]['id_sesi']
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontFamily: "Roboto",
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return detail_penilaian(
+                                            data_review: snapshot.data['data']
+                                                [index],
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: buttoncolor,
+                                  ),
+                                  child: Text(
+                                    "Detail",
+                                    style: TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: buttoncolor,
-                          ),
-                          child: Text(
-                            "Detail",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                    );
+                  } else {
+                    return Text("data error");
+                  }
+                },
               ),
             ],
           ),

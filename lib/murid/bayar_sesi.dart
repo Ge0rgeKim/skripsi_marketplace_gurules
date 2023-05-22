@@ -68,7 +68,7 @@ class _bayar_sesiState extends State<bayar_sesi> {
             "http://10.0.2.2:8000/api/transaksi_sesi/" + index_sesi.toString()),
         body: {
           "id_murid": index_user.toString(),
-          "id_guru" : id_guru.toString()
+          "id_guru": id_guru.toString()
         });
     if (response.statusCode == 200) {
       return json.decode(response.body)['message'];
@@ -114,154 +114,155 @@ class _bayar_sesiState extends State<bayar_sesi> {
           trackVisibility: true,
           child: SingleChildScrollView(
             child: Container(
-                padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-                child: FutureBuilder(
-                  future: getdatasesi(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                "ID Sesi : " +
-                                    snapshot.data['data']['id'].toString(),
-                                style: TextStyle(
-                                  fontFamily: "Roboto",
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
+              padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
+              child: FutureBuilder(
+                future: getdatasesi(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "ID Sesi : " +
+                                  snapshot.data['data']['id'].toString(),
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
                               ),
-                              SizedBox(
-                                height: 5,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              mataPelajaran,
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 13,
                               ),
-                              Text(
-                                mataPelajaran,
-                                style: TextStyle(
-                                  fontFamily: "Roboto",
-                                  fontSize: 13,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    snapshot.data['data']['tanggal_sesi'],
-                                    style: TextStyle(
-                                      fontFamily: "Roboto",
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                  Text(
-                                    " | ",
-                                    style: TextStyle(
-                                      fontFamily: "Roboto",
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                  Text(
-                                    snapshot.data['data']['waktu_sesi'],
-                                    style: TextStyle(
-                                      fontFamily: "Roboto",
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                "ID Guru : " +
-                                    snapshot.data['data']['id_guru'].toString(),
-                                style: TextStyle(
-                                  fontFamily: "Roboto",
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Column(
-                            children: [
-                              FutureBuilder(
-                                future: getdatasaldo(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    return Text(
-                                      data_user.isEmpty
-                                          ? NumberFormat.currency(
-                                                  locale: 'id',
-                                                  symbol: "Saldo User : Rp. ",
-                                                  decimalDigits: 0)
-                                              .format(saldo_user)
-                                          : NumberFormat.currency(
-                                                  locale: 'id',
-                                                  symbol: "Saldo User : Rp. ",
-                                                  decimalDigits: 0)
-                                              .format(saldo_user),
-                                      style: TextStyle(
-                                        fontFamily: "Roboto",
-                                        fontSize: 15,
-                                      ),
-                                    );
-                                  } else {
-                                    return Text("data error");
-                                  }
-                                },
-                              ),
-                              Text(
-                                NumberFormat.currency(
-                                        locale: 'id',
-                                        symbol: "Harga Sesi : Rp. ",
-                                        decimalDigits: 0)
-                                    .format(
-                                  snapshot.data['data']['nominal_saldo'],
-                                ),
-                                style: TextStyle(
-                                  fontFamily: "Roboto",
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  save_transaksi_sesi();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  primary: buttoncolor,
-                                ),
-                                child: Text(
-                                  "Bayar",
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  snapshot.data['data']['tanggal_sesi'],
                                   style: TextStyle(
                                     fontFamily: "Roboto",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                                    fontSize: 13,
                                   ),
                                 ),
+                                Text(
+                                  " | ",
+                                  style: TextStyle(
+                                    fontFamily: "Roboto",
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  snapshot.data['data']['waktu_sesi'],
+                                  style: TextStyle(
+                                    fontFamily: "Roboto",
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "ID Guru : " +
+                                  snapshot.data['data']['id_guru'].toString(),
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 13,
                               ),
-                            ],
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Text("data error");
-                    }
-                  },
-                )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Column(
+                          children: [
+                            FutureBuilder(
+                              future: getdatasaldo(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    data_user.isEmpty
+                                        ? NumberFormat.currency(
+                                                locale: 'id',
+                                                symbol: "Saldo User : Rp. ",
+                                                decimalDigits: 0)
+                                            .format(saldo_user)
+                                        : NumberFormat.currency(
+                                                locale: 'id',
+                                                symbol: "Saldo User : Rp. ",
+                                                decimalDigits: 0)
+                                            .format(saldo_user),
+                                    style: TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 15,
+                                    ),
+                                  );
+                                } else {
+                                  return Text("data error");
+                                }
+                              },
+                            ),
+                            Text(
+                              NumberFormat.currency(
+                                      locale: 'id',
+                                      symbol: "Harga Sesi : Rp. ",
+                                      decimalDigits: 0)
+                                  .format(
+                                snapshot.data['data']['nominal_saldo'],
+                              ),
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                save_transaksi_sesi();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: buttoncolor,
+                              ),
+                              child: Text(
+                                "Bayar",
+                                style: TextStyle(
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Text("data error");
+                  }
+                },
+              ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Future save_transaksi_sesi() async{
+  Future save_transaksi_sesi() async {
     if (saldo_user < harga_sesi) {
       Alert(
         context: context,

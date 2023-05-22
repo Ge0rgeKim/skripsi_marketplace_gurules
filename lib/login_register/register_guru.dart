@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
@@ -58,6 +57,7 @@ class _register_guruState extends State<register_guru> {
   Future getdata() async {
     var response = await http.get(Uri.parse(url));
     data = json.decode(response.body)["data"];
+    isi_data();
     return json.decode(response.body)["data"];
   }
 
@@ -106,38 +106,38 @@ class _register_guruState extends State<register_guru> {
     }
   }
 
-  List<dynamic> akun_guru = [];
-  List<String> email_guru = [];
-  Future getdataguru() async {
-    var response =
-        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_guru"));
-    akun_guru = json.decode(response.body)["data"];
-    return json.decode(response.body)["data"];
-  }
+  // List<dynamic> akun_guru = [];
+  // List<String> email_guru = [];
+  // Future getdataguru() async {
+  //   var response =
+  //       await http.get(Uri.parse("http://10.0.2.2:8000/api/user_guru"));
+  //   akun_guru = json.decode(response.body)["data"];
+  //   return json.decode(response.body)["data"];
+  // }
 
-  void isi_data_guru() {
-    if (email_guru.length < akun_guru.length) {
-      akun_guru.forEach((element) {
-        email_guru.add(element["email"] as String);
-      });
-    }
-  }
+  // void isi_data_guru() {
+  //   if (email_guru.length < akun_guru.length) {
+  //     akun_guru.forEach((element) {
+  //       email_guru.add(element["email"] as String);
+  //     });
+  //   }
+  // }
 
-  bool cek_guru = false;
-  void cekdata() {
-    for (int i = 0; i < email_guru.length; i++) {
-      if (emailGuruRegistController.text == email_guru[i]) {
-        cek_guru = true;
-      }
-    }
-  }
+  // bool cek_guru = false;
+  // void cekdata() {
+  //   for (int i = 0; i < email_guru.length; i++) {
+  //     if (emailGuruRegistController.text == email_guru[i]) {
+  //       cek_guru = true;
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    getdata();
-    isi_data();
-    getdataguru();
-    isi_data_guru();
+    // getdata();
+    // isi_data();
+    // getdataguru();
+    // isi_data_guru();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -211,33 +211,42 @@ class _register_guruState extends State<register_guru> {
                       SizedBox(
                         height: 15,
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.black)),
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          underline: SizedBox(),
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.black,
-                          ),
-                          hint: Text(
-                            "Mata Pelajaran",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 20,
-                            ),
-                          ),
-                          items: data_value.map(buildmenuitem).toList(),
-                          value: selectedvalue,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedvalue = value;
-                            });
-                          },
-                        ),
+                      FutureBuilder(
+                        future: getdata(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.black)),
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                icon: Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.black,
+                                ),
+                                hint: Text(
+                                  "Mata Pelajaran",
+                                  style: TextStyle(
+                                    fontFamily: "Roboto",
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                items: data_value.map(buildmenuitem).toList(),
+                                value: selectedvalue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedvalue = value;
+                                  });
+                                },
+                              ),
+                            );
+                          } else {
+                            return Text("data error");
+                          }
+                        },
                       ),
                       SizedBox(
                         height: 15,
@@ -387,65 +396,65 @@ class _register_guruState extends State<register_guru> {
       );
 
   Future guru_regist() async {
-    if (userGuruRegistController.text.isEmpty ||
-        emailGuruRegistController.text.isEmpty ||
-        lokasiGuruRegistController.text.isEmpty ||
-        passGuruRegistController.text.isEmpty ||
-        confirpassGuruRegistController.text.isEmpty ||
-        selectedvalue.toString().isEmpty ||
-        pickedfile_ == null) {
-      Alert(
-        context: context,
-        title: "Data belum lengkap",
-        type: AlertType.error,
-        buttons: [],
-      ).show();
-    } else {
-      if (passGuruRegistController.text !=
-          confirpassGuruRegistController.text) {
-        Alert(
-          context: context,
-          title: "Data Password tidak valid",
-          type: AlertType.error,
-          buttons: [],
-        ).show();
-      } else {
-        if ((passGuruRegistController.text).length < 8) {
-          Alert(
-            context: context,
-            title: "Password harus lebih dari 8 huruf/karakter",
-            type: AlertType.error,
-            buttons: [],
-          ).show();
-        } else {
-          cekdata();
-          if (cek_guru) {
-            Alert(
-              context: context,
-              title: "Email User sudah terdaftar/terpakai",
-              type: AlertType.error,
-              buttons: [],
-            ).show();
-            cek_guru = false;
-          } else {
-            savedata().then((value) {
-              Alert(
-                context: context,
-                title: "Registrasi Akun Berhasil",
-                type: AlertType.success,
-                buttons: [],
-              ).show();
-            });
-            userGuruRegistController.text = "";
-            emailGuruRegistController.text = "";
-            passGuruRegistController.text = "";
-            lokasiGuruRegistController.text="";
-            confirpassGuruRegistController.text = "";
-            selectedvalue = null;
-          }
-          cek_guru = false;
-        }
-      }
-    }
+    // if (userGuruRegistController.text.isEmpty ||
+    //     emailGuruRegistController.text.isEmpty ||
+    //     lokasiGuruRegistController.text.isEmpty ||
+    //     passGuruRegistController.text.isEmpty ||
+    //     confirpassGuruRegistController.text.isEmpty ||
+    //     selectedvalue.toString().isEmpty ||
+    //     pickedfile_ == null) {
+    //   Alert(
+    //     context: context,
+    //     title: "Data belum lengkap",
+    //     type: AlertType.error,
+    //     buttons: [],
+    //   ).show();
+    // } else {
+    //   if (passGuruRegistController.text !=
+    //       confirpassGuruRegistController.text) {
+    //     Alert(
+    //       context: context,
+    //       title: "Data Password tidak valid",
+    //       type: AlertType.error,
+    //       buttons: [],
+    //     ).show();
+    //   } else {
+    //     if ((passGuruRegistController.text).length < 8) {
+    //       Alert(
+    //         context: context,
+    //         title: "Password harus lebih dari 8 huruf/karakter",
+    //         type: AlertType.error,
+    //         buttons: [],
+    //       ).show();
+    //     } else {
+    //       cekdata();
+    //       if (cek_guru) {
+    //         Alert(
+    //           context: context,
+    //           title: "Email User sudah terdaftar/terpakai",
+    //           type: AlertType.error,
+    //           buttons: [],
+    //         ).show();
+    //         cek_guru = false;
+    //       } else {
+    //         savedata().then((value) {
+    //           Alert(
+    //             context: context,
+    //             title: "Registrasi Akun Berhasil",
+    //             type: AlertType.success,
+    //             buttons: [],
+    //           ).show();
+    //         });
+    //         userGuruRegistController.text = "";
+    //         emailGuruRegistController.text = "";
+    //         passGuruRegistController.text = "";
+    //         lokasiGuruRegistController.text="";
+    //         confirpassGuruRegistController.text = "";
+    //         selectedvalue = null;
+    //       }
+    //       cek_guru = false;
+    //     }
+    //   }
+    // }
   }
 }

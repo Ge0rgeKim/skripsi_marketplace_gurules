@@ -7,7 +7,6 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:http/http.dart' as http;
-import 'package:skripsi_c14190201/murid/detail_guru.dart';
 import 'package:skripsi_c14190201/murid/history_sesi_murid.dart';
 
 class review_guru extends StatefulWidget {
@@ -36,17 +35,17 @@ class _review_guruState extends State<review_guru> {
   TextEditingController penilaianmuridController = TextEditingController();
   TextEditingController komentarmuridController = TextEditingController();
 
-  String mataPelajaran = "";
-  Future getdatasesi() async {
-    var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi/" +
-        data_transaksi['id_sesi'].toString()));
-    var response2 = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/user_guru/" +
-            data_transaksi['id_guru'].toString()));
-    mataPelajaran =
-        json.decode(response2.body)['data']['mata_pelajaran'].toString();
-    return json.decode(response.body);
-  }
+  // String mataPelajaran = "";
+  // Future getdatasesi() async {
+  //   var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi/" +
+  //       data_transaksi['id_sesi'].toString()));
+  //   var response2 = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/user_guru/" +
+  //           data_transaksi['id_guru'].toString()));
+  //   mataPelajaran =
+  //       json.decode(response2.body)['data']['mata_pelajaran'].toString();
+  //   return json.decode(response.body);
+  // }
 
   Future savedata() async {
     final response =
@@ -82,6 +81,15 @@ class _review_guruState extends State<review_guru> {
               color: Colors.black,
             ),
           ),
+          leading: IconButton(
+            onPressed: () => {
+              Navigator.of(context).pop(),
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
           centerTitle: true,
           toolbarHeight: 75,
           // leadingWidth: 65,
@@ -95,72 +103,72 @@ class _review_guruState extends State<review_guru> {
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: Column(
                 children: [
-                  FutureBuilder(
-                    future: getdatasesi(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Column(
-                          children: [
-                            Text(
-                              "ID Sesi : " +
-                                  snapshot.data['data']['id'].toString(),
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              mataPelajaran,
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 13,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  snapshot.data['data']['tanggal_sesi'],
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                Text(
-                                  " | ",
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                Text(
-                                  snapshot.data['data']['waktu_sesi'],
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              "ID Guru : " +
-                                  snapshot.data['data']['id_guru'].toString(),
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
-                        );
-                      } else {
-                        return Text("data error");
-                      }
-                    },
-                  ),
+                  // FutureBuilder(
+                  //   future: getdatasesi(),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.hasData) {
+                  //       return Column(
+                  //         children: [
+                  //           Text(
+                  //             "ID Sesi : " +
+                  //                 snapshot.data['data']['id'].toString(),
+                  //             style: TextStyle(
+                  //               fontFamily: "Roboto",
+                  //               fontSize: 15,
+                  //               fontWeight: FontWeight.bold,
+                  //             ),
+                  //           ),
+                  //           SizedBox(
+                  //             height: 5,
+                  //           ),
+                  //           Text(
+                  //             mataPelajaran,
+                  //             style: TextStyle(
+                  //               fontFamily: "Roboto",
+                  //               fontSize: 13,
+                  //             ),
+                  //           ),
+                  //           Row(
+                  //             mainAxisAlignment: MainAxisAlignment.center,
+                  //             children: [
+                  //               Text(
+                  //                 snapshot.data['data']['tanggal_sesi'],
+                  //                 style: TextStyle(
+                  //                   fontFamily: "Roboto",
+                  //                   fontSize: 13,
+                  //                 ),
+                  //               ),
+                  //               Text(
+                  //                 " | ",
+                  //                 style: TextStyle(
+                  //                   fontFamily: "Roboto",
+                  //                   fontSize: 13,
+                  //                 ),
+                  //               ),
+                  //               Text(
+                  //                 snapshot.data['data']['waktu_sesi'],
+                  //                 style: TextStyle(
+                  //                   fontFamily: "Roboto",
+                  //                   fontSize: 13,
+                  //                 ),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           Text(
+                  //             "ID Guru : " +
+                  //                 snapshot.data['data']['id_guru'].toString(),
+                  //             style: TextStyle(
+                  //               fontFamily: "Roboto",
+                  //               fontSize: 13,
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       );
+                  //     } else {
+                  //       return Text("data error");
+                  //     }
+                  //   },
+                  // ),
                   SizedBox(
                     height: 20,
                   ),
@@ -256,6 +264,8 @@ class _review_guruState extends State<review_guru> {
             type: AlertType.success,
             buttons: [],
           ).show();
+          penilaianmuridController.text = "";
+          komentarmuridController.text = "";
         } else {
           Alert(
             context: context,
@@ -269,10 +279,7 @@ class _review_guruState extends State<review_guru> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return detail_guru(
-              index_user: data_transaksi['id_murid'],
-              index_guru: data_transaksi['id_guru'],
-            );
+            return history_sesi_murid(index_user: data_transaksi['id_murid']);
           },
         ),
       );
