@@ -29,8 +29,8 @@ class _profile_guruState extends State<profile_guru> {
   }
 
   Future getdataguru() async {
-    var response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/user_guru/" + index_user.toString()));
+    var response = await http.get(Uri.parse(
+        "http://10.0.2.2:8000/api/user_guru/" + index_user.toString()));
     return json.decode(response.body);
   }
 
@@ -377,7 +377,8 @@ class _profile_guruState extends State<profile_guru> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return edit_profile_guru(data_profile: snapshot.data["data"]);
+                                  return edit_profile_guru(
+                                      data_profile: snapshot.data["data"]);
                                 },
                               ),
                             );

@@ -19,10 +19,6 @@ class reset_password extends StatefulWidget {
 class _reset_passwordState extends State<reset_password> {
   @override
   void initState() {
-    getdatamurid();
-    isi_data_murid();
-    getdataguru();
-    isi_data_guru();
     super.initState();
   }
 
@@ -36,109 +32,16 @@ class _reset_passwordState extends State<reset_password> {
   TextEditingController emailResetController = TextEditingController();
   TextEditingController passResetController = TextEditingController();
   TextEditingController confirPassResetController = TextEditingController();
-  Future savedatamurid(int? i) async {
-    final response = await http.put(
-        Uri.parse("http://10.0.2.2:8000/api/user_murid/" + i.toString()),
+
+  Future reset_user() async {
+    var response = await http.put(
+        Uri.parse("http://10.0.2.2:8000/api/login_user/reset_user"),
         body: {
-          "email": temp_email_murid,
-          "username": temp_user_murid,
+          "email": emailResetController.text,
           "password": passResetController.text,
+          "users": selectedvalue
         });
-  }
-
-  Future savedataguru(int? i) async {
-    final response = await http.put(
-        Uri.parse("http://10.0.2.2:8000/api/user_guru/" + i.toString()),
-        body: {
-          //id_admin,mata_pelajaran,ktp,lokasi,status_sesi,status_akun,
-          "id_admin": temp_idAdmin_guru,
-          "mata_pelajaran": temp_mataPelajaran_guru,
-          "ktp": temp_ktp_guru,
-          "lokasi": temp_lokasi_guru,
-          "status_sesi": temp_statusSesi_guru,
-          "status_akun": temp_statusAkun_guru,
-          "email": temp_email_guru,
-          "username": temp_user_guru,
-          "password": passResetController.text,
-        });
-  }
-
-  List<dynamic> akun_murid = [];
-  List<String> email_murid = [];
-  Future getdatamurid() async {
-    var response =
-        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_murid"));
-    akun_murid = json.decode(response.body)["data"];
-    return json.decode(response.body)["data"];
-  }
-
-  void isi_data_murid() {
-    if (email_murid.length < akun_murid.length) {
-      akun_murid.forEach((element) {
-        email_murid.add(element["email"] as String);
-      });
-    }
-  }
-
-  List<dynamic> akun_guru = [];
-  List<String> email_guru = [];
-  Future getdataguru() async {
-    var response =
-        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_guru"));
-    akun_guru = json.decode(response.body)["data"];
-    return json.decode(response.body)["data"];
-  }
-
-  void isi_data_guru() {
-    if (email_guru.length < akun_guru.length) {
-      akun_guru.forEach((element) {
-        email_guru.add(element["email"] as String);
-      });
-    }
-  }
-
-  bool cek_guru = false;
-  bool cek_murid = false;
-  int? index_guru;
-  int? index_murid;
-
-  String? temp_email_murid;
-  String? temp_user_murid;
-
-  String? temp_email_guru;
-  String? temp_user_guru;
-  String? temp_idAdmin_guru;
-  String? temp_mataPelajaran_guru;
-  String? temp_ktp_guru;
-  String? temp_lokasi_guru;
-  int? temp_statusSesi_guru;
-  int? temp_statusAkun_guru;
-  void cekdatamurid() {
-    for (int i = 0; i < email_murid.length; i++) {
-      if (emailResetController.text == email_murid[i]) {
-        cek_murid = true;
-        index_murid = akun_murid[i]["id"];
-        temp_email_murid = akun_murid[i]["email"];
-        temp_user_murid = akun_murid[i]["username"];
-      }
-    }
-  }
-
-  void cekdataguru() {
-    for (int i = 0; i < email_guru.length; i++) {
-      if (emailResetController.text == email_guru[i]) {
-        cek_guru = true;
-        index_guru = akun_guru[i]["id"];
-        temp_email_guru = akun_guru[i]["email"];
-        temp_user_guru = akun_guru[i]["username"];
-        temp_statusAkun_guru = akun_guru[i]["status_akun"];
-        temp_statusSesi_guru = akun_guru[i]["status_sesi"];
-        temp_idAdmin_guru = akun_guru[i]["id_admin"];
-        temp_mataPelajaran_guru = akun_guru[i]["mata_pelajaran"];
-        temp_ktp_guru = akun_guru[i]["ktp"];
-        temp_lokasi_guru = akun_guru[i]["lokasi"];
-      }
-    }
+    return json.decode(response.body)['message'];
   }
 
   final user = ["Guru", "Murid"];
@@ -326,74 +229,49 @@ class _reset_passwordState extends State<reset_password> {
             buttons: [],
           ).show();
         } else {
-          if (selectedvalue == "Guru") {
-            cekdataguru();
-            if (cek_guru) {
-              if (temp_statusAkun_guru == 1) {
-                savedataguru(index_guru).then((value) {
-                  Alert(
-                    context: context,
-                    title: "Reset Password Akun Berhasil",
-                    type: AlertType.success,
-                    buttons: [],
-                  ).show();
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return MyApp();
-                    },
-                  ),
-                );
-                cek_guru = false;
+          reset_user().then((value) {
+            if (selectedvalue == "Guru") {
+              if (value == "success") {
+                Alert(
+                  context: context,
+                  title: "Password Guru Berhasil Di Ubah",
+                  type: AlertType.success,
+                  buttons: [],
+                ).show();
               } else {
                 Alert(
                   context: context,
-                  title: "Akun belum divalidasi oleh admin",
+                  title: value,
                   type: AlertType.error,
                   buttons: [],
                 ).show();
               }
-            } else {
-              Alert(
-                context: context,
-                title: "Akun guru tidak terdaftar",
-                type: AlertType.error,
-                buttons: [],
-              ).show();
-            }
-            cek_guru = false;
-          } else if (selectedvalue == "Murid") {
-            cekdatamurid();
-            if (cek_murid) {
-              savedatamurid(index_murid).then((value) {
+            } else if (selectedvalue == "Murid") {
+              if (value == "success") {
                 Alert(
                   context: context,
-                  title: "Reset Password Akun Berhasil",
+                  title: "Password Murid Berhasil Di Ubah",
                   type: AlertType.success,
                   buttons: [],
                 ).show();
-              });
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return MyApp();
-                  },
-                ),
-              );
-              cek_murid = false;
-            } else {
-              Alert(
-                context: context,
-                title: "Akun murid tidak terdaftar",
-                type: AlertType.error,
-                buttons: [],
-              ).show();
+              } else {
+                Alert(
+                  context: context,
+                  title: value,
+                  type: AlertType.error,
+                  buttons: [],
+                ).show();
+              }
             }
-            cek_murid = false;
-          }
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return MyApp();
+              },
+            ),
+          );
         }
       }
     }

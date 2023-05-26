@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
-import 'package:skripsi_c14190201/murid/history_guru.dart';
+import 'package:skripsi_c14190201/murid/murid_pages.dart';
 import 'package:http/http.dart' as http;
 
 class bayar_sesi extends StatefulWidget {
@@ -283,7 +283,7 @@ class _bayar_sesiState extends State<bayar_sesi> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return history_guru(index_user: index_user);
+            return murid_pages(index_user: index_user);
           },
         ),
       );

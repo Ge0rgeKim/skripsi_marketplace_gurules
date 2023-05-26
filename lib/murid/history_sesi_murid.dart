@@ -119,8 +119,7 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                                     ),
                                     Text(
                                       "ID Sesi : " +
-                                          snapshot.data['data']['id_sesi']
-                                              .toString(),
+                                          snapshot.data['data'][index]['id_sesi'].toString() ,
                                       style: TextStyle(
                                         fontFamily: "Roboto",
                                         fontSize: 15,

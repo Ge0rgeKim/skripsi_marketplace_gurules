@@ -22,9 +22,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  TextEditingController emaillogincontroller = TextEditingController();
-  TextEditingController passlogincontroller = TextEditingController();
-
   void initState() {
     super.initState();
   }
@@ -35,73 +32,23 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-  List<dynamic> akun_murid = [];
-  List<String> email_murid = [];
-  Future getdatamurid() async {
-    var response =
-        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_murid"));
-    akun_murid = json.decode(response.body)["data"];
-    return json.decode(response.body)["data"];
-  }
+  TextEditingController emaillogincontroller = TextEditingController();
+  TextEditingController passlogincontroller = TextEditingController();
 
-  void isi_data_murid() {
-    if (email_murid.length < akun_murid.length) {
-      akun_murid.forEach((element) {
-        email_murid.add(element["email"] as String);
-      });
-    }
-  }
-
-  List<dynamic> akun_guru = [];
-  List<String> email_guru = [];
-  Future getdataguru() async {
-    var response =
-        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_guru"));
-    akun_guru = json.decode(response.body)["data"];
-    return json.decode(response.body)["data"];
-  }
-
-  void isi_data_guru() {
-    if (email_guru.length < akun_guru.length) {
-      akun_guru.forEach((element) {
-        email_guru.add(element["email"] as String);
-      });
-    }
-  }
-
-  bool cek_guru = false;
-  bool cek_murid = false;
-  int? id_murid;
-  int? id_guru;
-  String? pass_murid;
-  String? pass_guru;
-  int? status_guru;
-  void cekdata() {
-    for (int i = 0; i < email_murid.length; i++) {
-      if (emaillogincontroller.text == email_murid[i]) {
-        cek_murid = true;
-        id_murid = akun_murid[i]["id"];
-        pass_murid = akun_murid[i]["password"];
-      }
-    }
-    for (int i = 0; i < email_guru.length; i++) {
-      if (emaillogincontroller.text == email_guru[i]) {
-        cek_guru = true;
-        id_guru = akun_guru[i]["id"];
-        pass_guru = akun_guru[i]["password"];
-        status_guru = akun_guru[i]["status_akun"];
-      }
-    }
+  Future login_user() async {
+    var response = await http
+        .post(Uri.parse("http://10.0.2.2:8000/api/login_user/login"), body: {
+      "email": emaillogincontroller.text,
+      "password": passlogincontroller.text,
+      "users": selectedvalue
+    });
+    return json.decode(response.body);
   }
 
   final user = ["Guru", "Murid"];
   String? selectedvalue;
   @override
   Widget build(BuildContext context) {
-    getdatamurid();
-    getdataguru();
-    isi_data_murid();
-    isi_data_guru();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Skripsi c14190201",
@@ -277,7 +224,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future userlogin() async {
-    cekdata();
     if (emaillogincontroller.text.isEmpty ||
         passlogincontroller.text.isEmpty ||
         selectedvalue == null) {
@@ -288,88 +234,45 @@ class _MyAppState extends State<MyApp> {
         buttons: [],
       ).show();
     } else {
-      if (selectedvalue == "Guru") {
-        if (cek_guru) {
-          if (passlogincontroller.text == pass_guru) {
-            if (status_guru == 1) {
-              print(id_guru);
-              Alert(
-                context: context,
-                title: "Guru Berhasil Login",
-                type: AlertType.success,
-                buttons: [],
-              ).show();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return guru_pages(index_user: id_guru);
-                  },
-                ),
-              );
-              cek_guru = false;
-            } else {
-              Alert(
-                context: context,
-                title: "Akun belum divalidasi oleh admin",
-                type: AlertType.error,
-                buttons: [],
-              ).show();
-            }
-          } else {
-            Alert(
-              context: context,
-              title: "Password Akun Guru Salah",
-              type: AlertType.error,
-              buttons: [],
-            ).show();
-          }
-        } else {
-          Alert(
-            context: context,
-            title: "Akun Guru Belum Terdaftar",
-            type: AlertType.error,
-            buttons: [],
-          ).show();
-        }
-        cek_guru = false;
-      } else if (selectedvalue == "Murid") {
-        if (cek_murid) {
-          if (passlogincontroller.text == pass_murid) {
-            print(id_murid);
-            Alert(
-              context: context,
-              title: "Murid Berhasil Login",
-              type: AlertType.success,
-              buttons: [],
-            ).show();
+      login_user().then((value) {
+        if (selectedvalue == "Guru") {
+          if (value['message'] == "success") {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return murid_pages(index_user: id_murid);
+                  return guru_pages(index_user: value['data']);
                 },
               ),
             );
-            cek_murid = false;
           } else {
             Alert(
               context: context,
-              title: "Password Akun Murid Salah",
+              title: value['message'],
               type: AlertType.error,
               buttons: [],
             ).show();
           }
-        } else {
-          Alert(
-            context: context,
-            title: "Akun Murid Belum Terdaftar",
-            type: AlertType.error,
-            buttons: [],
-          ).show();
+        } else if (selectedvalue == "Murid") {
+          if (value['message'] == "success") {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return murid_pages(index_user: value['data']);
+                },
+              ),
+            );
+          } else {
+            Alert(
+              context: context,
+              title: value['message'],
+              type: AlertType.error,
+              buttons: [],
+            ).show();
+          }
         }
-        cek_murid = false;
-      }
+      });
     }
   }
 

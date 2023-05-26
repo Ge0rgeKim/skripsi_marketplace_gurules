@@ -37,8 +37,8 @@ class _edit_profile_guruState extends State<edit_profile_guru> {
 
   Future updatedataguru() async {
     int? n;
-    for(int i = 0;i<3;i++){
-      if(selectedvalue == status[i]){
+    for (int i = 0; i < 3; i++) {
+      if (selectedvalue == status[i]) {
         n = i;
       }
     }

@@ -248,7 +248,9 @@ class _tambah_sesiState extends State<tambah_sesi> {
   }
 
   Future save_sesi() async {
-    if (hargaSesiGuruController.text.isEmpty || selectedvalue == null) {
+    if (tgl == "" ||
+        hargaSesiGuruController.text.isEmpty ||
+        selectedvalue == null) {
       Alert(
         context: context,
         title: "Data belum lengkap",

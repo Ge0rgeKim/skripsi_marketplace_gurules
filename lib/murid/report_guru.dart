@@ -32,18 +32,6 @@ class _report_guruState extends State<report_guru> {
 
   TextEditingController isireportmurid = TextEditingController();
 
-  // String mataPelajaran = "";
-  // Future getdatasesi() async {
-  //   var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi/" +
-  //       data_transaksi['id_sesi'].toString()));
-  //   var response2 = await http.get(Uri.parse(
-  //       "http://10.0.2.2:8000/api/user_guru/" +
-  //           data_transaksi['id_guru'].toString()));
-  //   mataPelajaran =
-  //       json.decode(response2.body)['data']['mata_pelajaran'].toString();
-  //   return json.decode(response.body);
-  // }
-
   Future savedata() async {
     final response =
         await http.post(Uri.parse("http://10.0.2.2:8000/api/report"), body: {
@@ -99,75 +87,6 @@ class _report_guruState extends State<report_guru> {
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: Column(
                 children: [
-                  // FutureBuilder(
-                  //   future: getdatasesi(),
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.hasData) {
-                  //       return Column(
-                  //         children: [
-                  //           Text(
-                  //             "ID Sesi : " +
-                  //                 snapshot.data['data']['id'].toString(),
-                  //             style: TextStyle(
-                  //               fontFamily: "Roboto",
-                  //               fontSize: 15,
-                  //               fontWeight: FontWeight.bold,
-                  //             ),
-                  //           ),
-                  //           SizedBox(
-                  //             height: 5,
-                  //           ),
-                  //           Text(
-                  //             mataPelajaran,
-                  //             style: TextStyle(
-                  //               fontFamily: "Roboto",
-                  //               fontSize: 13,
-                  //             ),
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               Text(
-                  //                 snapshot.data['data']['tanggal_sesi'],
-                  //                 style: TextStyle(
-                  //                   fontFamily: "Roboto",
-                  //                   fontSize: 13,
-                  //                 ),
-                  //               ),
-                  //               Text(
-                  //                 " | ",
-                  //                 style: TextStyle(
-                  //                   fontFamily: "Roboto",
-                  //                   fontSize: 13,
-                  //                 ),
-                  //               ),
-                  //               Text(
-                  //                 snapshot.data['data']['waktu_sesi'],
-                  //                 style: TextStyle(
-                  //                   fontFamily: "Roboto",
-                  //                   fontSize: 13,
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Text(
-                  //             "ID Guru : " +
-                  //                 snapshot.data['data']['id_guru'].toString(),
-                  //             style: TextStyle(
-                  //               fontFamily: "Roboto",
-                  //               fontSize: 13,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       );
-                  //     } else {
-                  //       return Text("data error");
-                  //     }
-                  //   },
-                  // ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   TextField(
                     controller: isireportmurid,
                     autofocus: true,
