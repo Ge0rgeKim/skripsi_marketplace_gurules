@@ -27,13 +27,20 @@ class _sesi_guruState extends State<sesi_guru> {
     super.dispose();
   }
 
+  // Future getdataguru() async {
+  //   var response = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/user_guru/" +
+  //           data_guru['id_guru'].toString()));
+  //   return json.decode(response.body);
+  // }
+
   Future getdataguru() async {
     var response = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/user_guru/" +
+        "https://literasimilenial.net/george/public/api/user_guru/" +
             data_guru['id_guru'].toString()));
     return json.decode(response.body);
   }
-  
+
   final status = ["Online Onsite", "Online", "Onsite"];
   @override
   Widget build(BuildContext context) {
@@ -45,7 +52,7 @@ class _sesi_guruState extends State<sesi_guru> {
         appBar: AppBar(
           backgroundColor: appbarColor,
           title: Text(
-            "Detail Sesi",
+            "Detail Data Guru",
             style: TextStyle(
               fontFamily: "Roboto",
               fontSize: 25,
@@ -115,7 +122,7 @@ class _sesi_guruState extends State<sesi_guru> {
                               ),
                             ),
                             Text(
-                              status[snapshot.data['data']['status_sesi']],
+                              status[int.parse(snapshot.data['data']['status_sesi'])],
                               style: TextStyle(
                                 fontFamily: "Roboto",
                                 fontSize: 13,
@@ -128,14 +135,15 @@ class _sesi_guruState extends State<sesi_guru> {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            final Uri whatsapp_user = Uri.parse('https://wa.me/+6281354958833');
+                            final Uri whatsapp_user =
+                                Uri.parse(snapshot.data['data']['kontak']);
                             launchUrl(whatsapp_user);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: buttoncolor,
                           ),
                           child: Text(
-                            "Login",
+                            "Get Contact",
                             style: TextStyle(
                               fontFamily: "Roboto",
                               fontWeight: FontWeight.bold,

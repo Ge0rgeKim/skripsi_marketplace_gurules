@@ -10,10 +10,12 @@ import 'package:http/http.dart' as http;
 class detail_sesi_guru extends StatefulWidget {
   int? index_user;
   int? index_sesi;
-  detail_sesi_guru({super.key, required this.index_user, required this.index_sesi});
+  detail_sesi_guru(
+      {super.key, required this.index_user, required this.index_sesi});
 
   @override
-  State<detail_sesi_guru> createState() => _detail_sesi_guruState(index_user, index_sesi);
+  State<detail_sesi_guru> createState() =>
+      _detail_sesi_guruState(index_user, index_sesi);
 }
 
 class _detail_sesi_guruState extends State<detail_sesi_guru> {
@@ -35,16 +37,36 @@ class _detail_sesi_guruState extends State<detail_sesi_guru> {
   String lokasiGuru = "";
   int statusSesi = 0;
   final status = ["Online Onsite", "Online", "Onsite"];
+  // Future getdatasesi() async {
+  //   var response = await http
+  //       .get(Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
+  //   var response2 = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/user_guru/" +
+  //           json.decode(response.body)['data']['id_guru'].toString()));
+  //   mataPelajaran =
+  //       json.decode(response2.body)['data']['mata_pelajaran'].toString();
+  //   lokasiGuru = json.decode(response2.body)['data']['lokasi'].toString();
+  //   statusSesi = json.decode(response2.body)['data']['status_sesi'];
+  //   return json.decode(response.body);
+  // }
+
   Future getdatasesi() async {
-    var response = await http
-        .get(Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
-    var response2 = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/user_guru/" +
-            json.decode(response.body)['data']['id_guru'].toString()));
+    var response = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/sesi/" +
+            index_sesi.toString(),
+      ),
+    );
+    var response2 = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/user_guru/" +
+            json.decode(response.body)['data']['id_guru'].toString(),
+      ),
+    );
     mataPelajaran =
         json.decode(response2.body)['data']['mata_pelajaran'].toString();
     lokasiGuru = json.decode(response2.body)['data']['lokasi'].toString();
-    statusSesi = json.decode(response2.body)['data']['status_sesi'];
+    statusSesi = int.parse(json.decode(response2.body)['data']['status_sesi']);
     return json.decode(response.body);
   }
 
@@ -97,7 +119,8 @@ class _detail_sesi_guruState extends State<detail_sesi_guru> {
                             Column(
                               children: [
                                 Text(
-                                  "ID Sesi : "+snapshot.data['data']['id'].toString(),
+                                  "ID Sesi : " +
+                                      snapshot.data['data']['id'].toString(),
                                   style: TextStyle(
                                     fontFamily: "Roboto",
                                     fontSize: 15,
@@ -146,7 +169,7 @@ class _detail_sesi_guruState extends State<detail_sesi_guru> {
                                           symbol: "Rp. ",
                                           decimalDigits: 0)
                                       .format(
-                                    snapshot.data['data']['nominal_saldo'],
+                                    int.parse(snapshot.data['data']['nominal_saldo']),
                                   ),
                                   style: TextStyle(
                                     fontFamily: "Roboto",
@@ -161,7 +184,7 @@ class _detail_sesi_guruState extends State<detail_sesi_guru> {
                             Column(
                               children: [
                                 Text(
-                                  snapshot.data['data']['status_sesi'] == 1
+                                  int.parse(snapshot.data['data']['status_sesi']) == 1
                                       ? "Sesi sudah di booking"
                                       : "Sesi belum di booking",
                                   style: TextStyle(

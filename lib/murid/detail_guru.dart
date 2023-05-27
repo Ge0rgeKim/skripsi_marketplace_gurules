@@ -34,20 +34,43 @@ class _detail_guruState extends State<detail_guru> {
     super.dispose();
   }
 
+  // Future getdatasesi() async {
+  //   var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi"));
+  //   return json.decode(response.body);
+  // }
+
+  // Future getdataguru() async {
+  //   var response = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/user_guru/" + index_guru.toString()));
+  //   return json.decode(response.body);
+  // }
+
+  // Future getdatareview() async {
+  //   var response =
+  //       await http.get(Uri.parse("http://10.0.2.2:8000/api/review/"));
+  //   return json.decode(response.body);
+  // }
+
   Future getdatasesi() async {
-    var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi"));
+    var response = await http.get(
+      Uri.parse("https://literasimilenial.net/george/public/api/sesi"),
+    );
     return json.decode(response.body);
   }
 
   Future getdataguru() async {
-    var response = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/user_guru/" + index_guru.toString()));
+    var response = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/user_guru/" + index_guru.toString(),
+      ),
+    );
     return json.decode(response.body);
   }
 
   Future getdatareview() async {
-    var response =
-        await http.get(Uri.parse("http://10.0.2.2:8000/api/review/"));
+    var response = await http.get(
+      Uri.parse("https://literasimilenial.net/george/public/api/review"),
+    );
     return json.decode(response.body);
   }
 
@@ -131,7 +154,7 @@ class _detail_guruState extends State<detail_guru> {
                               ),
                             ),
                             Text(
-                              status[snapshot.data['data']['status_sesi']],
+                              status[int.parse(snapshot.data['data']['status_sesi'])],
                               style: TextStyle(
                                 fontFamily: "Roboto",
                                 fontSize: 13,
@@ -157,10 +180,10 @@ class _detail_guruState extends State<detail_guru> {
                       child: ListView.builder(
                         itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
-                          if (snapshot.data['data'][index]['id_guru'] ==
+                          if (int.parse(snapshot.data['data'][index]['id_guru']) ==
                               index_guru) {
                             if (snapshot.data['data'][index]['status_sesi'] ==
-                                0) {
+                                '0') {
                               return Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -204,8 +227,8 @@ class _detail_guruState extends State<detail_guru> {
                                             symbol: "Rp. ",
                                             decimalDigits: 0)
                                         .format(
-                                      snapshot.data['data'][index]
-                                          ['nominal_saldo'],
+                                      int.parse(snapshot.data['data'][index]
+                                          ['nominal_saldo']),
                                     ),
                                     style: TextStyle(
                                       fontFamily: "Roboto",
@@ -277,7 +300,7 @@ class _detail_guruState extends State<detail_guru> {
                       child: ListView.builder(
                         itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
-                          if (snapshot.data['data'][index]['id_guru'] ==
+                          if (int.parse(snapshot.data['data'][index]['id_guru']) ==
                               index_guru) {
                             return Row(
                               children: [
@@ -314,8 +337,7 @@ class _detail_guruState extends State<detail_guru> {
                                         Text(
                                           "Nilai : " +
                                               snapshot.data['data'][index]
-                                                      ['penilaian_sesi']
-                                                  .toString(),
+                                                      ['penilaian_sesi'],
                                           style: TextStyle(
                                             fontFamily: "Roboto",
                                             fontSize: 13,

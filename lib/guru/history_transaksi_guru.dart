@@ -30,8 +30,15 @@ class _history_transaksi_guruState extends State<history_transaksi_guru> {
     super.dispose();
   }
 
+  // Future getdatasesi() async {
+  //   var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi"));
+  //   return json.decode(response.body);
+  // }
+
   Future getdatasesi() async {
-    var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi"));
+    var response = await http.get(
+      Uri.parse("https://literasimilenial.net/george/public/api/sesi"),
+    );
     return json.decode(response.body);
   }
 
@@ -78,9 +85,11 @@ class _history_transaksi_guruState extends State<history_transaksi_guru> {
                   child: ListView.builder(
                     itemCount: snapshot.data['data'].length,
                     itemBuilder: (context, index) {
-                      if (snapshot.data['data'][index]['id_guru'] ==
+                      if (int.parse(snapshot.data['data'][index]['id_guru']) ==
                               index_user &&
-                          snapshot.data['data'][index]['status_sesi'] == 1) {
+                          int.parse(snapshot.data['data'][index]
+                                  ['status_sesi']) ==
+                              1) {
                         return Column(
                           children: [
                             Row(
@@ -113,8 +122,8 @@ class _history_transaksi_guruState extends State<history_transaksi_guru> {
                                                       symbol: "Rp. ",
                                                       decimalDigits: 0)
                                                   .format(
-                                                snapshot.data['data'][index]
-                                                    ['nominal_saldo'],
+                                                int.parse(snapshot.data['data']
+                                                    [index]['nominal_saldo']),
                                               ),
                                           style: TextStyle(
                                             fontFamily: "Roboto",
@@ -137,8 +146,9 @@ class _history_transaksi_guruState extends State<history_transaksi_guru> {
                                                       symbol: "Rp. ",
                                                       decimalDigits: 0)
                                                   .format(
-                                                snapshot.data['data'][index]
-                                                        ['nominal_saldo'] *
+                                                int.parse(snapshot.data['data']
+                                                            [index]
+                                                        ['nominal_saldo']) *
                                                     0.1,
                                               ),
                                           style: TextStyle(
@@ -161,11 +171,16 @@ class _history_transaksi_guruState extends State<history_transaksi_guru> {
                                                       symbol: "Rp. ",
                                                       decimalDigits: 0)
                                                   .format(
-                                                (snapshot.data['data'][index]
-                                                        ['nominal_saldo']) -
-                                                    (snapshot.data['data']
-                                                                [index]
-                                                            ['nominal_saldo'] *
+                                                (int.parse(
+                                                      snapshot.data['data']
+                                                              [index]
+                                                          ['nominal_saldo'],
+                                                    )) -
+                                                    (int.parse(
+                                                          snapshot.data['data']
+                                                                  [index]
+                                                              ['nominal_saldo'],
+                                                        ) *
                                                         0.1),
                                               ),
                                           style: TextStyle(

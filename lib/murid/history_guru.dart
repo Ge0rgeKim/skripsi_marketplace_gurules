@@ -28,10 +28,20 @@ class _history_guruState extends State<history_guru> {
     super.dispose();
   }
 
+  // Future getdatatransesi() async {
+  //   var response = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/transaksi_sesi/murid/" +
+  //           index_user.toString()));
+  //   return json.decode(response.body);
+  // }
+
   Future getdatatransesi() async {
-    var response = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/transaksi_sesi/murid/" +
-            index_user.toString()));
+    var response = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/transaksi_sesi/murid/" +
+            index_user.toString(),
+      ),
+    );
     return json.decode(response.body);
   }
 
@@ -45,7 +55,7 @@ class _history_guruState extends State<history_guru> {
         appBar: AppBar(
           backgroundColor: appbarColor,
           title: Text(
-            "List Sesi Guru",
+            "History User Guru",
             style: TextStyle(
               fontFamily: "Roboto",
               fontSize: 25,
@@ -80,7 +90,7 @@ class _history_guruState extends State<history_guru> {
                       child: ListView.builder(
                         itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
-                          if (snapshot.data['data'][index]['id_sesi'] != 0) {
+                          if (snapshot.data['data'][index]['id_sesi'] != '0') {
                             return Column(
                               children: [
                                 Row(
@@ -131,7 +141,9 @@ class _history_guruState extends State<history_guru> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) {
-                                              return sesi_guru(data_guru: snapshot.data['data'][index]);
+                                              return sesi_guru(
+                                                  data_guru: snapshot
+                                                      .data['data'][index]);
                                             },
                                           ),
                                         );

@@ -28,9 +28,19 @@ class _profile_muridState extends State<profile_murid> {
     super.dispose();
   }
 
+  // Future getdatamurid() async {
+  //   var response = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/user_murid/" + index_user.toString()));
+  //   return json.decode(response.body);
+  // }
+
   Future getdatamurid() async {
     var response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/user_murid/" + index_user.toString()));
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/user_murid/" +
+            index_user.toString(),
+      ),
+    );
     return json.decode(response.body);
   }
 

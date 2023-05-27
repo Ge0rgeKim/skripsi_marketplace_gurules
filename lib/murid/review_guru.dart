@@ -7,7 +7,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:skripsi_c14190201/colors.dart';
 import 'package:http/http.dart' as http;
-import 'package:skripsi_c14190201/murid/history_sesi_murid.dart';
+import 'package:skripsi_c14190201/murid/murid_pages.dart';
 
 class review_guru extends StatefulWidget {
   final Map data_transaksi;
@@ -35,27 +35,33 @@ class _review_guruState extends State<review_guru> {
   TextEditingController penilaianmuridController = TextEditingController();
   TextEditingController komentarmuridController = TextEditingController();
 
-  // String mataPelajaran = "";
-  // Future getdatasesi() async {
-  //   var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi/" +
-  //       data_transaksi['id_sesi'].toString()));
-  //   var response2 = await http.get(Uri.parse(
-  //       "http://10.0.2.2:8000/api/user_guru/" +
-  //           data_transaksi['id_guru'].toString()));
-  //   mataPelajaran =
-  //       json.decode(response2.body)['data']['mata_pelajaran'].toString();
-  //   return json.decode(response.body);
+  // Future savedata() async {
+  //   final response =
+  //       await http.post(Uri.parse("http://10.0.2.2:8000/api/review"), body: {
+  //     "id_sesi": data_transaksi['id_sesi'].toString(),
+  //     "id_murid": data_transaksi['id_murid'].toString(),
+  //     "id_guru": data_transaksi['id_guru'].toString(),
+  //     "penilaian_sesi": penilaianmuridController.text,
+  //     "komentar_sesi": komentarmuridController.text,
+  //   });
+  //   if (response.statusCode == 200) {
+  //     return json.decode(response.body)['message'];
+  //   } else {
+  //     return json.decode(response.body)['message'];
+  //   }
   // }
 
   Future savedata() async {
-    final response =
-        await http.post(Uri.parse("http://10.0.2.2:8000/api/review"), body: {
-      "id_sesi": data_transaksi['id_sesi'].toString(),
-      "id_murid": data_transaksi['id_murid'].toString(),
-      "id_guru": data_transaksi['id_guru'].toString(),
-      "penilaian_sesi": penilaianmuridController.text,
-      "komentar_sesi": komentarmuridController.text,
-    });
+    final response = await http.post(
+      Uri.parse("https://literasimilenial.net/george/public/api/review"),
+      body: {
+        "id_sesi": data_transaksi['id_sesi'].toString(),
+        "id_murid": data_transaksi['id_murid'].toString(),
+        "id_guru": data_transaksi['id_guru'].toString(),
+        "penilaian_sesi": penilaianmuridController.text,
+        "komentar_sesi": komentarmuridController.text,
+      },
+    );
     if (response.statusCode == 200) {
       return json.decode(response.body)['message'];
     } else {
@@ -210,7 +216,7 @@ class _review_guruState extends State<review_guru> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return history_sesi_murid(index_user: data_transaksi['id_murid']);
+            return murid_pages(index_user: int.parse(data_transaksi['id_murid']));
           },
         ),
       );

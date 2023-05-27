@@ -64,12 +64,22 @@ class _topup_saldoState extends State<topup_saldo> {
       'Connection': 'Keep-Alive'
     };
 
-    var request = http.MultipartRequest('POST',
-        Uri.parse("http://10.0.2.2:8000/api/transaksi_saldo/" + n.toString()))
+    // var request = http.MultipartRequest('POST',
+    //     Uri.parse("http://10.0.2.2:8000/api/transaksi_saldo/" + n.toString()))
+    //   ..fields.addAll(body)
+    //   ..headers.addAll(headers)
+    //   ..files.add(await http.MultipartFile.fromPath('image', filepath));
+
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/transaksi_saldo/" +
+            n.toString(),
+      ),
+    )
       ..fields.addAll(body)
       ..headers.addAll(headers)
       ..files.add(await http.MultipartFile.fromPath('image', filepath));
-
     var response = await request.send();
     if (response.statusCode == 200) {
       return true;

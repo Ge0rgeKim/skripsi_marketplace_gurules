@@ -34,12 +34,26 @@ class _home_muridState extends State<home_murid> {
 
   List<dynamic> data_user = [];
   int saldo_user = 0;
+  // Future getdatasaldo() async {
+  //   var response = await http.get(
+  //       Uri.parse("http://10.0.2.2:8000/api/saldo/" + index_user.toString()));
+  //   data_user = json.decode(response.body)["data"];
+  //   if (data_user.isNotEmpty) {
+  //     saldo_user = data_user[data_user.length - 1]["total"];
+  //   }
+  //   return json.decode(response.body)["data"];
+  // }
+
   Future getdatasaldo() async {
     var response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/saldo/" + index_user.toString()));
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/saldo/" +
+            index_user.toString(),
+      ),
+    );
     data_user = json.decode(response.body)["data"];
     if (data_user.isNotEmpty) {
-      saldo_user = data_user[data_user.length - 1]["total"];
+      saldo_user = int.parse(data_user[data_user.length - 1]["total"]);
     }
     return json.decode(response.body)["data"];
   }

@@ -33,15 +33,24 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
   TextEditingController mataPelajaranGuru = TextEditingController();
   TextEditingController lokasiGuru = TextEditingController();
   @override
+  // Future getdataguru() async {
+  //   var response =
+  //       await http.get(Uri.parse("http://10.0.2.2:8000/api/user_guru"));
+  //   return json.decode(response.body);
+  // }
+
   Future getdataguru() async {
-    var response =
-        await http.get(Uri.parse("http://10.0.2.2:8000/api/user_guru"));
+    var response = await http.get(
+      Uri.parse("https://literasimilenial.net/george/public/api/user_guru"),
+    );
     return json.decode(response.body);
   }
 
   List<dynamic> data = [];
   List<String> data_value = [];
-  final String url = "http://10.0.2.2:8000/api/mata_pelajaran";
+  // final String url = "http://10.0.2.2:8000/api/mata_pelajaran";
+  final String url =
+      "https://literasimilenial.net/george/public/api/mata_pelajaran";
   String? selectedvalue;
   Future getdata() async {
     var response = await http.get(Uri.parse(url));
@@ -133,7 +142,7 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
                 },
               ),
               SizedBox(
-                height: 20,
+                height: 15,
               ),
               FutureBuilder(
                 future: getdataguru(),
@@ -144,7 +153,7 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
                         itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
                           if (snapshot.data['data'][index]['status_akun'] ==
-                              1) {
+                              '1') {
                             if (selectedvalue == null) {
                               return Row(
                                 mainAxisAlignment:
@@ -182,8 +191,9 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
                                                 ),
                                               ),
                                               Text(
-                                                status[snapshot.data['data']
-                                                    [index]['status_sesi']],
+                                                status[int.parse(
+                                                    snapshot.data['data'][index]
+                                                        ['status_sesi'])],
                                                 style: TextStyle(
                                                   fontFamily: "Roboto",
                                                   fontSize: 13,
@@ -294,8 +304,8 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
                                                 ),
                                               ),
                                               Text(
-                                                status[snapshot.data['data']
-                                                    [index]['status_sesi']],
+                                                status[int.parse(snapshot.data['data']
+                                                    [index]['status_sesi'])],
                                                 style: TextStyle(
                                                   fontFamily: "Roboto",
                                                   fontSize: 13,

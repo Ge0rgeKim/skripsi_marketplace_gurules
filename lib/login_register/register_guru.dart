@@ -52,7 +52,9 @@ class _register_guruState extends State<register_guru> {
 
   List<dynamic> data = [];
   List<String> data_value = [];
-  final String url = "http://10.0.2.2:8000/api/mata_pelajaran";
+  // final String url = "http://10.0.2.2:8000/api/mata_pelajaran";
+  final String url =
+      "https://literasimilenial.net/george/public/api/mata_pelajaran";
   String? selectedvalue;
   Future getdata() async {
     var response = await http.get(Uri.parse(url));
@@ -93,8 +95,18 @@ class _register_guruState extends State<register_guru> {
       'Connection': 'Keep-Alive'
     };
 
+    // var request = http.MultipartRequest(
+    //     'POST', Uri.parse("http://10.0.2.2:8000/api/user_guru"))
+    //   ..fields.addAll(body)
+    //   ..headers.addAll(headers)
+    //   ..files.add(await http.MultipartFile.fromPath('image', filepath));
+
     var request = http.MultipartRequest(
-        'POST', Uri.parse("http://10.0.2.2:8000/api/user_guru"))
+      'POST',
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/user_guru",
+      ),
+    )
       ..fields.addAll(body)
       ..headers.addAll(headers)
       ..files.add(await http.MultipartFile.fromPath('image', filepath));

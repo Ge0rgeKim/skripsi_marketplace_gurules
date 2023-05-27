@@ -28,9 +28,19 @@ class _profile_guruState extends State<profile_guru> {
     super.dispose();
   }
 
+  // Future getdataguru() async {
+  //   var response = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/user_guru/" + index_user.toString()));
+  //   return json.decode(response.body);
+  // }
+
   Future getdataguru() async {
-    var response = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/user_guru/" + index_user.toString()));
+    var response = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/user_guru/" +
+            index_user.toString(),
+      ),
+    );
     return json.decode(response.body);
   }
 
@@ -356,8 +366,8 @@ class _profile_guruState extends State<profile_guru> {
                                     ),
                                   ),
                                   Text(
-                                    status[snapshot.data['data']
-                                        ['status_sesi']],
+                                    status[int.parse(snapshot.data['data']
+                                        ['status_sesi'])],
                                     style: TextStyle(
                                       fontFamily: "Roboto",
                                       fontSize: 13,

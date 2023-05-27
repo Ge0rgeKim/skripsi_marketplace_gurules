@@ -27,10 +27,20 @@ class _history_sesi_guruState extends State<history_sesi_guru> {
     super.dispose();
   }
 
+  // Future getdatatransesi() async {
+  //   var response = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/transaksi_sesi/guru/" +
+  //           index_user.toString()));
+  //   return json.decode(response.body);
+  // }
+
   Future getdatatransesi() async {
-    var response = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/transaksi_sesi/guru/" +
-            index_user.toString()));
+    var response = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/transaksi_sesi/guru/" +
+            index_user.toString(),
+      ),
+    );
     return json.decode(response.body);
   }
 
@@ -158,7 +168,8 @@ class _history_sesi_guruState extends State<history_sesi_guru> {
                                         //nnti return id sesi
                                         return detail_sesi_guru(
                                           index_user: index_user,
-                                          index_sesi: snapshot.data['data'][index]['id_sesi'],
+                                          index_sesi: int.parse(snapshot.data['data']
+                                              [index]['id_sesi']),
                                         );
                                       },
                                     ),

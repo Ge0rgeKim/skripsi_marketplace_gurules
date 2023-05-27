@@ -35,13 +35,31 @@ class _register_muridState extends State<register_murid> {
   TextEditingController confirpassMuridRegistController =
       TextEditingController();
 
+  // Future savedata() async {
+  //   final response = await http
+  //       .post(Uri.parse("http://10.0.2.2:8000/api/user_murid"), body: {
+  //     "username": userMuridRegistController.text,
+  //     "email": emailMuridRegistController.text,
+  //     "password": passMuridRegistController.text
+  //   });
+  //   if (response.statusCode == 200) {
+  //     return json.decode(response.body)['message'];
+  //   } else {
+  //     return json.decode(response.body)['message'];
+  //   }
+  // }
+
   Future savedata() async {
-    final response = await http
-        .post(Uri.parse("http://10.0.2.2:8000/api/user_murid"), body: {
-      "username": userMuridRegistController.text,
-      "email": emailMuridRegistController.text,
-      "password": passMuridRegistController.text
-    });
+    final response = await http.post(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/user_murid",
+      ),
+      body: {
+        "username": userMuridRegistController.text,
+        "email": emailMuridRegistController.text,
+        "password": passMuridRegistController.text
+      },
+    );
     if (response.statusCode == 200) {
       return json.decode(response.body)['message'];
     } else {

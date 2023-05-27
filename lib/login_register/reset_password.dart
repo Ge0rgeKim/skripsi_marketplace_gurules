@@ -33,9 +33,22 @@ class _reset_passwordState extends State<reset_password> {
   TextEditingController passResetController = TextEditingController();
   TextEditingController confirPassResetController = TextEditingController();
 
+  // Future reset_user() async {
+  //   var response = await http.put(
+  //       Uri.parse("http://10.0.2.2:8000/api/login_user/reset_user"),
+  //       body: {
+  //         "email": emailResetController.text,
+  //         "password": passResetController.text,
+  //         "users": selectedvalue
+  //       });
+  //   return json.decode(response.body)['message'];
+  // }
+
   Future reset_user() async {
     var response = await http.put(
-        Uri.parse("http://10.0.2.2:8000/api/login_user/reset_user"),
+        Uri.parse(
+          "https://literasimilenial.net/george/public/api/login_user/reset_user",
+        ),
         body: {
           "email": emailResetController.text,
           "password": passResetController.text,

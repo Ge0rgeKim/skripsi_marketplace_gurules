@@ -27,12 +27,30 @@ class _detail_penilaianState extends State<detail_penilaian> {
   }
 
   String mataPelajaran = "";
+  // Future getdatasesi() async {
+  //   var response = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/sesi/" + data_review['id_sesi'].toString()));
+  //   var response2 = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/user_guru/" +
+  //           json.decode(response.body)['data']['id_guru'].toString()));
+  //   mataPelajaran =
+  //       json.decode(response2.body)['data']['mata_pelajaran'].toString();
+  //   return json.decode(response.body);
+  // }
+
   Future getdatasesi() async {
-    var response = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/sesi/" + data_review['id_sesi'].toString()));
-    var response2 = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/user_guru/" +
-            json.decode(response.body)['data']['id_guru'].toString()));
+    var response = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/sesi/" +
+            data_review['id_sesi'].toString(),
+      ),
+    );
+    var response2 = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/user_guru/" +
+            json.decode(response.body)['data']['id_guru'].toString(),
+      ),
+    );
     mataPelajaran =
         json.decode(response2.body)['data']['mata_pelajaran'].toString();
     return json.decode(response.body);

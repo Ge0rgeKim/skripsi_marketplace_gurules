@@ -42,17 +42,32 @@ class _edit_profile_guruState extends State<edit_profile_guru> {
         n = i;
       }
     }
+    // var response = await http.put(
+    //     Uri.parse("http://10.0.2.2:8000/api/user_guru/" +
+    //         data_profile["id"].toString()),
+    //     body: {
+    //       'username': dataUserGuruController.text,
+    //       'email': data_profile['email'],
+    //       'password': dataPassGuruController.text,
+    //       'mata_pelajaran': data_profile['mata_pelajaran'],
+    //       'lokasi': dataLokasiGuruController.text,
+    //       'status_sesi': n.toString(),
+    //     });
+
     var response = await http.put(
-        Uri.parse("http://10.0.2.2:8000/api/user_guru/" +
-            data_profile["id"].toString()),
-        body: {
-          'username': dataUserGuruController.text,
-          'email': data_profile['email'],
-          'password': dataPassGuruController.text,
-          'mata_pelajaran': data_profile['mata_pelajaran'],
-          'lokasi': dataLokasiGuruController.text,
-          'status_sesi': n.toString(),
-        });
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/user_guru/" +
+            data_profile["id"].toString(),
+      ),
+      body: {
+        'username': dataUserGuruController.text,
+        'email': data_profile['email'],
+        'password': dataPassGuruController.text,
+        'mata_pelajaran': data_profile['mata_pelajaran'],
+        'lokasi': dataLokasiGuruController.text,
+        'status_sesi': n.toString(),
+      },
+    );
     return json.decode(response.body);
   }
 

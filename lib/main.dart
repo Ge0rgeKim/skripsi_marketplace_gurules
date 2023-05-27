@@ -35,9 +35,19 @@ class _MyAppState extends State<MyApp> {
   TextEditingController emaillogincontroller = TextEditingController();
   TextEditingController passlogincontroller = TextEditingController();
 
+  // Future login_user() async {
+  //   var response = await http
+  //       .post(Uri.parse("http://10.0.2.2:8000/api/login_user/login"), body: {
+  //     "email": emaillogincontroller.text,
+  //     "password": passlogincontroller.text,
+  //     "users": selectedvalue
+  //   });
+  //   return json.decode(response.body);
+  // }
+
   Future login_user() async {
     var response = await http
-        .post(Uri.parse("http://10.0.2.2:8000/api/login_user/login"), body: {
+        .post(Uri.parse("https://literasimilenial.net/george/public/api/login_user/login"), body: {
       "email": emaillogincontroller.text,
       "password": passlogincontroller.text,
       "users": selectedvalue

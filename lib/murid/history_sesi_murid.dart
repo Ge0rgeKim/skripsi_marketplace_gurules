@@ -30,10 +30,20 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
     super.dispose();
   }
 
+  // Future getdatatransesi() async {
+  //   var response = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/transaksi_sesi/murid/" +
+  //           index_user.toString()));
+  //   return json.decode(response.body);
+  // }
+
   Future getdatatransesi() async {
-    var response = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/transaksi_sesi/murid/" +
-            index_user.toString()));
+    var response = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/transaksi_sesi/murid/" +
+            index_user.toString(),
+      ),
+    );
     return json.decode(response.body);
   }
 
@@ -102,7 +112,7 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                       child: ListView.builder(
                         itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
-                          if (snapshot.data['data'][index]['id_sesi'] != 0) {
+                          if (snapshot.data['data'][index]['id_sesi'] != '0') {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -119,7 +129,9 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                                     ),
                                     Text(
                                       "ID Sesi : " +
-                                          snapshot.data['data'][index]['id_sesi'].toString() ,
+                                          snapshot.data['data'][index]
+                                                  ['id_sesi']
+                                              .toString(),
                                       style: TextStyle(
                                         fontFamily: "Roboto",
                                         fontSize: 15,
@@ -186,8 +198,10 @@ class _history_sesi_muridState extends State<history_sesi_murid> {
                                         builder: (context) {
                                           return detail_sesi_murid(
                                             index_user: index_user,
-                                            index_sesi: snapshot.data['data']
-                                                [index]['id_sesi'],
+                                            index_sesi: int.parse(
+                                              snapshot.data['data'][index]
+                                                  ['id_sesi'],
+                                            ),
                                           );
                                         },
                                       ),

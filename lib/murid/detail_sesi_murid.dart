@@ -37,16 +37,36 @@ class _detail_sesi_muridState extends State<detail_sesi_murid> {
   String lokasiGuru = "";
   int statusSesi = 0;
   final status = ["Online Onsite", "Online", "Onsite"];
+  // Future getdatasesi() async {
+  //   var response = await http.get(
+  //       Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
+  //   var response2 = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/user_guru/" +
+  //           json.decode(response.body)['data']['id_guru'].toString()));
+  //   mataPelajaran =
+  //       json.decode(response2.body)['data']['mata_pelajaran'].toString();
+  //   lokasiGuru = json.decode(response2.body)['data']['lokasi'].toString();
+  //   statusSesi = json.decode(response2.body)['data']['status_sesi'];
+  //   return json.decode(response.body);
+  // }
+
   Future getdatasesi() async {
     var response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
-    var response2 = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/user_guru/" +
-            json.decode(response.body)['data']['id_guru'].toString()));
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/sesi/" +
+            index_sesi.toString(),
+      ),
+    );
+    var response2 = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/user_guru/" +
+            json.decode(response.body)['data']['id_guru'].toString(),
+      ),
+    );
     mataPelajaran =
         json.decode(response2.body)['data']['mata_pelajaran'].toString();
     lokasiGuru = json.decode(response2.body)['data']['lokasi'].toString();
-    statusSesi = json.decode(response2.body)['data']['status_sesi'];
+    statusSesi = int.parse(json.decode(response2.body)['data']['status_sesi']);
     return json.decode(response.body);
   }
 
@@ -147,7 +167,7 @@ class _detail_sesi_muridState extends State<detail_sesi_murid> {
                                       symbol: "Rp. ",
                                       decimalDigits: 0)
                                   .format(
-                                snapshot.data['data']['nominal_saldo'],
+                                int.parse(snapshot.data['data']['nominal_saldo']),
                               ),
                               style: TextStyle(
                                 fontFamily: "Roboto",

@@ -30,12 +30,26 @@ class _history_transaksi_muridState extends State<history_transaksi_murid> {
 
   List<dynamic> data_user = [];
   int saldo_user = 0;
+  // Future getdatasaldo() async {
+  //   var response = await http.get(
+  //       Uri.parse("http://10.0.2.2:8000/api/saldo/" + index_user.toString()));
+  //   data_user = json.decode(response.body)["data"];
+  //   if (data_user.isNotEmpty) {
+  //     saldo_user = data_user[data_user.length - 1]["total"];
+  //   }
+  //   return json.decode(response.body);
+  // }
+
   Future getdatasaldo() async {
     var response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/saldo/" + index_user.toString()));
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/saldo/" +
+            index_user.toString(),
+      ),
+    );
     data_user = json.decode(response.body)["data"];
     if (data_user.isNotEmpty) {
-      saldo_user = data_user[data_user.length - 1]["total"];
+      saldo_user = int.parse(data_user[data_user.length - 1]["total"]);
     }
     return json.decode(response.body);
   }
@@ -115,7 +129,7 @@ class _history_transaksi_muridState extends State<history_transaksi_murid> {
                       child: ListView.builder(
                         itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
-                          if (snapshot.data['data'][index]['debit'] != 0) {
+                          if (snapshot.data['data'][index]['debit'] != '0') {
                             return Column(
                               children: [
                                 Row(
@@ -144,8 +158,8 @@ class _history_transaksi_muridState extends State<history_transaksi_murid> {
                                                   symbol: "Rp. ",
                                                   decimalDigits: 0)
                                               .format(
-                                            snapshot.data['data'][index]
-                                                ['debit'],
+                                            int.parse(snapshot.data['data'][index]
+                                                ['debit']),
                                           ),
                                           style: TextStyle(
                                             fontFamily: "Roboto",
@@ -162,7 +176,7 @@ class _history_transaksi_muridState extends State<history_transaksi_murid> {
                               ],
                             );
                           } else if (snapshot.data['data'][index]['credit'] !=
-                              0) {
+                              '0') {
                             return Column(
                               children: [
                                 Row(
@@ -191,8 +205,8 @@ class _history_transaksi_muridState extends State<history_transaksi_murid> {
                                                   symbol: "Rp. ",
                                                   decimalDigits: 0)
                                               .format(
-                                            snapshot.data['data'][index]
-                                                ['credit'],
+                                            int.parse(snapshot.data['data'][index]
+                                                ['credit']),
                                           ),
                                           style: TextStyle(
                                             fontFamily: "Roboto",

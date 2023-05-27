@@ -33,10 +33,24 @@ class _edit_profile_muridState extends State<edit_profile_murid> {
   TextEditingController dataUserMuridControlller = TextEditingController();
   TextEditingController dataPassMuridControlller = TextEditingController();
 
+  // Future updatedatamurid() async {
+  //   var response = await http.put(
+  //       Uri.parse("http://10.0.2.2:8000/api/user_murid/" +
+  //           data_profile["id"].toString()),
+  //       body: {
+  //         "username": dataUserMuridControlller.text,
+  //         "email": data_profile["email"],
+  //         "password": dataPassMuridControlller.text,
+  //       });
+  //   return json.decode(response.body);
+  // }
+
   Future updatedatamurid() async {
     var response = await http.put(
-        Uri.parse("http://10.0.2.2:8000/api/user_murid/" +
-            data_profile["id"].toString()),
+        Uri.parse(
+          "https://literasimilenial.net/george/public/api/user_murid/" +
+              data_profile["id"].toString(),
+        ),
         body: {
           "username": dataUserMuridControlller.text,
           "email": data_profile["email"],

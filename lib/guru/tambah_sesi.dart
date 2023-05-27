@@ -32,9 +32,24 @@ class _tambah_sesiState extends State<tambah_sesi> {
 
   TextEditingController hargaSesiGuruController = TextEditingController();
 
+  // Future savedata() async {
+  //   final response =
+  //       await http.post(Uri.parse("http://10.0.2.2:8000/api/sesi"), body: {
+  //     'id_guru': index_user.toString(),
+  //     'tanggal_sesi': tgl,
+  //     'waktu_sesi': selectedvalue,
+  //     'nominal_saldo': hargaSesiGuruController.text,
+  //   });
+  //   if (response.statusCode == 200) {
+  //     return json.decode(response.body)['message'];
+  //   } else {
+  //     return json.decode(response.body)['message'];
+  //   }
+  // }
+
   Future savedata() async {
     final response =
-        await http.post(Uri.parse("http://10.0.2.2:8000/api/sesi"), body: {
+        await http.post(Uri.parse("https://literasimilenial.net/george/public/api/sesi"), body: {
       'id_guru': index_user.toString(),
       'tanggal_sesi': tgl,
       'waktu_sesi': selectedvalue,
@@ -46,7 +61,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
       return json.decode(response.body)['message'];
     }
   }
-
+  
   @override
   final jam = [
     "00:00 - 01:00",
@@ -194,7 +209,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
                         height: 15,
                       ),
                       TextField(
-                        controller: hargaSesiGuruController,
+                        controller: hargaSesiGuruController..text = "50000",
                         autofocus: true,
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[

@@ -27,9 +27,16 @@ class _daftar_penilaianState extends State<daftar_penilaian> {
     super.dispose();
   }
 
+  // Future getdatareview() async {
+  //   var response =
+  //       await http.get(Uri.parse("http://10.0.2.2:8000/api/review"));
+  //   return json.decode(response.body);
+  // }
+
   Future getdatareview() async {
-    var response =
-        await http.get(Uri.parse("http://10.0.2.2:8000/api/review/"));
+    var response = await http.get(
+      Uri.parse("https://literasimilenial.net/george/public/api/review"),
+    );
     return json.decode(response.body);
   }
 
@@ -78,7 +85,7 @@ class _daftar_penilaianState extends State<daftar_penilaian> {
                       child: ListView.builder(
                         itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
-                          if (snapshot.data['data'][index]['id_guru'] ==
+                          if (int.parse(snapshot.data['data'][index]['id_guru']) ==
                               index_user) {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

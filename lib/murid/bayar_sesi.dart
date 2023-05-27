@@ -35,37 +35,94 @@ class _bayar_sesiState extends State<bayar_sesi> {
 
   String mataPelajaran = "";
   int harga_sesi = 0;
+  // Future getdatasesi() async {
+  //   var response = await http.get(
+  //       Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
+  //   var response2 = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/user_guru/" +
+  //           json.decode(response.body)['data']['id_guru'].toString()));
+  //   mataPelajaran =
+  //       json.decode(response2.body)['data']['mata_pelajaran'].toString();
+  //   harga_sesi = json.decode(response.body)['data']['nominal_saldo'];
+  //   return json.decode(response.body);
+  // }
+
   Future getdatasesi() async {
     var response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
-    var response2 = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/user_guru/" +
-            json.decode(response.body)['data']['id_guru'].toString()));
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/sesi/" +
+            index_sesi.toString(),
+      ),
+    );
+    var response2 = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/user_guru/" +
+            json.decode(response.body)['data']['id_guru'].toString(),
+      ),
+    );
     mataPelajaran =
         json.decode(response2.body)['data']['mata_pelajaran'].toString();
-    harga_sesi = json.decode(response.body)['data']['nominal_saldo'];
+    harga_sesi = int.parse(json.decode(response.body)['data']['nominal_saldo']);
     return json.decode(response.body);
   }
 
   List<dynamic> data_user = [];
   int saldo_user = 0;
+  // Future getdatasaldo() async {
+  //   var response = await http.get(
+  //       Uri.parse("http://10.0.2.2:8000/api/saldo/" + index_user.toString()));
+  //   data_user = json.decode(response.body)["data"];
+  //   if (data_user.isNotEmpty) {
+  //     saldo_user = data_user[data_user.length - 1]["total"];
+  //   }
+  //   return json.decode(response.body)["data"];
+  // }
+
+  // Future savedata() async {
+  //   var response_guru = await http.get(
+  //       Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
+  //   int id_guru = json.decode(response_guru.body)['data']['id_guru'];
+  //   final response = await http.post(
+  //       Uri.parse(
+  //           "http://10.0.2.2:8000/api/transaksi_sesi/" + index_sesi.toString()),
+  //       body: {
+  //         "id_murid": index_user.toString(),
+  //         "id_guru": id_guru.toString()
+  //       });
+  //   if (response.statusCode == 200) {
+  //     return json.decode(response.body)['message'];
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
   Future getdatasaldo() async {
     var response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/saldo/" + index_user.toString()));
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/saldo/" +
+            index_user.toString(),
+      ),
+    );
     data_user = json.decode(response.body)["data"];
     if (data_user.isNotEmpty) {
-      saldo_user = data_user[data_user.length - 1]["total"];
+      saldo_user = int.parse(data_user[data_user.length - 1]["total"]);
     }
     return json.decode(response.body)["data"];
   }
 
   Future savedata() async {
     var response_guru = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/sesi/" + index_sesi.toString()));
-    int id_guru = json.decode(response_guru.body)['data']['id_guru'];
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/sesi/" +
+            index_sesi.toString(),
+      ),
+    );
+    int id_guru = int.parse(json.decode(response_guru.body)['data']['id_guru']);
     final response = await http.post(
         Uri.parse(
-            "http://10.0.2.2:8000/api/transaksi_sesi/" + index_sesi.toString()),
+          "https://literasimilenial.net/george/public/api/transaksi_sesi/" +
+              index_sesi.toString(),
+        ),
         body: {
           "id_murid": index_user.toString(),
           "id_guru": id_guru.toString()
@@ -215,7 +272,7 @@ class _bayar_sesiState extends State<bayar_sesi> {
                                       symbol: "Harga Sesi : Rp. ",
                                       decimalDigits: 0)
                                   .format(
-                                snapshot.data['data']['nominal_saldo'],
+                                int.parse(snapshot.data['data']['nominal_saldo']),
                               ),
                               style: TextStyle(
                                 fontFamily: "Roboto",

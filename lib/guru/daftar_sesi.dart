@@ -29,8 +29,15 @@ class _daftar_sesiState extends State<daftar_sesi> {
     super.dispose();
   }
 
+  // Future getdatasesi() async {
+  //   var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi"));
+  //   return json.decode(response.body);
+  // }
+
   Future getdatasesi() async {
-    var response = await http.get(Uri.parse("http://10.0.2.2:8000/api/sesi"));
+    var response = await http.get(
+      Uri.parse("https://literasimilenial.net/george/public/api/sesi"),
+    );
     return json.decode(response.body);
   }
 
@@ -105,7 +112,7 @@ class _daftar_sesiState extends State<daftar_sesi> {
                       child: ListView.builder(
                         itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
-                          if (snapshot.data['data'][index]['id_guru'] ==
+                          if (int.parse(snapshot.data['data'][index]['id_guru']) ==
                               index_user) {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,8 +138,8 @@ class _daftar_sesiState extends State<daftar_sesi> {
                                           symbol: "Rp. ",
                                           decimalDigits: 0)
                                       .format(
-                                    snapshot.data['data'][index]
-                                        ['nominal_saldo'],
+                                    int.parse(snapshot.data['data'][index]
+                                        ['nominal_saldo']),
                                   ),
                                   style: TextStyle(
                                     fontFamily: "Roboto",

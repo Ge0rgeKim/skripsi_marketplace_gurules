@@ -28,10 +28,20 @@ class _daftar_dokumentasiState extends State<daftar_dokumentasi> {
     super.dispose();
   }
 
+  // Future getdatatransesi() async {
+  //   var response = await http.get(Uri.parse(
+  //       "http://10.0.2.2:8000/api/transaksi_sesi/guru/" +
+  //           index_user.toString()));
+  //   return json.decode(response.body);
+  // }
+
   Future getdatatransesi() async {
-    var response = await http.get(Uri.parse(
-        "http://10.0.2.2:8000/api/transaksi_sesi/guru/" +
-            index_user.toString()));
+    var response = await http.get(
+      Uri.parse(
+        "https://literasimilenial.net/george/public/api/transaksi_sesi/guru/" +
+            index_user.toString(),
+      ),
+    );
     return json.decode(response.body);
   }
 
