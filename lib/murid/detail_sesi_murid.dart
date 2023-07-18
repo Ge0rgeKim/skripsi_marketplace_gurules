@@ -108,52 +108,70 @@ class _detail_sesi_muridState extends State<detail_sesi_murid> {
           child: SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
-              child: FutureBuilder(
-                future: getdatasesi(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        Column(
+              child: Column(
+                children: [
+                  FutureBuilder(
+                    future: getdatasesi(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
                           children: [
-                            Text(
-                              "ID Sesi : " +
-                                  snapshot.data['data']['id'].toString(),
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              mataPelajaran,
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 13,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            Column(
                               children: [
                                 Text(
-                                  snapshot.data['data']['tanggal_sesi'],
+                                  "ID Sesi : " +
+                                      snapshot.data['data']['id'].toString(),
+                                  style: TextStyle(
+                                    fontFamily: "Roboto",
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  mataPelajaran,
                                   style: TextStyle(
                                     fontFamily: "Roboto",
                                     fontSize: 13,
                                   ),
                                 ),
-                                Text(
-                                  " | ",
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 13,
-                                  ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      snapshot.data['data']['tanggal_sesi'],
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    Text(
+                                      " | ",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    Text(
+                                      snapshot.data['data']['waktu_sesi'],
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 Text(
-                                  snapshot.data['data']['waktu_sesi'],
+                                  NumberFormat.currency(
+                                          locale: 'id',
+                                          symbol: "Rp. ",
+                                          decimalDigits: 0)
+                                      .format(
+                                    int.parse(
+                                        snapshot.data['data']['nominal_saldo']),
+                                  ),
                                   style: TextStyle(
                                     fontFamily: "Roboto",
                                     fontSize: 13,
@@ -161,56 +179,68 @@ class _detail_sesi_muridState extends State<detail_sesi_murid> {
                                 ),
                               ],
                             ),
-                            Text(
-                              NumberFormat.currency(
-                                      locale: 'id',
-                                      symbol: "Rp. ",
-                                      decimalDigits: 0)
-                                  .format(
-                                int.parse(snapshot.data['data']['nominal_saldo']),
-                              ),
-                              style: TextStyle(
-                                fontFamily: "Roboto",
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              "ID Guru : " +
-                                  snapshot.data['data']['id_guru'].toString(),
-                              style: TextStyle(
-                                  fontFamily: "Roboto",
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
                             SizedBox(
-                              height: 5,
+                              height: 20,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            Column(
                               children: [
                                 Text(
-                                  lokasiGuru,
+                                  "ID Guru : " +
+                                      snapshot.data['data']['id_guru']
+                                          .toString(),
                                   style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 13,
-                                  ),
+                                      fontFamily: "Roboto",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      lokasiGuru,
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    Text(
+                                      " | ",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    Text(
+                                      status[statusSesi],
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "Keterangan",
+                                  style: TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 5,
                                 ),
                                 Text(
-                                  " | ",
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                Text(
-                                  status[statusSesi],
+                                  snapshot.data['data']['keterangan'],
                                   style: TextStyle(
                                     fontFamily: "Roboto",
                                     fontSize: 13,
@@ -219,13 +249,13 @@ class _detail_sesi_muridState extends State<detail_sesi_murid> {
                               ],
                             ),
                           ],
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Text("data error");
-                  }
-                },
+                        );
+                      } else {
+                        return Text("data error");
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
           ),

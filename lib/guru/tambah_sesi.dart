@@ -31,7 +31,7 @@ class _tambah_sesiState extends State<tambah_sesi> {
   }
 
   TextEditingController hargaSesiGuruController = TextEditingController();
-
+  TextEditingController keteranganSesiGuruController = TextEditingController();
   // Future savedata() async {
   //   final response =
   //       await http.post(Uri.parse("http://10.0.2.2:8000/api/sesi"), body: {
@@ -48,50 +48,60 @@ class _tambah_sesiState extends State<tambah_sesi> {
   // }
 
   Future savedata() async {
-    final response =
-        await http.post(Uri.parse("https://literasimilenial.net/george/public/api/sesi"), body: {
-      'id_guru': index_user.toString(),
-      'tanggal_sesi': tgl,
-      'waktu_sesi': selectedvalue,
-      'nominal_saldo': hargaSesiGuruController.text,
-    });
+    final response = await http.post(
+      Uri.parse("https://literasimilenial.net/george/public/api/sesi"),
+      body: {
+        'id_guru': index_user.toString(),
+        'tanggal_sesi': tgl,
+        'waktu_sesi': time,
+        'nominal_saldo': hargaSesiGuruController.text,
+        'keterangan': keteranganSesiGuruController.text,
+      },
+    );
     if (response.statusCode == 200) {
       return json.decode(response.body)['message'];
     } else {
       return json.decode(response.body)['message'];
     }
   }
-  
+
   @override
-  final jam = [
-    "00:00 - 01:00",
-    "01:00 - 02:00",
-    "02:00 - 03:00",
-    "03:00 - 04:00",
-    "04:00 - 05:00",
-    "05:00 - 06:00",
-    "06:00 - 07:00",
-    "07:00 - 08:00",
-    "08:00 - 09:00",
-    "09:00 - 10:00",
-    "10:00 - 11:00",
-    "11:00 - 12:00",
-    "12:00 - 13:00",
-    "13:00 - 14:00",
-    "14:00 - 15:00",
-    "15:00 - 16:00",
-    "16:00 - 17:00",
-    "17:00 - 18:00",
-    "18:00 - 19:00",
-    "19:00 - 20:00",
-    "20:00 - 21:00",
-    "21:00 - 22:00",
-    "22:00 - 23:00",
-    "23:00 - 00:00",
-  ];
-  String? selectedvalue;
+  // final jam = [
+  //   "00:00 - 01:00",
+  //   "01:00 - 02:00",
+  //   "02:00 - 03:00",
+  //   "03:00 - 04:00",
+  //   "04:00 - 05:00",
+  //   "05:00 - 06:00",
+  //   "06:00 - 07:00",
+  //   "07:00 - 08:00",
+  //   "08:00 - 09:00",
+  //   "09:00 - 10:00",
+  //   "10:00 - 11:00",
+  //   "11:00 - 12:00",
+  //   "12:00 - 13:00",
+  //   "13:00 - 14:00",
+  //   "14:00 - 15:00",
+  //   "15:00 - 16:00",
+  //   "16:00 - 17:00",
+  //   "17:00 - 18:00",
+  //   "18:00 - 19:00",
+  //   "19:00 - 20:00",
+  //   "20:00 - 21:00",
+  //   "21:00 - 22:00",
+  //   "22:00 - 23:00",
+  //   "23:00 - 00:00",
+  // ];
+  // String? selectedvalue;
   String tgl = "";
+  String time = "";
   DateTime tglNow = DateTime.now();
+  TimeOfDay timeNow = TimeOfDay.now();
+  String n1 = "";
+  String n2 = "";
+  String n3 = "";
+  String ntime1 = "";
+  String ntime2 = "";
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -175,39 +185,97 @@ class _tambah_sesiState extends State<tambah_sesi> {
                   SizedBox(
                     height: 15,
                   ),
+                  Text(
+                    time == "" ? "Pilih Jam" : time,
+                    style: TextStyle(
+                      fontFamily: "Roboto",
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final TimeOfDay? timeOfDay = await showTimePicker(
+                        context: context,
+                        initialTime: timeNow,
+                        initialEntryMode: TimePickerEntryMode.dial,
+                      );
+                      if (timeOfDay != null) {
+                        setState(() {
+                          if (timeOfDay.hour < 10) {
+                            n1 = "0" + timeOfDay.hour.toString();
+                          }else{
+                            n1 = timeOfDay.hour.toString();
+                          }
+                          if(timeOfDay.minute < 10){
+                            n2 = "0" + timeOfDay.minute.toString();
+                          }else{
+                            n2 = timeOfDay.minute.toString();
+                          }
+                          if((timeOfDay.hour + 1) < 10){
+                            n3 = "0" + (timeOfDay.hour + 1).toString();
+                          }else{
+                            n3 = (timeOfDay.hour + 1).toString();
+                          }
+                          ntime1 = n1 + ":" + n2;
+                          ntime2 = n3 + ":" + n2;
+                          time = ntime1 +
+                              " - " +
+                              ntime2;
+                        });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: buttoncolor,
+                    ),
+                    child: Text(
+                      "Select Time",
+                      style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Column(
                     children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.black)),
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          underline: SizedBox(),
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.black,
-                          ),
-                          hint: Text(
-                            "Pilih Jadwal Sesi",
-                            style: TextStyle(
-                              fontFamily: "Roboto",
-                              fontSize: 20,
-                            ),
-                          ),
-                          items: jam.map(buildmenuitem).toList(),
-                          value: selectedvalue,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedvalue = value;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
+                      // Container(
+                      //   padding: EdgeInsets.symmetric(horizontal: 12),
+                      //   decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(5),
+                      //       border: Border.all(color: Colors.black)),
+                      //   child: DropdownButton<String>(
+                      //     isExpanded: true,
+                      //     underline: SizedBox(),
+                      //     icon: Icon(
+                      //       Icons.arrow_drop_down,
+                      //       color: Colors.black,
+                      //     ),
+                      //     hint: Text(
+                      //       "Pilih Jadwal Sesi",
+                      //       style: TextStyle(
+                      //         fontFamily: "Roboto",
+                      //         fontSize: 20,
+                      //       ),
+                      //     ),
+                      //     items: jam.map(buildmenuitem).toList(),
+                      //     value: selectedvalue,
+                      //     onChanged: (value) {
+                      //       setState(() {
+                      //         selectedvalue = value;
+                      //       });
+                      //     },
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 15,
+                      // ),
                       TextField(
                         controller: hargaSesiGuruController..text = "50000",
                         autofocus: true,
@@ -220,6 +288,22 @@ class _tambah_sesiState extends State<tambah_sesi> {
                           border: OutlineInputBorder(),
                           label: Text(
                             "Harga Sesi",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      TextField(
+                        controller: keteranganSesiGuruController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          label: Text(
+                            "Keterangan",
                             style: TextStyle(
                               fontFamily: "Roboto",
                               fontSize: 20,
@@ -265,7 +349,8 @@ class _tambah_sesiState extends State<tambah_sesi> {
   Future save_sesi() async {
     if (tgl == "" ||
         hargaSesiGuruController.text.isEmpty ||
-        selectedvalue == null) {
+        keteranganSesiGuruController.text.isEmpty ||
+        time == "") {
       Alert(
         context: context,
         title: "Data belum lengkap",

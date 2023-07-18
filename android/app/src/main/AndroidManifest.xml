@@ -2,12 +2,7 @@
     package="com.example.skripsi_c14190201">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="tel"/>
-        </intent>
-    </queries>
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="skripsi_c14190201"
         android:name="${applicationName}"

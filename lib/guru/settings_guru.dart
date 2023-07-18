@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:skripsi_c14190201/colors.dart';
+import 'package:skripsi_c14190201/guru/history_bayar_guru.dart';
 import 'package:skripsi_c14190201/guru/history_sesi_guru.dart';
 import 'package:skripsi_c14190201/guru/history_transaksi_guru.dart';
 import 'package:skripsi_c14190201/main.dart';
@@ -100,7 +101,8 @@ class _settings_guruState extends State<settings_guru> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return history_transaksi_guru(index_user: index_user);
+                            return history_transaksi_guru(
+                                index_user: index_user);
                           },
                         ),
                       );
@@ -110,6 +112,39 @@ class _settings_guruState extends State<settings_guru> {
                       children: [
                         Text(
                           "History Transaksi",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 20,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_right_outlined,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return history_bayar_guru(index_user: index_user);
+                          },
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "History Pembayaran",
                           style: TextStyle(
                             fontFamily: "Roboto",
                             fontSize: 20,

@@ -5,7 +5,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:skripsi_c14190201/colors.dart';
-import 'package:skripsi_c14190201/guru/detail_sesi_guru.dart';
 import 'package:http/http.dart' as http;
 import 'package:skripsi_c14190201/skripsi_icon_icons.dart';
 
@@ -95,15 +94,37 @@ class _history_transaksi_guruState extends State<history_transaksi_guru> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "ID Sesi : " +
-                                      snapshot.data['data'][index]['id']
-                                          .toString(),
-                                  style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "ID Sesi : " +
+                                          snapshot.data['data'][index]['id']
+                                              .toString(),
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      " | ",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    Text(
+                                      int.parse(snapshot.data['data'][index]
+                                                  ['status_bayar']) ==
+                                              1
+                                          ? "Sesi sudah di bayar"
+                                          : "Sesi belum di bayar",
+                                      style: TextStyle(
+                                          fontFamily: "Roboto",
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,

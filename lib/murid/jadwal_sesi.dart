@@ -25,13 +25,9 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
   }
 
   void dispose() {
-    mataPelajaranGuru.dispose();
-    lokasiGuru.dispose();
     super.dispose();
   }
 
-  TextEditingController mataPelajaranGuru = TextEditingController();
-  TextEditingController lokasiGuru = TextEditingController();
   @override
   // Future getdataguru() async {
   //   var response =
@@ -52,6 +48,7 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
   final String url =
       "https://literasimilenial.net/george/public/api/mata_pelajaran";
   String? selectedvalue;
+  String? selectedvalue1;
   Future getdata() async {
     var response = await http.get(Uri.parse(url));
     data = json.decode(response.body)["data"];
@@ -63,6 +60,25 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
     if (data_value.length < data.length) {
       data.forEach((element) {
         data_value.add(element["mata_pelajaran"] as String);
+      });
+    }
+  }
+
+  List<dynamic> data1 = [];
+  List<String> data_value1 = [];
+  final String url1 = "https://literasimilenial.net/george/public/api/kota";
+  String? selectedvalue2;
+  Future getdatakota() async {
+    var response = await http.get(Uri.parse(url1));
+    data1 = json.decode(response.body)["data"];
+    isi_datakota();
+    return json.decode(response.body)["data"];
+  }
+
+  void isi_datakota() {
+    if (data_value1.length < data1.length) {
+      data1.forEach((element) {
+        data_value1.add(element["kota"] as String);
       });
     }
   }
@@ -144,6 +160,77 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
               SizedBox(
                 height: 15,
               ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: Colors.black)),
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  underline: SizedBox(),
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black,
+                  ),
+                  hint: Text(
+                    "Status Sesi",
+                    style: TextStyle(
+                      fontFamily: "Roboto",
+                      fontSize: 20,
+                    ),
+                  ),
+                  items: status.map(buildmenuitem).toList(),
+                  value: selectedvalue1,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedvalue1 = value;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              FutureBuilder(
+                future: getdatakota(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.black)),
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        underline: SizedBox(),
+                        icon: Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.black,
+                        ),
+                        hint: Text(
+                          "Lokasi (Kota)",
+                          style: TextStyle(
+                            fontFamily: "Roboto",
+                            fontSize: 20,
+                          ),
+                        ),
+                        items: data_value1.map(buildmenuitem).toList(),
+                        value: selectedvalue2,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedvalue2 = value;
+                          });
+                        },
+                      ),
+                    );
+                  } else {
+                    return Text("data error");
+                  }
+                },
+              ),
+              SizedBox(
+                height: 15,
+              ),
               FutureBuilder(
                 future: getdataguru(),
                 builder: (context, snapshot) {
@@ -154,7 +241,9 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
                         itemBuilder: (context, index) {
                           if (snapshot.data['data'][index]['status_akun'] ==
                               '1') {
-                            if (selectedvalue == null) {
+                            if (selectedvalue == null &&
+                                selectedvalue1 == null &&
+                                selectedvalue2 == null) {
                               return Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -266,8 +355,10 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
                               );
                             }
                             if (selectedvalue ==
-                                snapshot.data['data'][index]
-                                    ['mata_pelajaran']) {
+                                    snapshot.data['data'][index]
+                                        ['mata_pelajaran'] &&
+                                selectedvalue1 == null &&
+                                selectedvalue2 == null) {
                               return Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -304,8 +395,705 @@ class _jadwal_sesiState extends State<jadwal_sesi> {
                                                 ),
                                               ),
                                               Text(
-                                                status[int.parse(snapshot.data['data']
-                                                    [index]['status_sesi'])],
+                                                status[int.parse(
+                                                    snapshot.data['data'][index]
+                                                        ['status_sesi'])],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['mata_pelajaran'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['lokasi'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return detail_guru(
+                                              index_user: index_user,
+                                              index_guru: snapshot.data['data']
+                                                  [index]['id'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: buttoncolor,
+                                    ),
+                                    child: Text(
+                                      "Detail",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            if (selectedvalue == null &&
+                                selectedvalue1 ==
+                                    status[int.parse(snapshot.data['data']
+                                        [index]['status_sesi'])] &&
+                                selectedvalue2 == null) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        SkripsiIcon.user,
+                                        size: 25,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['username'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                status[int.parse(
+                                                    snapshot.data['data'][index]
+                                                        ['status_sesi'])],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['mata_pelajaran'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['lokasi'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return detail_guru(
+                                              index_user: index_user,
+                                              index_guru: snapshot.data['data']
+                                                  [index]['id'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: buttoncolor,
+                                    ),
+                                    child: Text(
+                                      "Detail",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            if (selectedvalue == null &&
+                                selectedvalue1 == null &&
+                                selectedvalue2 ==
+                                    snapshot.data['data'][index]['lokasi']) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        SkripsiIcon.user,
+                                        size: 25,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['username'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                status[int.parse(
+                                                    snapshot.data['data'][index]
+                                                        ['status_sesi'])],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['mata_pelajaran'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['lokasi'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return detail_guru(
+                                              index_user: index_user,
+                                              index_guru: snapshot.data['data']
+                                                  [index]['id'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: buttoncolor,
+                                    ),
+                                    child: Text(
+                                      "Detail",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            if (selectedvalue ==
+                                    snapshot.data['data'][index]
+                                        ['mata_pelajaran'] &&
+                                selectedvalue1 ==
+                                    status[int.parse(snapshot.data['data']
+                                        [index]['status_sesi'])] &&
+                                selectedvalue2 == null) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        SkripsiIcon.user,
+                                        size: 25,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['username'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                status[int.parse(
+                                                    snapshot.data['data'][index]
+                                                        ['status_sesi'])],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['mata_pelajaran'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['lokasi'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return detail_guru(
+                                              index_user: index_user,
+                                              index_guru: snapshot.data['data']
+                                                  [index]['id'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: buttoncolor,
+                                    ),
+                                    child: Text(
+                                      "Detail",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            if (selectedvalue ==
+                                    snapshot.data['data'][index]
+                                        ['mata_pelajaran'] &&
+                                selectedvalue1 == null &&
+                                selectedvalue2 ==
+                                    snapshot.data['data'][index]['lokasi']) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        SkripsiIcon.user,
+                                        size: 25,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['username'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                status[int.parse(
+                                                    snapshot.data['data'][index]
+                                                        ['status_sesi'])],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['mata_pelajaran'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['lokasi'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return detail_guru(
+                                              index_user: index_user,
+                                              index_guru: snapshot.data['data']
+                                                  [index]['id'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: buttoncolor,
+                                    ),
+                                    child: Text(
+                                      "Detail",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            if (selectedvalue == null &&
+                                selectedvalue1 ==
+                                    status[int.parse(snapshot.data['data']
+                                        [index]['status_sesi'])] &&
+                                selectedvalue2 ==
+                                    snapshot.data['data'][index]['lokasi']) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        SkripsiIcon.user,
+                                        size: 25,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['username'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                status[int.parse(
+                                                    snapshot.data['data'][index]
+                                                        ['status_sesi'])],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['mata_pelajaran'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['lokasi'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return detail_guru(
+                                              index_user: index_user,
+                                              index_guru: snapshot.data['data']
+                                                  [index]['id'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: buttoncolor,
+                                    ),
+                                    child: Text(
+                                      "Detail",
+                                      style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            if (selectedvalue ==
+                                    snapshot.data['data'][index]
+                                        ['mata_pelajaran'] &&
+                                selectedvalue1 ==
+                                    status[int.parse(snapshot.data['data']
+                                        [index]['status_sesi'])] &&
+                                selectedvalue2 ==
+                                    snapshot.data['data'][index]['lokasi']) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        SkripsiIcon.user,
+                                        size: 25,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data['data'][index]
+                                                    ['username'],
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                " | ",
+                                                style: TextStyle(
+                                                  fontFamily: "Roboto",
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                status[int.parse(
+                                                    snapshot.data['data'][index]
+                                                        ['status_sesi'])],
                                                 style: TextStyle(
                                                   fontFamily: "Roboto",
                                                   fontSize: 13,

@@ -135,9 +135,8 @@ class _sesi_guruState extends State<sesi_guru> {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            final Uri whatsapp_user =
-                                Uri.parse(snapshot.data['data']['kontak']);
-                            launchUrl(whatsapp_user);
+                            String n = "tel:" + snapshot.data['data']['kontak'];
+                            launch(n);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: buttoncolor,

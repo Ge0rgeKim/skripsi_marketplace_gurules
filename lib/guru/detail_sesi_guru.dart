@@ -169,7 +169,8 @@ class _detail_sesi_guruState extends State<detail_sesi_guru> {
                                           symbol: "Rp. ",
                                           decimalDigits: 0)
                                       .format(
-                                    int.parse(snapshot.data['data']['nominal_saldo']),
+                                    int.parse(
+                                        snapshot.data['data']['nominal_saldo']),
                                   ),
                                   style: TextStyle(
                                     fontFamily: "Roboto",
@@ -184,7 +185,9 @@ class _detail_sesi_guruState extends State<detail_sesi_guru> {
                             Column(
                               children: [
                                 Text(
-                                  int.parse(snapshot.data['data']['status_sesi']) == 1
+                                  int.parse(snapshot.data['data']
+                                              ['status_sesi']) ==
+                                          1
                                       ? "Sesi sudah di booking"
                                       : "Sesi belum di booking",
                                   style: TextStyle(
@@ -220,6 +223,30 @@ class _detail_sesi_guruState extends State<detail_sesi_guru> {
                                       ),
                                     ),
                                   ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "Keterangan",
+                                  style: TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  snapshot.data['data']['keterangan'],
+                                  style: TextStyle(
+                                    fontFamily: "Roboto",
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ],
                             ),
